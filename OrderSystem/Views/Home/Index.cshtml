@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="zh_cn" ng-app="orderApp">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="no-cache,must-revalidate" http-equiv="Cache-Control" />
+	<meta content="no-cache" http-equiv="pragma" />
+	<meta content="0" http-equiv="expires" />
+	<meta content="telephone=no, address=no" name="format-detection" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<title>Document</title>
+
+	<link rel="stylesheet" href="~/Content/css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/Content/css/global.css">
+</head>
+<body>
+	<section class="search">
+		<div class="input-group">
+			<span class="input-group-addon"><span class="fa fa-search"></span></span>
+			<input type="text" class="form-control" placeholder="搜索">
+		</div>
+	</section>
+	<section class="category" ng-static-height>
+		<div class="list-group">
+			<a class="list-group-item">
+				<span class="badge">14</span>
+				热销榜
+			</a>
+			<a class="list-group-item active">百味家常菜</a>
+			<a class="list-group-item">盖浇饭</a>
+			<a class="list-group-item">饮料/酒水</a>
+			<a class="list-group-item active">百味家常菜</a>
+			<a class="list-group-item">盖浇饭</a>
+			<a class="list-group-item">饮料/酒水</a>
+			<a class="list-group-item active">百味家常菜</a>
+			<a class="list-group-item">盖浇饭</a>
+			<a class="list-group-item">饮料/酒水</a>
+			<a class="list-group-item active">百味家常菜</a>
+			<a class="list-group-item">盖浇饭</a>
+			<a class="list-group-item">饮料/酒水</a>
+		</div>
+	</section>
+	<section class="menu" ng-static-height>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="media">
+					<div class="media-left">
+						<a href="javascript:;">
+							<img class="media-object" src="~/Content/image/01/粉蒸肉 36元.jpg">
+						</a>
+					</div>
+					<div class="media-body">
+						<p class="meal-title">孜然牛肉</p>
+						<p class="meal-ordered">已有10个人点过</p>
+						<div class="meal-footer">
+							<p class="meal-price pull-left">￥36.00</p>
+							<div class="cart-control pull-right">
+								<button class="btn btn-sm btn-cart-decrease"><span class="fa fa-minus"></span></button>
+								<span class="cart-number">3</span>
+								<button class="btn btn-sm btn-cart-add"><span class="fa fa-plus"></span></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div class="media">
+					<div class="media-left">
+						<a href="javascript:;">
+							<img class="media-object" src="~/Content/image/01/粉蒸肉 36元.jpg">
+						</a>
+					</div>
+					<div class="media-body">
+						<p class="meal-title">孜然牛肉</p>
+						<p class="meal-ordered">已有10个人点过</p>
+						<div class="meal-footer">
+							<p class="meal-price pull-left">￥36.00</p>
+							<div class="cart-control pull-right">
+								<button class="btn btn-sm btn-cart-decrease"><span class="fa fa-minus"></span></button>
+								<span class="cart-number">3</span>
+								<button class="btn btn-sm btn-cart-add"><span class="fa fa-plus"></span></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</section>
+	<section class="cart">
+		<span class="cart-sum">
+			<span class="fa fa-shopping-cart"></span>
+			5份 ￥5.55
+		</span>
+		<button class="btn btn-sm btn-primary pull-right">查看点单</button>
+	</section>
+
+	<script src="~/Scripts/lib/jquery-2.1.4.min.js"></script>
+	<script src="~/Scripts/lib/angular.min.js"></script>
+
+	<script src="~/Scripts/orderApp/app.js"></script>
+</body>
+</html>

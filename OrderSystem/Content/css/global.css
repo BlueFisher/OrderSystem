@@ -1,0 +1,118 @@
+﻿html{
+	height: 100%;
+}
+body{
+	position: relative;
+	min-height: 100%;
+	font-family: "Microsoft Yahei";
+	background-color: #EEEDEF;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn:active:focus,
+.btn:focus{
+	outline: none;
+}
+
+section.search .input-group-addon,
+section.search input{
+	border-radius: 0;
+}
+
+section.category{
+	display: block;
+	width: 25%;
+	height: 500px;
+	overflow-y: scroll;
+	float: left;
+}
+section.category .list-group-item{
+	margin-bottom: 0;
+	padding: 15px 5px;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #ddd;
+	background-color: #f7f7f7;
+}
+section.category .list-group-item.active{
+	background: #fff;
+	border-left: 2px solid #337ab7;
+	border-bottom-color: #337ab7;
+	color: #555;
+}
+
+section.menu{
+	width: 75%;
+	float: left;
+	overflow-y: scroll;
+}
+section.menu .list-group-item{
+	padding: 10px 8px;
+	margin-bottom: 0;
+	border: none;
+	border-bottom: 1px solid #EDEDED;
+	border-radius: 0;
+}
+section.menu img.media-object{
+	width: 70px;
+}
+section.menu .media-body p{
+	margin-bottom: 6px;
+}
+section.menu .media-body p.meal-title{
+	color: #333;
+	font-size: 15px;
+}
+section.menu .media-body p.meal-ordered{
+	color: #666;
+	font-size: 12px;
+}
+section.menu .media-body p.meal-price{
+	margin-bottom: 0;
+	color: #ff6000;
+	font-size: 18px;
+}
+
+.cart-control .cart-number{
+	color: #999;
+	font-size: 13px;
+}
+.cart-control .btn.btn-cart-decrease,
+.cart-control .btn.btn-cart-add{
+	padding: 0;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	/*text-align: center;*/
+	line-height: 25px;
+}
+.cart-control .btn.btn-cart-decrease{
+	border: 1px solid  #337ab7;
+	background-color: #fff;
+	color: #337ab7;
+}
+.cart-control .btn.btn-cart-add{
+	background-color: #337ab7;
+	color: #fff;
+}
+
+section.cart{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 5px 10px;
+	clear:both;
+	background-color: #323941;
+	font-size: 16px;
+	color:#fff;
+	z-index: 10;
+}
+section.cart .cart-sum{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+}

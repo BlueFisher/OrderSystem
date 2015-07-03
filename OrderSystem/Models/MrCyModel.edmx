@@ -1,0 +1,1250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BaseInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InfoId" Type="int" Nullable="false" />
+          <Property Name="InfoName" Type="varchar" MaxLength="20" />
+          <Property Name="InfoDescription" Type="varchar" MaxLength="50" />
+          <Property Name="InfoContent" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="BatchNo">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PosNo" Type="char" MaxLength="2" />
+          <Property Name="CheckID" Type="char" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ClerkGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="GroupName" Type="varchar" MaxLength="20" />
+          <Property Name="GroupRemark" Type="varchar" MaxLength="50" />
+          <Property Name="EnableCheckIn" Type="bit" />
+          <Property Name="EnableQuitDisher" Type="bit" />
+          <Property Name="EnableModifyNum" Type="bit" />
+          <Property Name="EnableModifyPrice" Type="bit" />
+          <Property Name="EnableDiscount" Type="bit" />
+          <Property Name="DiscountId" Type="varchar" MaxLength="10" />
+          <Property Name="EnableDiscountAll" Type="bit" />
+          <Property Name="DiscountAllLimit" Type="float" />
+          <Property Name="EnableDiscountMoney" Type="bit" />
+          <Property Name="DiscountMoneyLimit" Type="money" />
+          <Property Name="EnableArrear" Type="bit" />
+          <Property Name="ArrearLimit" Type="money" />
+          <Property Name="EnablePresent" Type="bit" />
+          <Property Name="PresentLimit" Type="money" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ClerkInfo">
+          <Key>
+            <PropertyRef Name="ClerkId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClerkId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClerkName" Type="varchar" MaxLength="20" />
+          <Property Name="GroupId" Type="varchar" MaxLength="10" />
+          <Property Name="LoginName" Type="varchar" MaxLength="10" />
+          <Property Name="LoginPwd" Type="varchar" MaxLength="8" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
+          <Property Name="ClerkRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdatorDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ClientInfo">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientAutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClientName" Type="varchar" MaxLength="20" />
+          <Property Name="LoginName" Type="varchar" MaxLength="20" />
+          <Property Name="LoginPwd" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="DepartmentClass">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" />
+          <Property Name="ClassRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DepartmentInfo">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="ClassId" Type="varchar" MaxLength="6" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="50" />
+          <Property Name="DepartmentRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" />
+          <Property Name="PrinterId" Type="varchar" MaxLength="6" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DepartmentPrinter">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+            <PropertyRef Name="PrinterId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="PrinterId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DeskInfo">
+          <Key>
+            <PropertyRef Name="DeskId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeskId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DeskName" Type="varchar" MaxLength="30" />
+          <Property Name="RoomId" Type="varchar" MaxLength="10" />
+          <Property Name="RoomRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="DinerNumber" Type="int" />
+          <Property Name="DinerCircumstance" Type="varchar" MaxLength="50" />
+          <Property Name="IsRoom" Type="bit" />
+          <Property Name="QRCode" Type="varchar" MaxLength="10" />
+          <Property Name="MinConsuption" Type="money" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="UsedNum" Type="int" />
+          <Property Name="Creator" Type="varchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="10" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="10" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DineDetail">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckID" Type="char" MaxLength="20" />
+          <Property Name="DisherID" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DisherNum" Type="int" />
+          <Property Name="DisherPrice" Type="money" />
+          <Property Name="Quitstatus" Type="bit" />
+          <Property Name="SalesPrice" Type="money" />
+          <Property Name="SalesDiscount" Type="float" />
+          <Property Name="Ispayed" Type="bit" />
+          <Property Name="Note" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="DineDetailHistory">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckID" Type="char" MaxLength="20" />
+          <Property Name="CheckDate" Type="datetime" />
+          <Property Name="DisherID" Type="varchar" MaxLength="6" />
+          <Property Name="DisherNum" Type="int" />
+          <Property Name="DisherPrice" Type="money" />
+          <Property Name="Quitstatus" Type="bit" />
+          <Property Name="SalesPrice" Type="money" />
+          <Property Name="SalesDiscount" Type="float" />
+          <Property Name="Note" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="DineInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckID" Type="char" MaxLength="20" />
+          <Property Name="ClerkID" Type="varchar" MaxLength="20" />
+          <Property Name="WaiterID" Type="varchar" MaxLength="20" />
+          <Property Name="ClientID" Type="varchar" MaxLength="20" />
+          <Property Name="ClientNum" Type="int" />
+          <Property Name="DeskID" Type="varchar" MaxLength="10" />
+          <Property Name="Roomid" Type="varchar" MaxLength="10" />
+          <Property Name="BeginTime" Type="datetime" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="PayKind" Type="varchar" MaxLength="10" />
+          <Property Name="Subtotal" Type="money" />
+        </EntityType>
+        <EntityType Name="DineInfoHistory">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckDate" Type="datetime" />
+          <Property Name="CheckID" Type="char" MaxLength="20" />
+          <Property Name="ClerkID" Type="varchar" MaxLength="20" />
+          <Property Name="WaiterID" Type="varchar" MaxLength="20" />
+          <Property Name="ClientID" Type="varchar" MaxLength="20" />
+          <Property Name="ClientNum" Type="int" />
+          <Property Name="DeskID" Type="varchar" MaxLength="10" />
+          <Property Name="Roomid" Type="varchar" MaxLength="10" />
+          <Property Name="BeginTime" Type="datetime" />
+          <Property Name="PayKind" Type="varchar" MaxLength="10" />
+          <Property Name="Subtotal" Type="money" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.DineTempDetail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="DineTempDetail">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" Nullable="false" />
+          <Property Name="DisherID" Type="varchar" MaxLength="6" />
+          <Property Name="DisherNum" Type="int" />
+          <Property Name="DisherPrice" Type="money" />
+          <Property Name="SalesDiscount" Type="float" />
+          <Property Name="Note" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="DineTempInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="varchar" MaxLength="20" />
+          <Property Name="DeskID" Type="varchar" MaxLength="10" />
+          <Property Name="Roomid" Type="varchar" MaxLength="10" />
+          <Property Name="BeginTime" Type="datetime" />
+          <Property Name="peoplecount" Type="smallint" />
+        </EntityType>
+        <EntityType Name="MenuClass">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="AutoId" Type="int" />
+          <Property Name="ClassId" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="10" />
+          <Property Name="ClassRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="10" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="10" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MenuDetail">
+          <Key>
+            <PropertyRef Name="DisherId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisherId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DisherCode" Type="varchar" MaxLength="10" />
+          <Property Name="DisherName" Type="varchar" MaxLength="30" />
+          <Property Name="DisherPicture" Type="varchar" MaxLength="50" />
+          <Property Name="DisherEnglishName" Type="varchar" MaxLength="15" />
+          <Property Name="DisherDescription" Type="varchar" MaxLength="50" />
+          <Property Name="DisherSubclassID1" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DisherSubclassID2" Type="varchar" MaxLength="6" />
+          <Property Name="DisherSize" Type="varchar" MaxLength="3" />
+          <Property Name="DisherPrice" Type="money" />
+          <Property Name="DisherVipPrice" Type="money" />
+          <Property Name="DisherServicePrice" Type="money" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="DisherDiscount" Type="float" />
+          <Property Name="DepartmentId" Type="varchar" MaxLength="6" />
+          <Property Name="DisherPoint" Type="int" />
+          <Property Name="SourIndex" Type="smallint" />
+          <Property Name="SweetIndex" Type="smallint" />
+          <Property Name="SaltyIndex" Type="smallint" />
+          <Property Name="SpicyIndex" Type="smallint" />
+          <Property Name="Evaluate" Type="smallint" />
+          <Property Name="Creator" Type="varchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="10" />
+          <Property Name="updateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="10" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MenuSubClass">
+          <Key>
+            <PropertyRef Name="SubClassId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubClassId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="SubClassName" Type="varchar" MaxLength="20" />
+          <Property Name="ClassId" Type="varchar" MaxLength="3" />
+          <Property Name="SubClassRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" />
+          <Property Name="Creator" Type="varchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="10" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="10" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.Note”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Note" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="PayKind">
+          <Key>
+            <PropertyRef Name="Kind" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kind" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="PayName" Type="varchar" MaxLength="50" />
+          <Property Name="PayRemark" Type="varchar" MaxLength="50" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="IsCount" Type="bit" />
+          <Property Name="IsNetwork" Type="bit" />
+          <Property Name="NetworkAccount" Type="varchar" MaxLength="20" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PrinterInfo">
+          <Key>
+            <PropertyRef Name="PrinterId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrinterId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="PrinterName" Type="varchar" MaxLength="50" />
+          <Property Name="PrinterDescription" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="20" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="20" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RoomInfo">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoomName" Type="varchar" MaxLength="30" />
+          <Property Name="RoomRemark" Type="varchar" MaxLength="50" />
+          <Property Name="Usable" Type="bit" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Updator" Type="varchar" MaxLength="10" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="Deletor" Type="varchar" MaxLength="10" />
+          <Property Name="DeleteDate" Type="datetime" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.Waiter”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Waiter">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="20" />
+          <Property Name="name" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityContainer Name="db_MrCyModelStoreContainer">
+          <EntitySet Name="BaseInfo" EntityType="Self.BaseInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BatchNo" EntityType="Self.BatchNo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClerkGroup" EntityType="Self.ClerkGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClerkInfo" EntityType="Self.ClerkInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientInfo" EntityType="Self.ClientInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepartmentClass" EntityType="Self.DepartmentClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepartmentInfo" EntityType="Self.DepartmentInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepartmentPrinter" EntityType="Self.DepartmentPrinter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeskInfo" EntityType="Self.DeskInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineDetail" EntityType="Self.DineDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineDetailHistory" EntityType="Self.DineDetailHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineInfo" EntityType="Self.DineInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineInfoHistory" EntityType="Self.DineInfoHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuClass" EntityType="Self.MenuClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PayKind" EntityType="Self.PayKind" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DineTempDetail].[AutoID] AS [AutoID], 
+    [DineTempDetail].[DisherID] AS [DisherID], 
+    [DineTempDetail].[DisherNum] AS [DisherNum], 
+    [DineTempDetail].[DisherPrice] AS [DisherPrice], 
+    [DineTempDetail].[SalesDiscount] AS [SalesDiscount], 
+    [DineTempDetail].[Note] AS [Note]
+    FROM [dbo].[DineTempDetail] AS [DineTempDetail]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Note" EntityType="Self.Note" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Note].[AutoID] AS [AutoID], 
+    [Note].[Note] AS [Note]
+    FROM [dbo].[Note] AS [Note]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Waiter" EntityType="Self.Waiter" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Waiter].[AutoID] AS [AutoID], 
+    [Waiter].[ID] AS [ID], 
+    [Waiter].[name] AS [name]
+    FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BaseInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InfoId" Type="Int32" Nullable="false" />
+          <Property Name="InfoName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InfoDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InfoContent" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BatchNo">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PosNo" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CheckID" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ClerkGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GroupRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EnableCheckIn" Type="Boolean" />
+          <Property Name="EnableQuitDisher" Type="Boolean" />
+          <Property Name="EnableModifyNum" Type="Boolean" />
+          <Property Name="EnableModifyPrice" Type="Boolean" />
+          <Property Name="EnableDiscount" Type="Boolean" />
+          <Property Name="DiscountId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EnableDiscountAll" Type="Boolean" />
+          <Property Name="DiscountAllLimit" Type="Double" />
+          <Property Name="EnableDiscountMoney" Type="Boolean" />
+          <Property Name="DiscountMoneyLimit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="EnableArrear" Type="Boolean" />
+          <Property Name="ArrearLimit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="EnablePresent" Type="Boolean" />
+          <Property Name="PresentLimit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ClerkInfo">
+          <Key>
+            <PropertyRef Name="ClerkId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClerkId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClerkName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GroupId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LoginName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LoginPwd" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="ClerkRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatorDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ClientInfo">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientAutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClientName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DepartmentClass">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClassRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DepartmentInfo">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" />
+          <Property Name="PrinterId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DepartmentPrinter">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+            <PropertyRef Name="PrinterId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PrinterId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DeskInfo">
+          <Key>
+            <PropertyRef Name="DeskId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeskId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeskName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="RoomId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RoomRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="DinerNumber" Type="Int32" />
+          <Property Name="DinerCircumstance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsRoom" Type="Boolean" />
+          <Property Name="QRCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MinConsuption" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="UsedNum" Type="Int32" />
+          <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DineDetail">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckID" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DisherNum" Type="Int32" />
+          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Quitstatus" Type="Boolean" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesDiscount" Type="Double" />
+          <Property Name="Ispayed" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DineDetailHistory">
+          <Key>
+            <PropertyRef Name="AutoId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckID" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="CheckDate" Type="DateTime" Precision="3" />
+          <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherNum" Type="Int32" />
+          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Quitstatus" Type="Boolean" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesDiscount" Type="Double" />
+          <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DineInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckID" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="ClerkID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WaiterID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClientNum" Type="Int32" />
+          <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="DineInfoHistory">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckID" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="ClerkID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WaiterID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClientNum" Type="Int32" />
+          <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="DineTempInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <Property Name="peoplecount" Type="Int16" />
+        </EntityType>
+        <EntityType Name="MenuClass">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" />
+          <Property Name="ClassId" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ClassRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="MenuDetail">
+          <Key>
+            <PropertyRef Name="DisherId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisherId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DisherCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DisherName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DisherPicture" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DisherEnglishName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DisherDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DisherSubclassID1" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DisherSubclassID2" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherSize" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DisherVipPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DisherServicePrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="DisherDiscount" Type="Double" />
+          <Property Name="DepartmentId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherPoint" Type="Int32" />
+          <Property Name="SourIndex" Type="Int16" />
+          <Property Name="SweetIndex" Type="Int16" />
+          <Property Name="SaltyIndex" Type="Int16" />
+          <Property Name="SpicyIndex" Type="Int16" />
+          <Property Name="Evaluate" Type="Int16" />
+          <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="MenuSubClass">
+          <Key>
+            <PropertyRef Name="SubClassId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubClassId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubClassName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClassId" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="SubClassRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" />
+          <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="PayKind">
+          <Key>
+            <PropertyRef Name="Kind" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kind" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PayRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="IsCount" Type="Boolean" />
+          <Property Name="IsNetwork" Type="Boolean" />
+          <Property Name="NetworkAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="PrinterInfo">
+          <Key>
+            <PropertyRef Name="PrinterId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrinterId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PrinterName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PrinterDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RoomInfo">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoomName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="RoomRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Usable" Type="Boolean" Nullable="false" />
+          <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DineTempDetail">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" />
+          <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherNum" Type="Int32" />
+          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesDiscount" Type="Double" />
+          <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Note1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Waiter">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="MrCyContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BaseInfo" EntityType="Self.BaseInfo" />
+          <EntitySet Name="BatchNo" EntityType="Self.BatchNo" />
+          <EntitySet Name="ClerkGroup" EntityType="Self.ClerkGroup" />
+          <EntitySet Name="ClerkInfo" EntityType="Self.ClerkInfo" />
+          <EntitySet Name="ClientInfo" EntityType="Self.ClientInfo" />
+          <EntitySet Name="DepartmentClass" EntityType="Self.DepartmentClass" />
+          <EntitySet Name="DepartmentInfo" EntityType="Self.DepartmentInfo" />
+          <EntitySet Name="DepartmentPrinter" EntityType="Self.DepartmentPrinter" />
+          <EntitySet Name="DeskInfo" EntityType="Self.DeskInfo" />
+          <EntitySet Name="DineDetail" EntityType="Self.DineDetail" />
+          <EntitySet Name="DineDetailHistory" EntityType="Self.DineDetailHistory" />
+          <EntitySet Name="DineInfo" EntityType="Self.DineInfo" />
+          <EntitySet Name="DineInfoHistory" EntityType="Self.DineInfoHistory" />
+          <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" />
+          <EntitySet Name="MenuClass" EntityType="Self.MenuClass" />
+          <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" />
+          <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" />
+          <EntitySet Name="PayKind" EntityType="Self.PayKind" />
+          <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" />
+          <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" />
+          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" />
+          <EntitySet Name="Note" EntityType="Self.Note" />
+          <EntitySet Name="Waiter" EntityType="Self.Waiter" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_MrCyModelStoreContainer" CdmEntityContainer="MrCyContext">
+          <EntitySetMapping Name="BaseInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.BaseInfo">
+              <MappingFragment StoreEntitySet="BaseInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+                <ScalarProperty Name="InfoName" ColumnName="InfoName" />
+                <ScalarProperty Name="InfoDescription" ColumnName="InfoDescription" />
+                <ScalarProperty Name="InfoContent" ColumnName="InfoContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BatchNo">
+            <EntityTypeMapping TypeName="db_MrCyModel.BatchNo">
+              <MappingFragment StoreEntitySet="BatchNo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="PosNo" ColumnName="PosNo" />
+                <ScalarProperty Name="CheckID" ColumnName="CheckID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClerkGroup">
+            <EntityTypeMapping TypeName="db_MrCyModel.ClerkGroup">
+              <MappingFragment StoreEntitySet="ClerkGroup">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupRemark" ColumnName="GroupRemark" />
+                <ScalarProperty Name="EnableCheckIn" ColumnName="EnableCheckIn" />
+                <ScalarProperty Name="EnableQuitDisher" ColumnName="EnableQuitDisher" />
+                <ScalarProperty Name="EnableModifyNum" ColumnName="EnableModifyNum" />
+                <ScalarProperty Name="EnableModifyPrice" ColumnName="EnableModifyPrice" />
+                <ScalarProperty Name="EnableDiscount" ColumnName="EnableDiscount" />
+                <ScalarProperty Name="DiscountId" ColumnName="DiscountId" />
+                <ScalarProperty Name="EnableDiscountAll" ColumnName="EnableDiscountAll" />
+                <ScalarProperty Name="DiscountAllLimit" ColumnName="DiscountAllLimit" />
+                <ScalarProperty Name="EnableDiscountMoney" ColumnName="EnableDiscountMoney" />
+                <ScalarProperty Name="DiscountMoneyLimit" ColumnName="DiscountMoneyLimit" />
+                <ScalarProperty Name="EnableArrear" ColumnName="EnableArrear" />
+                <ScalarProperty Name="ArrearLimit" ColumnName="ArrearLimit" />
+                <ScalarProperty Name="EnablePresent" ColumnName="EnablePresent" />
+                <ScalarProperty Name="PresentLimit" ColumnName="PresentLimit" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClerkInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.ClerkInfo">
+              <MappingFragment StoreEntitySet="ClerkInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="ClerkId" ColumnName="ClerkId" />
+                <ScalarProperty Name="ClerkName" ColumnName="ClerkName" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="ClerkRemark" ColumnName="ClerkRemark" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdatorDate" ColumnName="UpdatorDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.ClientInfo">
+              <MappingFragment StoreEntitySet="ClientInfo">
+                <ScalarProperty Name="ClientAutoId" ColumnName="ClientAutoId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartmentClass">
+            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentClass">
+              <MappingFragment StoreEntitySet="DepartmentClass">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassRemark" ColumnName="ClassRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartmentInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentInfo">
+              <MappingFragment StoreEntitySet="DepartmentInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="DepartmentRemark" ColumnName="DepartmentRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="PrinterId" ColumnName="PrinterId" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepartmentPrinter">
+            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentPrinter">
+              <MappingFragment StoreEntitySet="DepartmentPrinter">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="PrinterId" ColumnName="PrinterId" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeskInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.DeskInfo">
+              <MappingFragment StoreEntitySet="DeskInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="DeskId" ColumnName="DeskId" />
+                <ScalarProperty Name="DeskName" ColumnName="DeskName" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="RoomRemark" ColumnName="RoomRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="DinerNumber" ColumnName="DinerNumber" />
+                <ScalarProperty Name="DinerCircumstance" ColumnName="DinerCircumstance" />
+                <ScalarProperty Name="IsRoom" ColumnName="IsRoom" />
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="MinConsuption" ColumnName="MinConsuption" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UsedNum" ColumnName="UsedNum" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineDetail">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineDetail">
+              <MappingFragment StoreEntitySet="DineDetail">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="CheckID" ColumnName="CheckID" />
+                <ScalarProperty Name="DisherID" ColumnName="DisherID" />
+                <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />
+                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="Quitstatus" ColumnName="Quitstatus" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
+                <ScalarProperty Name="Ispayed" ColumnName="Ispayed" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineDetailHistory">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineDetailHistory">
+              <MappingFragment StoreEntitySet="DineDetailHistory">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="CheckID" ColumnName="CheckID" />
+                <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
+                <ScalarProperty Name="DisherID" ColumnName="DisherID" />
+                <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />
+                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="Quitstatus" ColumnName="Quitstatus" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SalesPrice" />
+                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineInfo">
+              <MappingFragment StoreEntitySet="DineInfo">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="CheckID" ColumnName="CheckID" />
+                <ScalarProperty Name="ClerkID" ColumnName="ClerkID" />
+                <ScalarProperty Name="WaiterID" ColumnName="WaiterID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ClientNum" ColumnName="ClientNum" />
+                <ScalarProperty Name="DeskID" ColumnName="DeskID" />
+                <ScalarProperty Name="Roomid" ColumnName="Roomid" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineInfoHistory">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineInfoHistory">
+              <MappingFragment StoreEntitySet="DineInfoHistory">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
+                <ScalarProperty Name="CheckID" ColumnName="CheckID" />
+                <ScalarProperty Name="ClerkID" ColumnName="ClerkID" />
+                <ScalarProperty Name="WaiterID" ColumnName="WaiterID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ClientNum" ColumnName="ClientNum" />
+                <ScalarProperty Name="DeskID" ColumnName="DeskID" />
+                <ScalarProperty Name="Roomid" ColumnName="Roomid" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineTempInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineTempInfo">
+              <MappingFragment StoreEntitySet="DineTempInfo">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="DeskID" ColumnName="DeskID" />
+                <ScalarProperty Name="Roomid" ColumnName="Roomid" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="peoplecount" ColumnName="peoplecount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuClass">
+            <EntityTypeMapping TypeName="db_MrCyModel.MenuClass">
+              <MappingFragment StoreEntitySet="MenuClass">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassRemark" ColumnName="ClassRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuDetail">
+            <EntityTypeMapping TypeName="db_MrCyModel.MenuDetail">
+              <MappingFragment StoreEntitySet="MenuDetail">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="DisherId" ColumnName="DisherId" />
+                <ScalarProperty Name="DisherCode" ColumnName="DisherCode" />
+                <ScalarProperty Name="DisherName" ColumnName="DisherName" />
+                <ScalarProperty Name="DisherPicture" ColumnName="DisherPicture" />
+                <ScalarProperty Name="DisherEnglishName" ColumnName="DisherEnglishName" />
+                <ScalarProperty Name="DisherDescription" ColumnName="DisherDescription" />
+                <ScalarProperty Name="DisherSubclassID1" ColumnName="DisherSubclassID1" />
+                <ScalarProperty Name="DisherSubclassID2" ColumnName="DisherSubclassID2" />
+                <ScalarProperty Name="DisherSize" ColumnName="DisherSize" />
+                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="DisherVipPrice" ColumnName="DisherVipPrice" />
+                <ScalarProperty Name="DisherServicePrice" ColumnName="DisherServicePrice" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="DisherDiscount" ColumnName="DisherDiscount" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="DisherPoint" ColumnName="DisherPoint" />
+                <ScalarProperty Name="SourIndex" ColumnName="SourIndex" />
+                <ScalarProperty Name="SweetIndex" ColumnName="SweetIndex" />
+                <ScalarProperty Name="SaltyIndex" ColumnName="SaltyIndex" />
+                <ScalarProperty Name="SpicyIndex" ColumnName="SpicyIndex" />
+                <ScalarProperty Name="Evaluate" ColumnName="Evaluate" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuSubClass">
+            <EntityTypeMapping TypeName="db_MrCyModel.MenuSubClass">
+              <MappingFragment StoreEntitySet="MenuSubClass">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="SubClassId" ColumnName="SubClassId" />
+                <ScalarProperty Name="SubClassName" ColumnName="SubClassName" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="SubClassRemark" ColumnName="SubClassRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayKind">
+            <EntityTypeMapping TypeName="db_MrCyModel.PayKind">
+              <MappingFragment StoreEntitySet="PayKind">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="Kind" ColumnName="Kind" />
+                <ScalarProperty Name="PayName" ColumnName="PayName" />
+                <ScalarProperty Name="PayRemark" ColumnName="PayRemark" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="IsCount" ColumnName="IsCount" />
+                <ScalarProperty Name="IsNetwork" ColumnName="IsNetwork" />
+                <ScalarProperty Name="NetworkAccount" ColumnName="NetworkAccount" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrinterInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.PrinterInfo">
+              <MappingFragment StoreEntitySet="PrinterInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="PrinterId" ColumnName="PrinterId" />
+                <ScalarProperty Name="PrinterName" ColumnName="PrinterName" />
+                <ScalarProperty Name="PrinterDescription" ColumnName="PrinterDescription" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomInfo">
+            <EntityTypeMapping TypeName="db_MrCyModel.RoomInfo">
+              <MappingFragment StoreEntitySet="RoomInfo">
+                <ScalarProperty Name="AutoId" ColumnName="AutoId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+                <ScalarProperty Name="RoomRemark" ColumnName="RoomRemark" />
+                <ScalarProperty Name="Usable" ColumnName="Usable" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Deletor" ColumnName="Deletor" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DineTempDetail">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineTempDetail">
+              <MappingFragment StoreEntitySet="DineTempDetail">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="DisherID" ColumnName="DisherID" />
+                <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />
+                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Note">
+            <EntityTypeMapping TypeName="db_MrCyModel.Note">
+              <MappingFragment StoreEntitySet="Note">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="Note1" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Waiter">
+            <EntityTypeMapping TypeName="db_MrCyModel.Waiter">
+              <MappingFragment StoreEntitySet="Waiter">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
