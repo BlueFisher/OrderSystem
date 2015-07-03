@@ -20,8 +20,8 @@ namespace OrderSystem.Models
         public string RoomId { get; set; }
         public string RoomRemark { get; set; }
         public bool Usable { get; set; }
-        public Nullable<int> DinerNumber { get; set; }//null
-        public string DinerCircumstance { get; set; }//null
+        public Nullable<int> DinerNumber { get; set; }
+        public string DinerCircumstance { get; set; }
         public Nullable<bool> IsRoom { get; set; }
         public string QRCode { get; set; }
         public Nullable<decimal> MinConsuption { get; set; }
@@ -33,5 +33,6 @@ namespace OrderSystem.Models
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
+        public string AreaID { get; set; }
     }
 }

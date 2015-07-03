@@ -11,10 +11,9 @@ namespace OrderSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    //分类
+    
     public partial class MenuClass
     {
-
         public Nullable<int> AutoId { get; set; }
         public string ClassId { get; set; }
         public string ClassName { get; set; }

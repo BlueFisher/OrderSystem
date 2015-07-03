@@ -11,7 +11,7 @@ namespace OrderSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    //备注
+    
     public partial class Note
     {
         public int AutoID { get; set; }

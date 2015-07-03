@@ -11,7 +11,7 @@ namespace OrderSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    //二级分类
+    
     public partial class MenuSubClass
     {
         public int AutoId { get; set; }

@@ -11,7 +11,7 @@ namespace OrderSystem.Models
 {
     using System;
     using System.Collections.Generic;
-    //菜品的详细信息
+    
     public partial class MenuDetail
     {
         public int AutoId { get; set; }
@@ -42,5 +42,6 @@ namespace OrderSystem.Models
         public Nullable<System.DateTime> updateDate { get; set; }
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
+        public Nullable<bool> DisherStatus { get; set; }
     }
 }

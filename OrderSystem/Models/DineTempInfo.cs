@@ -20,5 +20,8 @@ namespace OrderSystem.Models
         public string Roomid { get; set; }
         public Nullable<System.DateTime> BeginTime { get; set; }
         public Nullable<short> peoplecount { get; set; }
+        public Nullable<int> IsPaid { get; set; }
+        public string PaidAccount { get; set; }
+        public string PayKind { get; set; }
     }
 }

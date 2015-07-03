@@ -103,7 +103,6 @@
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\css\global.css" />
     <Content Include="Global.asax" />
-    <Content Include="Icon.png" />
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
