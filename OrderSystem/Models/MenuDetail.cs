@@ -25,6 +25,7 @@ namespace OrderSystem.Models
         public string DisherSubclassID2 { get; set; }
         public string DisherSize { get; set; }
         public Nullable<decimal> DisherPrice { get; set; }
+        public Nullable<bool> DisherStatus { get; set; }
         public Nullable<decimal> DisherVipPrice { get; set; }
         public Nullable<decimal> DisherServicePrice { get; set; }
         public bool Usable { get; set; }
@@ -42,6 +43,5 @@ namespace OrderSystem.Models
         public Nullable<System.DateTime> updateDate { get; set; }
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
-        public Nullable<bool> DisherStatus { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -432,7 +432,8 @@
     FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -580,13 +581,13 @@
           <Property Name="MinConsuption" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Status" Type="Int16" />
           <Property Name="UsedNum" Type="Int32" />
+          <Property Name="AreaID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="Creator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="Updator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
-          <Property Name="AreaID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DineDetail">
           <Key>
@@ -615,7 +616,7 @@
           <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Quitstatus" Type="Boolean" />
           <Property Name="SalesPrice" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="SalesDiscount" Type="Double" />
+          <Property Name="SalesDiscount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DineInfo">
@@ -698,6 +699,7 @@
           <Property Name="DisherSubclassID2" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="DisherSize" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DisherStatus" Type="Boolean" />
           <Property Name="DisherVipPrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DisherServicePrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Usable" Type="Boolean" Nullable="false" />
@@ -715,7 +717,6 @@
           <Property Name="updateDate" Type="DateTime" Precision="3" />
           <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
-          <Property Name="DisherStatus" Type="Boolean" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -980,7 +981,6 @@
           <EntitySetMapping Name="DeskInfo">
             <EntityTypeMapping TypeName="db_MrCyModel.DeskInfo">
               <MappingFragment StoreEntitySet="DeskInfo">
-                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DeskId" ColumnName="DeskId" />
                 <ScalarProperty Name="DeskName" ColumnName="DeskName" />
@@ -994,6 +994,7 @@
                 <ScalarProperty Name="MinConsuption" ColumnName="MinConsuption" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="UsedNum" ColumnName="UsedNum" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
                 <ScalarProperty Name="Creator" ColumnName="Creator" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Updator" ColumnName="Updator" />
@@ -1038,7 +1039,6 @@
           <EntitySetMapping Name="DineInfo">
             <EntityTypeMapping TypeName="db_MrCyModel.DineInfo">
               <MappingFragment StoreEntitySet="DineInfo">
-                <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
                 <ScalarProperty Name="ClerkID" ColumnName="ClerkID" />
@@ -1051,6 +1051,7 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PayKind" ColumnName="PayKind" />
                 <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1075,15 +1076,15 @@
           <EntitySetMapping Name="DineTempInfo">
             <EntityTypeMapping TypeName="db_MrCyModel.DineTempInfo">
               <MappingFragment StoreEntitySet="DineTempInfo">
-                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
-                <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
-                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="DeskID" ColumnName="DeskID" />
                 <ScalarProperty Name="Roomid" ColumnName="Roomid" />
                 <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
                 <ScalarProperty Name="peoplecount" ColumnName="peoplecount" />
+                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+                <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
+                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1107,7 +1108,6 @@
           <EntitySetMapping Name="MenuDetail">
             <EntityTypeMapping TypeName="db_MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
-                <ScalarProperty Name="DisherStatus" ColumnName="DisherStatus" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DisherId" ColumnName="DisherId" />
                 <ScalarProperty Name="DisherCode" ColumnName="DisherCode" />
@@ -1119,6 +1119,7 @@
                 <ScalarProperty Name="DisherSubclassID2" ColumnName="DisherSubclassID2" />
                 <ScalarProperty Name="DisherSize" ColumnName="DisherSize" />
                 <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="DisherStatus" ColumnName="DisherStatus" />
                 <ScalarProperty Name="DisherVipPrice" ColumnName="DisherVipPrice" />
                 <ScalarProperty Name="DisherServicePrice" ColumnName="DisherServicePrice" />
                 <ScalarProperty Name="Usable" ColumnName="Usable" />

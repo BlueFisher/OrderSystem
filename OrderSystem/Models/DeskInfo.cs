@@ -27,12 +27,12 @@ namespace OrderSystem.Models
         public Nullable<decimal> MinConsuption { get; set; }
         public Nullable<short> Status { get; set; }
         public Nullable<int> UsedNum { get; set; }
+        public string AreaID { get; set; }
         public string Creator { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string Updator { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
-        public string AreaID { get; set; }
     }
 }
