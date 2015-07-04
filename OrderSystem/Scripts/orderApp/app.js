@@ -48,16 +48,18 @@ public partial class MenuDetail{
     public string Deletor { get; set; }
     public Nullable<System.DateTime> DeleteDate { get; set; }
 }
+public partial class Note{
+    public int AutoID { get; set; }
+    public string Note1 { get; set; }
+}
 */
 
 
 var app = angular.module('orderApp', []);
 
 app.directive('ngStaticHeight', function () {
-	return function ($scope, $elem, attr) {
-		$elem.height(
-			$(window).height() - $('section.search').height() - $('section.search').height()
-			);
+	return function ($scope, $elem) {
+		$elem.height($(window).height() - $('section.search').height() - $('section.search').height());
 	};
 });
 
@@ -71,7 +73,8 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 			for (var i = 0; i < data.length; i++) {
 				data[i].cart = {
 					isSelected: false,
-					ordered: 0
+					ordered: 0,
+					isRemarkCollapsed: false
 				};
 			}
 			data[0].cart.isSelected = true;
@@ -89,9 +92,18 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 					data[i].DisherPoint = 0;
 				}
 				data[i].cart = {
-					ordered: 0
+					ordered: 0,
+					notes:[]
 				};
 			}
+			resolve(data);
+		}).error(function (data, status) {
+			alert(status);
+		});
+	});
+}]).factory('generateRemarkPromise', ['$http', '$q', function ($http, $q) {
+	return $q(function (resolve) {
+		$http.get('/Home/GetNote').success(function (data) {
 			resolve(data);
 		}).error(function (data, status) {
 			alert(status);
@@ -100,72 +112,101 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 }]);
 
 
-app.controller('cartCtrl', function ($scope, $filter, generateMenuSubClassPromise, generateMenuDetailPromise) {
-	var activeClass;
-	generateMenuSubClassPromise.then(function (data) {
-		$scope.menuSubClass = data;
-		activeClass = $scope.menuSubClass[0];
-	});
-	generateMenuDetailPromise.then(function (data) {
-		$scope.menuDetail = data;
-		filterMenu();
-	});
-
-	$scope.add = function (menu) {
-		menu.cart.ordered++;
-		for (var i = 0; i < $scope.menuSubClass.length; i++) {
-			if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-				$scope.menuSubClass[i].cart.ordered++;
-				return;
-			}
-		}
-	};
-	$scope.decrease = function (menu) {
-		menu.cart.ordered--;
-		for (var i = 0; i < $scope.menuSubClass.length; i++) {
-			if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-				$scope.menuSubClass[i].cart.ordered--;
-				return;
-			}
-		}
-	};
-	$scope.toggleSelected = function (c) {
-		// if (activeClass == c) {
-		// 	return;
-		// }
-		activeClass.cart.isSelected = false;
-		c.cart.isSelected = true;
-		activeClass = c;
-		filterMenu();
-	};
-	$scope.searchMode = false;
-	$scope.startSearch = function(searchText){
-		if(searchText!=''){
-			$scope.searchMode = true;
-			
-			$scope.filteredMenuDetail = $filter('filter')($scope.menuDetail, {
-				DisherName: searchText
-			});
-
-			
-			activeClass.cart.isSelected = false;
-		}else{
-			$scope.searchMode = false;
-			activeClass.cart.isSelected = true;
+app.controller('cartCtrl', [
+	'$scope',
+	'$filter',
+	'generateMenuSubClassPromise',
+	'generateMenuDetailPromise',
+	'generateRemarkPromise',
+	function ($scope, $filter, GMSCP, GMDP,GRP) {
+		var activeClass;
+		GMSCP.then(function (data) {
+			$scope.menuSubClass = data;
+			activeClass = $scope.menuSubClass[0];
+		});
+		GMDP.then(function (data) {
+			$scope.menuDetail = data;
 			filterMenu();
+		});
+		GRP.then(function(data){
+			$scope.notes = data;
+		});
+
+		$scope.test  = function(menu,note){
+			menu.cart.notes.push(note);
+			console.log(menu.cart.notes);
+		};
+
+		$scope.sizeAll = 0;
+		$scope.priceAll = 0;
+		$scope.add = function (menu) {
+			menu.cart.ordered++;
+			$scope.sizeAll++;
+			$scope.priceAll += menu.DisherPrice;
+			for (var i = 0; i < $scope.menuSubClass.length; i++) {
+				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
+					$scope.menuSubClass[i].cart.ordered++;
+					return;
+				}
+			}
+		};
+		$scope.decrease = function (menu) {
+			menu.cart.ordered--;
+			$scope.sizeAll--;
+			$scope.priceAll -= menu.DisherPrice;
+			for (var i = 0; i < $scope.menuSubClass.length; i++) {
+				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
+					$scope.menuSubClass[i].cart.ordered--;
+					return;
+				}
+			}
+		};
+		$scope.toggleSelected = function (c) {
+			// exit the search mode
+			$scope.searchMode = false;
+			$scope.searchText = '';
+
+			activeClass.cart.isSelected = false;
+			c.cart.isSelected = true;
+			activeClass = c;
+			filterMenu();
+		};
+
+		$scope.searchMode = false;
+		$scope.searchChange = function (searchText) {
+			if (searchText == '') {
+				// exit the search mode
+				$scope.searchMode = false;
+				activeClass.cart.isSelected = true;
+				filterMenu();
+			} else {
+				// enter the search mode
+				$scope.searchMode = true;
+				activeClass.cart.isSelected = false;
+				filterMenu(searchText);
+			}
+		};
+
+
+		function filterMenu(searchText) {
+			var filteredArr = $scope.menuDetail;
+			if ($scope.searchMode) {
+				// the filterMenu is filtered by searchText
+				filteredArr = $filter('filter')($scope.menuDetail, {
+					DisherName: searchText
+				});
+			} else if (activeClass.IsRankClass == true) {
+				// the filterMenu is a ranklist
+				filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
+				filteredArr = $filter('limitTo')(filteredArr, 10);
+			} else {
+				// the filterMenu is classified by subclassid
+				filteredArr = $filter('filter')(filteredArr, {
+					DisherSubclassID1: activeClass.SubClassId
+				}, true);
+				filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
+			}
+			$scope.filteredMenuDetail = filteredArr;
 		}
-	};
-	function filterMenu() {
-		var filteredArr = $scope.menuDetail;
-		if (activeClass.IsRankClass == true) {
-			filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
-			filteredArr = $filter('limitTo')(filteredArr, 10);
-		} else {
-			filteredArr = $filter('filter')(filteredArr, {
-				DisherSubclassID1: activeClass.SubClassId
-			}, true);
-			filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
-		}
-		$scope.filteredMenuDetail = filteredArr;
 	}
-});
+]);

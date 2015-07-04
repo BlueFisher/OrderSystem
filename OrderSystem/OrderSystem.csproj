@@ -102,6 +102,7 @@
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\css\global.css" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
@@ -125,11 +126,16 @@
       <DependentUpon>MrCyModel.edmx</DependentUpon>
       <LastGenOutput>MrCyModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\lib\angular-animate.js" />
+    <Content Include="Scripts\lib\angular-route.min.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\lib\jquery-2.1.4.min.js" />
     <Content Include="Scripts\lib\angular.min.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\orderApp\app.js" />
     <Content Include="Web.config" />
   </ItemGroup>

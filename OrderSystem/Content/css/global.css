@@ -70,10 +70,23 @@ section.menu .media-body p.meal-point{
 	color: #666;
 	font-size: 12px;
 }
+section.menu .media-body .meal-footer:after{
+	display: block;
+	content: "";
+	clear: both;
+}
 section.menu .media-body p.meal-price{
 	margin-bottom: 0;
 	color: #ff6000;
 	font-size: 18px;
+}
+section.menu .media-body .btn-note{
+	padding: 0 5px;
+}
+section.menu .media-body .well-note{
+	padding: 2px 5px;
+	margin: 0;
+	border-radius: 2px;
 }
 
 .cart-control .cart-number{

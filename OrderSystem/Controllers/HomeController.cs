@@ -26,5 +26,11 @@ namespace OrderSystem.Controllers {
 				return Json(list, JsonRequestBehavior.AllowGet);
 			}
 		}
+		public async Task<JsonResult> GetNote() {
+			using(MrCyContext ctx = new MrCyContext()) {
+				List<Note> list = await ctx.Note.ToListAsync();
+				return Json(list, JsonRequestBehavior.AllowGet);
+			}
+		}
 	}
 }

@@ -21,7 +21,7 @@
 		<div class="input-group">
 			<span class="input-group-addon"><span class="fa fa-search"></span></span>
 			<input type="text" class="form-control" placeholder="搜索"
-				ng-model="searchText" ng-change="startSearch(searchText)">
+				ng-model="searchText" ng-change="searchChange(searchText)">
 		</div>
 	</section>
 	<section class="category" ng-static-height>
@@ -51,7 +51,7 @@
 						</a>
 					</div>
 					<div class="media-body">
-						<p class="meal-title">{{menu.DisherName}} （{{menu.DisherSize}}）</p>
+						<p class="meal-title">{{menu.DisherName}}</p>
 						<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
 						<div class="meal-footer">
 							<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
@@ -64,6 +64,15 @@
 									ng-click="add(menu)"><span class="fa fa-plus"></span></button>
 							</div>
 						</div>
+						<button class="btn btn-sm btn-danger btn-note"
+							ng-show="menu.cart.ordered"
+							ng-click="menu.cart.isNoteCollapsed = !menu.cart.isNoteCollapsed">备注</button>
+						<div class="well well-note" 
+							ng-show="menu.cart.isNoteCollapsed">
+							<button class="btn btn-sm btn-primary" style="border-radius:0" 
+								ng-repeat="note in notes"
+								ng-click="test(menu,note)">{{note.Note1}}</button>
+						</div> 
 					</div>
 				</div>
 			</li>
@@ -72,13 +81,14 @@
 	<section class="cart">
 		<span class="cart-sum">
 			<span class="fa fa-shopping-cart"></span>
-			5份 ￥5.55
+			{{sizeAll}}份 ￥{{priceAll}}
 		</span>
 		<button class="btn btn-sm btn-primary pull-right">查看点单</button>
 	</section>
 
 	<script src="~/Scripts/lib/jquery-2.1.4.min.js"></script>
 	<script src="~/Scripts/lib/angular.min.js"></script>
+	
 
 	<script src="~/Scripts/orderApp/app.js"></script>
 </body>
