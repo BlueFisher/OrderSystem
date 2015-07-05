@@ -11,7 +11,7 @@ namespace OrderSystem.Controllers {
 	public class HomeController : Controller {
 		// GET: Home
 		public ActionResult Index() {
-			return View();	
+			return View();
 		}
 		public ActionResult Partial(string id) {
 			return View(id);

@@ -22,6 +22,17 @@ section.search input{
 	border-radius: 0;
 }
 
+section.back{
+	padding-left: 10px;
+	height: 34px;
+	background-color: #337AB7;
+}
+section.back a{
+	font-size: 16px;
+	color: #fff;
+	line-height: 34px;
+}
+
 section.category{
 	display: block;
 	width: 25%;
@@ -47,6 +58,10 @@ section.category .list-group-item.active{
 section.menu{
 	width: 75%;
 	float: left;
+	overflow-y: scroll;
+}
+section.menu.result-menu{
+	width: 100%;
 	overflow-y: scroll;
 }
 section.menu .list-group-item{
@@ -128,4 +143,11 @@ section.cart .cart-sum{
 	display: inline-block;
 	height: 30px;
 	line-height: 30px;
+}
+section.cart .table-number{
+	margin-right: 5px;
+}
+section.cart .input-customer{
+	display: inline-block;
+	width: auto;
 }

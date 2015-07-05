@@ -1,1 +1,65 @@
-﻿
+﻿<section class="back">
+	<a href="javascript:;" ng-click="redirect('/')">
+		<span class="fa fa-chevron-left"></span> 返回
+	</a>
+</section>
+<section class="menu result-menu" ng-static-height>
+	<ul class="list-group">
+		<!-- ngRepeat menu -->
+		<li class="list-group-item"
+			ng-repeat="menu in cart.results">
+			<div class="media">
+				<div class="media-left">
+					<a href="javascript:;">
+						<img class="media-object" ng-src="~/Content/image/{{menu.DisherPicture}}">
+					</a>
+				</div>
+				<div class="media-body">
+					<p class="meal-title">{{menu.DisherName}}</p>
+					<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
+					<div class="meal-footer">
+						<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
+						<div class="cart-control pull-right">
+							<span ng-if="menu.cart.ordered>0">
+								<button class="btn btn-sm btn-cart-decrease"
+										ng-click="removeMenu(menu)">
+									<span class="fa fa-minus"></span>
+								</button>
+								<span class="cart-number">{{menu.cart.ordered}}</span>
+							</span>
+							<button class="btn btn-sm btn-cart-add"
+									ng-click="addMenu(menu)">
+								<span class="fa fa-plus"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<!-- Remark Region -->
+				<div ng-if="menu.cart.ordered>0">
+					<button class="btn btn-sm btn-danger btn-note"
+							ng-click="menu.cart.isNoteCollapsed = !menu.cart.isNoteCollapsed">
+						备注
+					</button>
+					<!-- ngRepeat the added notes -->
+					<button class="btn btn-sm btn-success btn-note"
+							ng-repeat="note in menu.cart.notes"
+							ng-click="removeNote(menu,note,$index)">
+						{{note.Note1}}
+						<span class="fa fa-times-circle"></span>
+					</button>
+					<div class="well well-note" ng-show="menu.cart.isNoteCollapsed">
+						<!-- ngRepeat not added notes -->
+						<button class="btn btn-sm btn-primary btn-note"
+								ng-repeat="note in menu.cart.filteredNotes"
+								ng-click="addNote(menu,note,$index)">
+							{{note.Note1}}
+							<span class="fa fa-check-circle"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+	
+</section>
+

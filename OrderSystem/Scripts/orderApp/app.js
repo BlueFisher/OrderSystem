@@ -62,16 +62,18 @@ app.config(function ($routeProvider) {
 		.when('/', {
 		templateUrl: 'Home/Partial/partial-cart',
 		controller: 'cartCtrl'
-	})
-		.when('/result', {
+	}).when('/result', {
 		templateUrl: 'Home/Partial/partial-result',
 		controller: 'resultCtrl'
+	}).when('/error',{
+		templateUrl: 'Home/Partial/partial-error',
+		controller: 'errorCtrl'
 	});
 });
 
 app.directive('ngStaticHeight', function () {
 	return function ($scope, $elem) {
-		$elem.height($(window).height() - $('section.search').height() - $('section.search').height());
+		$elem.height($(window).height() - 34 - 40);
 	};
 });
 
@@ -82,7 +84,6 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 				data[i].cart = {
 					isSelected: false,
 					ordered: 0,
-					isRemarkCollapsed: false
 				};
 			}
 
@@ -120,7 +121,8 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 				data[i].cart = {
 					ordered: 0,
 					notes: [],
-					filteredNotes: []
+					filteredNotes: [],
+					isNoteCollapsed: false
 				};
 			}
 			resolve(data);
@@ -143,16 +145,28 @@ app.controller('cartCtrl', [
 	'$scope',
 	'$rootScope',
 	'$filter',
+	'$location',
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
-	function ($scope, $rootScope, $filter, GMSCP, GMDP, GRP) {
+	function ($scope, $rootScope, $filter,$location, GMSCP, GMDP, GRP) {
+		$rootScope.redirect = function(href){
+			$location.path(href);
+		};
+		$rootScope.isCart = true;
+		var param = $location.search();
+		if(param.table==undefined){
+			$location.path('/error');
+		}else{
+			$rootScope.table = parseInt(param.table);
+		}
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
 				isInitialized: false,
 				activeClass: null,
 				sizeAll: null,
-				priceAll: null
+				priceAll: null,
+				results: []
 			};
 		}
 		var rootCart = $rootScope.cart;
@@ -180,13 +194,13 @@ app.controller('cartCtrl', [
 				});
 			});
 		});
-		
+
 		var classMode = {
 			search: 0,
 			normal: 1,
 			rank: 2
 		};
-		$scope.currentMode = classMode.rank;
+		_changeMode(classMode.rank);
 		$scope.isRankMode = function () {
 			return $scope.currentMode == classMode.rank;
 		};
@@ -198,7 +212,7 @@ app.controller('cartCtrl', [
 			if (mode != classMode.search) {
 				$scope.searchText = '';
 			}
-			if (mode != classMode.normal) {
+			if (mode != classMode.normal && rootCart.isInitialized) {
 				rootCart.activeClass.cart.isSelected = false;
 			}
 		}
@@ -214,49 +228,11 @@ app.controller('cartCtrl', [
 			_filterMenu();
 		};
 
-		var results = [];
-		// add and remove Meal
-		$scope.addMenu = function (menu) {
-			menu.cart.ordered++;
-			rootCart.sizeAll++;
-			rootCart.priceAll += menu.DisherPrice;
-			for (var i = 0; i < $scope.menuSubClass.length; i++) {
-				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].cart.ordered++;
-					break;
-				}
-			}
-			if (menu.cart.ordered == 1) {
-				results.push(menu);
-			}
-		};
-		$scope.removeMenu = function (menu) {
-			menu.cart.ordered--;
-			rootCart.sizeAll--;
-			rootCart.priceAll -= menu.DisherPrice;
-			for (var i = 0; i < $scope.menuSubClass.length; i++) {
-				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].cart.ordered--;
-					break;
-				}
-			}
-			if (menu.cart.ordered == 0) {
-				for (var i = 0; i < results.length; i++) {
-					if (angular.equals(menu, results[i])) {
-						results.splice(i, 1);
-						break;
-					}
-				}
-			}
-		};
-
-		
 		$scope.enterRankMode = function () {
 			_changeMode(classMode.rank);
 			_filterMenu();
 		};
 
-		// $scope.searchMode = false;
 		$scope.searchChange = function (searchText) {
 			if (searchText == '') {
 				// exit the search mode
@@ -269,12 +245,46 @@ app.controller('cartCtrl', [
 			}
 		};
 		
+		// add and remove Meal
+		$rootScope.addMenu = function (menu) {
+			menu.cart.ordered++;
+			rootCart.sizeAll++;
+			rootCart.priceAll += menu.DisherPrice;
+			for (var i = 0; i < $scope.menuSubClass.length; i++) {
+				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
+					$scope.menuSubClass[i].cart.ordered++;
+					break;
+				}
+			}
+			if (menu.cart.ordered == 1) {
+				rootCart.results.push(menu);
+			}
+		};
+		$rootScope.removeMenu = function (menu) {
+			menu.cart.ordered--;
+			rootCart.sizeAll--;
+			rootCart.priceAll -= menu.DisherPrice;
+			for (var i = 0; i < $scope.menuSubClass.length; i++) {
+				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
+					$scope.menuSubClass[i].cart.ordered--;
+					break;
+				}
+			}
+			if (menu.cart.ordered == 0) {
+				for (var i = 0; i < rootCart.results.length; i++) {
+					if (angular.equals(menu, rootCart.results[i])) {
+						rootCart.results.splice(i, 1);
+						break;
+					}
+				}
+			}
+		};
 		// add and remove Remark
-		$scope.addNote = function (menu, note, index) {
+		$rootScope.addNote = function (menu, note, index) {
 			menu.cart.notes.push(note);
 			menu.cart.filteredNotes.splice(index, 1);
 		};
-		$scope.removeNote = function (menu, note, index) {
+		$rootScope.removeNote = function (menu, note, index) {
 			menu.cart.filteredNotes.push(note);
 			menu.cart.notes.splice(index, 1);
 		};
@@ -308,7 +318,18 @@ app.controller('cartCtrl', [
 
 app.controller('resultCtrl', [
 	'$scope',
-	function ($scope) {
-
+	'$rootScope',
+	'$location',
+	function ($scope, $rootScope,$location) {
+		if ($rootScope.cart == undefined) {
+			$location.path('/');
+			return;
+		} 
+		
+		$rootScope.isCart = false;
+		$rootScope.customer = 1;
+		angular.forEach($rootScope.cart.results, function (menu) {
+			menu.cart.isNoteCollapsed = false;
+		});
 	}
 ]);
