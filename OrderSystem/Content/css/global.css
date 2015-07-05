@@ -80,11 +80,11 @@ section.menu .media-body p.meal-price{
 	color: #ff6000;
 	font-size: 18px;
 }
-section.menu .media-body .btn-note{
+section.menu .btn-note{
 	padding: 0 5px;
 }
-section.menu .media-body .well-note{
-	padding: 2px 5px;
+section.menu .well-note{
+	padding: 2px;
 	margin: 0;
 	border-radius: 2px;
 }
@@ -99,7 +99,7 @@ section.menu .media-body .well-note{
 	width: 25px;
 	height: 25px;
 	border-radius: 50%;
-	/*text-align: center;*/
+
 	line-height: 25px;
 }
 .cart-control .btn.btn-cart-decrease{

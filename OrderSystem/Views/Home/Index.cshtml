@@ -10,84 +10,20 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-	<title>Document</title>
+	<title>请点餐</title>
 
 	<link rel="stylesheet" href="~/Content/css/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
 	<link rel="stylesheet" href="~/Content/css/global.css">
 </head>
-<body ng-controller="cartCtrl">
-	<section class="search">
-		<div class="input-group">
-			<span class="input-group-addon"><span class="fa fa-search"></span></span>
-			<input type="text" class="form-control" placeholder="搜索"
-				ng-model="searchText" ng-change="searchChange(searchText)">
-		</div>
-	</section>
-	<section class="category" ng-static-height>
-		<ul class="list-group">
-			<li class="list-group-item active"
-				ng-show="searchMode">
-				搜索结果
-			</li>
-			<li class="list-group-item" 
-				ng-repeat="class in menuSubClass"
-				ng-class="{active: class.cart.isSelected}"
-				ng-click="toggleSelected(class)">
-				<span class="label label-primary"
-					ng-show="class.cart.ordered>0">{{class.cart.ordered}}</span>
-				{{class.SubClassName}}
-			</li>
-		</ul>
-	</section>
-	<section class="menu" ng-static-height>
-		<ul class="list-group">
-			<li class="list-group-item" 
-				ng-repeat="menu in filteredMenuDetail">
-				<div class="media">
-					<div class="media-left">
-						<a href="javascript:;">
-							<img class="media-object" ng-src="~/Content/image/{{menu.DisherPicture}}">
-						</a>
-					</div>
-					<div class="media-body">
-						<p class="meal-title">{{menu.DisherName}}</p>
-						<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
-						<div class="meal-footer">
-							<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
-							<div class="cart-control pull-right">
-								<button class="btn btn-sm btn-cart-decrease" 
-									ng-show="menu.cart.ordered > 0"
-									ng-click="decrease(menu)"><span class="fa fa-minus"></span></button>
-								<span class="cart-number" ng-show="menu.cart.ordered > 0">{{menu.cart.ordered}}</span>
-								<button class="btn btn-sm btn-cart-add"
-									ng-click="add(menu)"><span class="fa fa-plus"></span></button>
-							</div>
-						</div>
-						<button class="btn btn-sm btn-danger btn-note"
-							ng-show="menu.cart.ordered"
-							ng-click="menu.cart.isNoteCollapsed = !menu.cart.isNoteCollapsed">备注</button>
-						<div class="well well-note" 
-							ng-show="menu.cart.isNoteCollapsed">
-							<button class="btn btn-sm btn-primary" style="border-radius:0" 
-								ng-repeat="note in notes"
-								ng-click="test(menu,note)">{{note.Note1}}</button>
-						</div> 
-					</div>
-				</div>
-			</li>
-		</ul>
-	</section>
-	<section class="cart">
-		<span class="cart-sum">
-			<span class="fa fa-shopping-cart"></span>
-			{{sizeAll}}份 ￥{{priceAll}}
-		</span>
-		<button class="btn btn-sm btn-primary pull-right">查看点单</button>
-	</section>
+<body>
+	<div ng-view>
+		
+	</div>
 
 	<script src="~/Scripts/lib/jquery-2.1.4.min.js"></script>
 	<script src="~/Scripts/lib/angular.min.js"></script>
+	<script src="~/Scripts/lib/angular-route.min.js"></script>
 	
 
 	<script src="~/Scripts/orderApp/app.js"></script>
