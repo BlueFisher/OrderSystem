@@ -57,16 +57,16 @@ public partial class Note{
 
 var app = angular.module('orderApp', ['ngRoute']);
 
-app.config(function($routeProvider) {
+app.config(function ($routeProvider) {
     $routeProvider
-    	.when('/', {
-    		templateUrl: 'Home/Partial/partial-cart',
-            controller: 'cartCtrl'
-    	})
-    	.when('/result', {
-    		templateUrl: 'Home/Partial/partial-result',
-            controller: 'resultCtrl'
-    	});
+		.when('/', {
+		templateUrl: 'Home/Partial/partial-cart',
+		controller: 'cartCtrl'
+	})
+		.when('/result', {
+		templateUrl: 'Home/Partial/partial-result',
+		controller: 'resultCtrl'
+	});
 });
 
 app.directive('ngStaticHeight', function () {
@@ -78,10 +78,6 @@ app.directive('ngStaticHeight', function () {
 app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
 	return $q(function (resolve) {
 		$http.get('/Home/GetMenuSubClass').success(function (data) {
-			data.splice(0, 0, {
-				SubClassName: '销量榜',
-				IsRankClass: true
-			});
 			for (var i = 0; i < data.length; i++) {
 				data[i].cart = {
 					isSelected: false,
@@ -89,7 +85,6 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 					isRemarkCollapsed: false
 				};
 			}
-			data[0].cart.isSelected = true;
 
 			resolve(data);
 		}).error(function (data, status) {
@@ -146,51 +141,85 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 
 app.controller('cartCtrl', [
 	'$scope',
+	'$rootScope',
 	'$filter',
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
-	function ($scope, $filter, GMSCP, GMDP, GRP) {
-		var activeClass;
+	function ($scope, $rootScope, $filter, GMSCP, GMDP, GRP) {
+		if ($rootScope.cart == undefined) {
+			$rootScope.cart = {
+				isInitialized: false,
+				activeClass: null,
+				sizeAll: null,
+				priceAll: null
+			};
+		}
+		var rootCart = $rootScope.cart;
+
 		var menuDetail;
-		var notes;
-		GMSCP.then(function (data) {
-			$scope.menuSubClass = data;
-			activeClass = $scope.menuSubClass[0];
-		});
-		GMDP.then(function (data) {
-			menuDetail = data;
+		GMSCP.then(function (classes) {
+			$scope.menuSubClass = classes;
+			if (!rootCart.isInitialized) {
+				rootCart.sizeAll = 0;
+				rootCart.priceAll = 0;
+				rootCart.activeClass = $scope.menuSubClass[0];
+			}
 
-			GRP.then(function (data) {
-				notes = data;
-				for (var i = 0; i < menuDetail.length; i++) {
-					menuDetail[i].cart.filteredNotes = angular.copy(notes);
-				}
+			GMDP.then(function (menus) {
+				menuDetail = menus;
+
+				GRP.then(function (notes) {
+					if (!rootCart.isInitialized) {
+						for (var i = 0; i < menuDetail.length; i++) {
+							menuDetail[i].cart.filteredNotes = angular.copy(notes);
+						}
+					}
+					_filterMenu();
+					rootCart.isInitialized = true;
+				});
 			});
-
-			_filterMenu();
 		});
 		
+		var classMode = {
+			search: 0,
+			normal: 1,
+			rank: 2
+		};
+		$scope.currentMode = classMode.rank;
+		$scope.isRankMode = function () {
+			return $scope.currentMode == classMode.rank;
+		};
+		$scope.isSearchMode = function () {
+			return $scope.currentMode == classMode.search;
+		};
+		function _changeMode(mode) {
+			$scope.currentMode = mode;
+			if (mode != classMode.search) {
+				$scope.searchText = '';
+			}
+			if (mode != classMode.normal) {
+				rootCart.activeClass.cart.isSelected = false;
+			}
+		}
+
 		// click subclass
 		$scope.toggleSelected = function (c) {
-			// exit the search mode
-			$scope.searchMode = false;
-			$scope.searchText = '';
+			// enter the normalMode
+			_changeMode(classMode.normal);
 
-			activeClass.cart.isSelected = false;
+			rootCart.activeClass.cart.isSelected = false;
 			c.cart.isSelected = true;
-			activeClass = c;
+			rootCart.activeClass = c;
 			_filterMenu();
 		};
 
-		$scope.sizeAll = 0;
-		$scope.priceAll = 0;
 		var results = [];
 		// add and remove Meal
 		$scope.addMenu = function (menu) {
 			menu.cart.ordered++;
-			$scope.sizeAll++;
-			$scope.priceAll += menu.DisherPrice;
+			rootCart.sizeAll++;
+			rootCart.priceAll += menu.DisherPrice;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
 					$scope.menuSubClass[i].cart.ordered++;
@@ -203,8 +232,8 @@ app.controller('cartCtrl', [
 		};
 		$scope.removeMenu = function (menu) {
 			menu.cart.ordered--;
-			$scope.sizeAll--;
-			$scope.priceAll -= menu.DisherPrice;
+			rootCart.sizeAll--;
+			rootCart.priceAll -= menu.DisherPrice;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
 					$scope.menuSubClass[i].cart.ordered--;
@@ -221,17 +250,21 @@ app.controller('cartCtrl', [
 			}
 		};
 
-		$scope.searchMode = false;
+		
+		$scope.enterRankMode = function () {
+			_changeMode(classMode.rank);
+			_filterMenu();
+		};
+
+		// $scope.searchMode = false;
 		$scope.searchChange = function (searchText) {
 			if (searchText == '') {
 				// exit the search mode
-				$scope.searchMode = false;
-				activeClass.cart.isSelected = true;
+				_changeMode(classMode.rank);
 				_filterMenu();
 			} else {
 				// enter the search mode
-				$scope.searchMode = true;
-				activeClass.cart.isSelected = false;
+				_changeMode(classMode.search);
 				_filterMenu(searchText);
 			}
 		};
@@ -249,23 +282,33 @@ app.controller('cartCtrl', [
 
 		function _filterMenu(searchText) {
 			var filteredArr = menuDetail;
-			if ($scope.searchMode) {
-				// the filterMenu is filtered by searchText
-				filteredArr = $filter('filter')(menuDetail, {
-					DisherName: searchText
-				});
-			} else if (activeClass.IsRankClass) {
-				// the filterMenu is a ranklist
-				filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
-				filteredArr = $filter('limitTo')(filteredArr, 10);
-			} else {
-				// the filterMenu is classified by subclassid
-				filteredArr = $filter('filter')(filteredArr, {
-					DisherSubclassID1: activeClass.SubClassId
-				}, true);
-				filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
+
+			switch ($scope.currentMode) {
+				case classMode.normal:
+					filteredArr = $filter('filter')(filteredArr, {
+						DisherSubclassID1: rootCart.activeClass.SubClassId
+					}, true);
+					filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
+					break;
+				case classMode.rank:
+					filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
+					filteredArr = $filter('limitTo')(filteredArr, 10);
+					break;
+				case classMode.search:
+					filteredArr = $filter('filter')(menuDetail, {
+						DisherName: searchText
+					});
+					break;
 			}
+
 			$scope.filteredMenuDetail = filteredArr;
 		}
+	}
+]);
+
+app.controller('resultCtrl', [
+	'$scope',
+	function ($scope) {
+
 	}
 ]);

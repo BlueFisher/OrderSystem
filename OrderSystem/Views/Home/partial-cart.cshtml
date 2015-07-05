@@ -8,8 +8,13 @@
 <section class="category" ng-static-height>
 	<ul class="list-group">
 		<li class="list-group-item active"
-			ng-show="searchMode">
+			ng-show="isSearchMode()">
 			搜索结果
+		</li>
+		<li class="list-group-item"
+			ng-class="{active:isRankMode()}"
+			ng-click="enterRankMode()">
+			<span class="fa fa-star"></span> 销量排行
 		</li>
 		<!-- ngRepeat class -->
 		<li class="list-group-item"
@@ -83,10 +88,11 @@
 <section class="cart">
 	<span class="cart-sum">
 		<span class="fa fa-shopping-cart"></span>
-		{{sizeAll}}份 ￥{{priceAll}}
+		{{cart.sizeAll}}份 ￥{{cart.priceAll}}
 	</span>
-	<button class="btn btn-sm btn-primary pull-right"
-			ng-show="sizeAll">
+	<a class="btn btn-sm btn-primary pull-right"
+		href="#/result"
+		ng-show="cart.sizeAll">
 		查看点单
-	</button>
+	</a>
 </section>
