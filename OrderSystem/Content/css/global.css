@@ -139,6 +139,17 @@ section.cart{
 	color:#fff;
 	z-index: 10;
 }
+section.cart ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+section.cart ul li{
+	margin-bottom: 5px;
+}
+section.cart ul li:last-child{
+	margin-bottom: 0;
+}
 section.cart .cart-sum{
 	display: inline-block;
 	height: 30px;
@@ -147,7 +158,10 @@ section.cart .cart-sum{
 section.cart .table-number{
 	margin-right: 5px;
 }
-section.cart .input-customer{
+section.cart .input-customer,
+section.cart .input-bill{
 	display: inline-block;
+	margin-right: 5px;
 	width: auto;
+	color:#000;
 }

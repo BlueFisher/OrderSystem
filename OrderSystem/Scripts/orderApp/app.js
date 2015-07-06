@@ -55,7 +55,7 @@ public partial class Note{
 */
 
 
-var app = angular.module('orderApp', ['ngRoute']);
+var app = angular.module('orderApp', ['ngRoute','ui.bootstrap']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -65,16 +65,29 @@ app.config(function ($routeProvider) {
 	}).when('/result', {
 		templateUrl: 'Home/Partial/partial-result',
 		controller: 'resultCtrl'
-	}).when('/error',{
+	}).when('/error', {
 		templateUrl: 'Home/Partial/partial-error',
 		controller: 'errorCtrl'
 	});
 });
 
 app.directive('ngStaticHeight', function () {
-	return function ($scope, $elem) {
+	return function ($scope, $elem,attr) {
+		console.log(attr);
 		$elem.height($(window).height() - 34 - 40);
 	};
+}).directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return parseInt(val, 10);
+      });
+      ngModel.$formatters.push(function(val) {
+        return '' + val;
+      });
+    }
+  };
 });
 
 app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
@@ -149,28 +162,33 @@ app.controller('cartCtrl', [
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
-	function ($scope, $rootScope, $filter,$location, GMSCP, GMDP, GRP) {
-		$rootScope.redirect = function(href){
+	function ($scope, $rootScope, $filter, $location, GMSCP, GMDP, GRP) {
+		$rootScope.customer = 1;
+		$rootScope.redirect = function (href) {
 			$location.path(href);
 		};
 		$rootScope.isCart = true;
-		var param = $location.search();
-		if(param.table==undefined){
-			$location.path('/error');
-		}else{
-			$rootScope.table = parseInt(param.table);
-		}
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
 				isInitialized: false,
 				activeClass: null,
 				sizeAll: null,
 				priceAll: null,
-				results: []
+				results: [],
+				customer:1,
+				bill:''
 			};
 		}
 		var rootCart = $rootScope.cart;
-
+		
+		var param = $location.search();
+		if (param.table == undefined) {
+			$location.path('/');
+			$location.search('table','1');
+		} else {
+			rootCart.table = parseInt(param.table);
+		}
+		
 		var menuDetail;
 		GMSCP.then(function (classes) {
 			$scope.menuSubClass = classes;
@@ -320,14 +338,18 @@ app.controller('resultCtrl', [
 	'$scope',
 	'$rootScope',
 	'$location',
-	function ($scope, $rootScope,$location) {
+	function ($scope, $rootScope, $location) {
 		if ($rootScope.cart == undefined) {
 			$location.path('/');
+			$location.search('table','1');
 			return;
-		} 
+		}
 		
 		$rootScope.isCart = false;
-		$rootScope.customer = 1;
+		$rootScope.submit = function(){
+			console.log($rootScope.cart);
+		};
+
 		angular.forEach($rootScope.cart.results, function (menu) {
 			menu.cart.isNoteCollapsed = false;
 		});
