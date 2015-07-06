@@ -21,33 +21,50 @@
 		
 	</div>
 	<section class="cart">
-		<div ng-show="!isCart">
-			<span class="table-number">桌号：{{table}}</span>
-			<span>人数：</span>
-			<input type="text" maxlength="2" size="2" class="form-control input-sm input-customer" ng-model="customer"></span>
-		</div>
-		<span class="cart-sum">
-			<span class="fa fa-shopping-cart"></span>
-			{{cart.sizeAll}}份 ￥{{cart.priceAll}}
-		</span>
+		<ul>
+			<li>
+				<span class="table-number">桌号：{{cart.table}}</span>
+				<span>人数：</span>
+				<select class="input-customer" 
+					ng-model="cart.customer" convert-to-number>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+			</li>
+			<li>
+				<span>发票抬头：</span>
+				<input type="text" class="input-bill" size="12" 
+					ng-model="bill">
+			</li>
+			<li>
+				<span class="cart-sum">
+					<span class="fa fa-shopping-cart"></span>
+					{{cart.sizeAll}}份 ￥{{cart.priceAll}}
+				</span>
+				
+				<a class="btn btn-sm btn-danger pull-right"
+					href="javascript:;"
+					ng-show="!isCart"
+					ng-click="submit()">
+					确认点单
+				</a>
+				<a class="btn btn-sm btn-primary pull-right"
+					href="javascript:;"
+					ng-click="redirect('/result')"
+					ng-show="cart.sizeAll && isCart">
+					查看点单
+				</a>
+			</li>
+		</ul>
 		
-		<a class="btn btn-sm btn-danger pull-right"
-			href="javascript:;"
-			ng-href="#/result"
-			ng-show="!isCart">
-			确认点单
-		</a>
-		<a class="btn btn-sm btn-primary pull-right"
-			href="javascript:;"
-			ng-click="redirect('/result')"
-			ng-show="cart.sizeAll && isCart">
-			查看点单
-		</a>
 	</section>
 	<script src="~/Scripts/lib/jquery-2.1.4.min.js"></script>
 	<script src="~/Scripts/lib/angular.min.js"></script>
 	<script src="~/Scripts/lib/angular-route.min.js"></script>
-	
+	<script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
 
 	<script src="~/Scripts/orderApp/app.js"></script>
 </body>
