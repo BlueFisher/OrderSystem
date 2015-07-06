@@ -111,10 +111,11 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 			alert(status);
 		});
 	});
-}]).factory('generateMenuDetailPromise', ['$http', '$q', function ($http, $q) {
+}]).factory('generateMenuDetailPromise', ['$http', '$q','getPinYinCap', function ($http, $q,PinYin) {
 	return $q(function (resolve) {
 		$http.get('/Home/GetMenuDetail').success(function (data) {
 			for (var i = 0; i < data.length; i++) {
+				data[i].pinYin = PinYin.searchCap(data[i].DisherName);
 				// delete data[i].AutoId;
 				// delete data[i].DisherCode;
 				// delete data[i].DisherEnglishName;
@@ -328,7 +329,8 @@ app.controller('cartCtrl', [
 					break;
 				case classMode.search:
 					filteredArr = $filter('filter')(menuDetail, {
-						DisherName: searchText
+						// DisherName: searchText,
+						pinYin: searchText
 					});
 					break;
 			}
