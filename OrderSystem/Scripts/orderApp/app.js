@@ -55,7 +55,7 @@ public partial class Note{
 */
 
 
-var app = angular.module('orderApp', ['ngRoute','ui.bootstrap']);
+var app = angular.module('orderApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -72,23 +72,29 @@ app.config(function ($routeProvider) {
 });
 
 app.directive('ngStaticHeight', function () {
-	return function ($scope, $elem,attr) {
-		console.log(attr);
-		$elem.height($(window).height() - 34 - 40);
+	return function ($scope, $elem, attr) {
+		$elem.height($(window).height() - attr.ngStaticHeight);
 	};
-}).directive('convertToNumber', function() {
-  return {
-    require: 'ngModel',
-    link: function(scope, element, attrs, ngModel) {
-      ngModel.$parsers.push(function(val) {
-        return parseInt(val, 10);
-      });
-      ngModel.$formatters.push(function(val) {
-        return '' + val;
-      });
-    }
-  };
-});
+}).directive('convertToNumber', function () {
+	return {
+		require: 'ngModel',
+		link: function (scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function (val) {
+				return parseInt(val, 10);
+			});
+			ngModel.$formatters.push(function (val) {
+				return '' + val;
+			});
+		}
+	};
+}).directive('routeHref', ['$location', function ($location) {
+	return function ($scope, $elem, attr) {
+		$elem.click(function () {
+			$location.path(attr.routeHref);
+			$scope.$apply();
+		});
+	};
+}]);
 
 app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
 	return $q(function (resolve) {
@@ -151,7 +157,9 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 			alert(status);
 		});
 	});
-}]);
+}]).factory('statusRemain', function () {
+	return {};
+});
 
 
 app.controller('cartCtrl', [
@@ -159,44 +167,40 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$filter',
 	'$location',
+	'statusRemain',
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
-	function ($scope, $rootScope, $filter, $location, GMSCP, GMDP, GRP) {
-		$rootScope.customer = 1;
-		$rootScope.redirect = function (href) {
-			$location.path(href);
-		};
+	function ($scope, $rootScope, $filter, $location, statusRemain, GMSCP, GMDP, GRP) {
 		$rootScope.isCart = true;
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
 				isInitialized: false,
-				activeClass: null,
-				sizeAll: null,
-				priceAll: null,
+				sizeAll: 0,
+				priceAll: 0,
 				results: [],
-				customer:1,
-				bill:''
+				customer: 1,
+				bill: ''
 			};
 		}
 		var rootCart = $rootScope.cart;
-		
+
 		var param = $location.search();
 		if (param.table == undefined) {
 			$location.path('/');
-			$location.search('table','1');
+			$location.search('table', '1');
 		} else {
 			rootCart.table = parseInt(param.table);
 		}
-		
+
 		var menuDetail;
 		GMSCP.then(function (classes) {
 			$scope.menuSubClass = classes;
-			if (!rootCart.isInitialized) {
-				rootCart.sizeAll = 0;
-				rootCart.priceAll = 0;
-				rootCart.activeClass = $scope.menuSubClass[0];
+
+			if (statusRemain.activeClass == null) {
+				statusRemain.activeClass = $scope.menuSubClass[0];
 			}
+			_changeMode(classMode.rank);
 
 			GMDP.then(function (menus) {
 				menuDetail = menus;
@@ -218,7 +222,7 @@ app.controller('cartCtrl', [
 			normal: 1,
 			rank: 2
 		};
-		_changeMode(classMode.rank);
+
 		$scope.isRankMode = function () {
 			return $scope.currentMode == classMode.rank;
 		};
@@ -230,8 +234,8 @@ app.controller('cartCtrl', [
 			if (mode != classMode.search) {
 				$scope.searchText = '';
 			}
-			if (mode != classMode.normal && rootCart.isInitialized) {
-				rootCart.activeClass.cart.isSelected = false;
+			if (mode != classMode.normal) {
+				statusRemain.activeClass.cart.isSelected = false;
 			}
 		}
 
@@ -240,9 +244,9 @@ app.controller('cartCtrl', [
 			// enter the normalMode
 			_changeMode(classMode.normal);
 
-			rootCart.activeClass.cart.isSelected = false;
+			statusRemain.activeClass.cart.isSelected = false;
 			c.cart.isSelected = true;
-			rootCart.activeClass = c;
+			statusRemain.activeClass = c;
 			_filterMenu();
 		};
 
@@ -314,7 +318,7 @@ app.controller('cartCtrl', [
 			switch ($scope.currentMode) {
 				case classMode.normal:
 					filteredArr = $filter('filter')(filteredArr, {
-						DisherSubclassID1: rootCart.activeClass.SubClassId
+						DisherSubclassID1: statusRemain.activeClass.SubClassId
 					}, true);
 					filteredArr = $filter('orderBy')(filteredArr, '-DisherPoint');
 					break;
@@ -339,14 +343,14 @@ app.controller('resultCtrl', [
 	'$rootScope',
 	'$location',
 	function ($scope, $rootScope, $location) {
-		if ($rootScope.cart == undefined) {
+		if ($rootScope.cart == null) {
 			$location.path('/');
-			$location.search('table','1');
+			$location.search('table', '1');
 			return;
 		}
-		
+
 		$rootScope.isCart = false;
-		$rootScope.submit = function(){
+		$rootScope.submit = function () {
 			console.log($rootScope.cart);
 		};
 

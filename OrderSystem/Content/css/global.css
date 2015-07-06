@@ -150,7 +150,7 @@ section.cart ul li{
 section.cart ul li:last-child{
 	margin-bottom: 0;
 }
-section.cart .cart-sum{
+section.cart span{
 	display: inline-block;
 	height: 30px;
 	line-height: 30px;
@@ -160,8 +160,5 @@ section.cart .table-number{
 }
 section.cart .input-customer,
 section.cart .input-bill{
-	display: inline-block;
-	margin-right: 5px;
-	width: auto;
 	color:#000;
 }
