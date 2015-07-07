@@ -265,7 +265,7 @@ app.controller('cartCtrl', [
 			};
 		}
 	}
-]).controller('signinCtrl', [
+]).controller('signupCtrl', [
 	'$scope',
 	'$rootScope',
 	'$location',
