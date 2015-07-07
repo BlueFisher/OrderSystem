@@ -1,0 +1,31 @@
+﻿
+<section class="payment">
+	<ul class="list-group">
+		<li class="list-group-item">
+			桌号：{{cart.table}}
+		</li>
+		<li class="list-group-item">
+			人数：
+			<select ng-model="cart.customer" convert-to-number>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</li>
+		<li class="list-group-item">
+			发票抬头：
+			<input class="form-control input-sm form-control-inline" type="text" placeholder="置空不开具发票"
+				ng-model="bill">
+		</li>
+		<li class="list-group-item">
+			<span class="text-danger">
+				共计：{{cart.priceAll | currency : "￥"}}
+			</span>
+		</li>
+		<li class="list-group-item">
+			<button class="btn btn-danger btn-block">确认下单</button>
+		</li>
+	</ul>
+</section>

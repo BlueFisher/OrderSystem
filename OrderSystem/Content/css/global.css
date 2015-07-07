@@ -16,21 +16,43 @@ body{
 .btn:focus{
 	outline: none;
 }
+.form-control-inline{
+	display: inline-block;
+	width:auto;
+}
 
 section.search .input-group-addon,
 section.search input{
 	border-radius: 0;
 }
 
-section.back{
-	padding-left: 10px;
-	height: 34px;
+section.header{
+	position: relative;
+	padding: 5px 10px;
+	height: 38px;
 	background-color: #337AB7;
 }
-section.back a{
-	font-size: 16px;
+section.header .btn{
+	padding: 3px 10px;
+}
+section.header .header-left{
+	position: absolute;
+}
+section.header .header-center{
+	text-align: center;
 	color: #fff;
-	line-height: 34px;
+	font-size: 18px;
+	line-height: 28px;
+}
+section.header .header-right{
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}
+section.header .btn-group-navicon .dropdown-menu{
+	left: auto;
+	right: 0;
+	min-width: 0;
 }
 
 section.category{
@@ -62,7 +84,8 @@ section.menu{
 }
 section.menu.result-menu{
 	width: 100%;
-	overflow-y: scroll;
+	float: none;
+	overflow-y: auto;
 }
 section.menu .list-group-item{
 	padding: 10px 8px;
@@ -139,26 +162,14 @@ section.cart{
 	color:#fff;
 	z-index: 10;
 }
-section.cart ul{
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-section.cart ul li{
-	margin-bottom: 5px;
-}
-section.cart ul li:last-child{
-	margin-bottom: 0;
-}
-section.cart span{
+section.cart .cart-sum{
 	display: inline-block;
 	height: 30px;
 	line-height: 30px;
 }
-section.cart .table-number{
-	margin-right: 5px;
-}
-section.cart .input-customer,
-section.cart .input-bill{
-	color:#000;
+
+section.payment .list-group .list-group-item{
+	border-radius: 0;
+	border-left: none;
+	border-right: none;
 }

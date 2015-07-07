@@ -17,56 +17,32 @@
 	<link rel="stylesheet" href="~/Content/css/global.css">
 </head>
 <body>
+	<section class="header clearfix" ng-hide="hideNavBar">
+		<button type="button" class="btn btn-primary header-left" back-button>
+			<span class="fa fa-chevron-left"></span> 返回
+		</button>
+		<div class="header-center">{{viewTitle}}</div>
+		<div class="btn-group btn-group-navicon header-right" dropdown is-open="status.isopen">
+			<button type="button" class="btn btn-primary btn-navicon dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+			<span class="fa fa-navicon"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a route-href="/signin">会员登录</a></li>
+				<li><a route-href="/signup">注册会员</a></li>
+			</ul>
+		</div>
+	</section>
 	<div ng-view>
 		
 	</div>
-	<section class="cart">
-		<ul>
-			<li ng-if="!isCart">
-				<span class="table-number">桌号：{{cart.table}}</span>
-				<span>人数：</span>
-				<select class="input-customer" 
-					ng-model="cart.customer" convert-to-number>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-				</select>
-			</li>
-			<li ng-if="!isCart">
-				<span>发票抬头：</span>
-				<input type="text" class="input-bill" size="12" 
-					ng-model="bill">
-			</li>
-			<li class="clearfix">
-				<span class="cart-sum">
-					<span class="fa fa-shopping-cart"></span>
-					{{cart.sizeAll}}份 ￥{{cart.priceAll}}
-				</span>
-				
-				<a class="btn btn-sm btn-danger pull-right"
-					href="javascript:;"
-					ng-show="!isCart"
-					ng-click="submit()">
-					确认点单
-				</a>
-				<a class="btn btn-sm btn-primary pull-right"
-					href="javascript:;"
-					route-href="/result"
-					ng-show="cart.sizeAll && isCart">
-					查看点单
-				</a>
-			</li>
-		</ul>
-		
-	</section>
+	
 	<script src="~/Scripts/lib/jquery-2.1.4.min.js"></script>
 	<script src="~/Scripts/lib/angular.min.js"></script>
 	<script src="~/Scripts/lib/angular-route.min.js"></script>
 	<script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
 
 	<script src="~/Scripts/orderApp/app.js"></script>
+	<script src="~/Scripts/orderApp/directive.js"></script>
 	<script src="~/Scripts/orderApp/factory.js"></script>
 </body>
 </html>

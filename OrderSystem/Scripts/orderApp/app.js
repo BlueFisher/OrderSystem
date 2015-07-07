@@ -1,63 +1,10 @@
 ﻿/* global angular */
 /* global $ */
 
-/* 
-public partial class MenuSubClass{
-    public int AutoId { get; set; }
-    public string SubClassId { get; set; }
-    public string SubClassName { get; set; }
-    public string ClassId { get; set; }
-    public string SubClassRemark { get; set; }
-    public Nullable<bool> Usable { get; set; }
-    public string Creator { get; set; }
-    public Nullable<System.DateTime> CreateDate { get; set; }
-    public string Updator { get; set; }
-    public Nullable<System.DateTime> UpdateDate { get; set; }
-    public string Deletor { get; set; }
-    public Nullable<System.DateTime> DeleteDate { get; set; }
-}
-
-public partial class MenuDetail{
-    public int AutoId { get; set; }
-    public string DisherId { get; set; }
-    public string DisherCode { get; set; }
-    public string DisherName { get; set; }
-    public string DisherPicture { get; set; }
-    public string DisherEnglishName { get; set; }
-    public string DisherDescription { get; set; }
-    public string DisherSubclassID1 { get; set; }
-    public string DisherSubclassID2 { get; set; }
-    public string DisherSize { get; set; }
-    public Nullable<decimal> DisherPrice { get; set; }
-    public Nullable<bool> DisherStatus { get; set; }
-    public Nullable<decimal> DisherVipPrice { get; set; }
-    public Nullable<decimal> DisherServicePrice { get; set; }
-    public bool Usable { get; set; }
-    public Nullable<double> DisherDiscount { get; set; }
-    public string DepartmentId { get; set; }
-    public Nullable<int> DisherPoint { get; set; }
-    public Nullable<short> SourIndex { get; set; }
-    public Nullable<short> SweetIndex { get; set; }
-    public Nullable<short> SaltyIndex { get; set; }
-    public Nullable<short> SpicyIndex { get; set; }
-    public Nullable<short> Evaluate { get; set; }
-    public string Creator { get; set; }
-    public Nullable<System.DateTime> CreateDate { get; set; }
-    public string Updator { get; set; }
-    public Nullable<System.DateTime> updateDate { get; set; }
-    public string Deletor { get; set; }
-    public Nullable<System.DateTime> DeleteDate { get; set; }
-}
-public partial class Note{
-    public int AutoID { get; set; }
-    public string Note1 { get; set; }
-}
-*/
-
-
 var app = angular.module('orderApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
+	
     $routeProvider
 		.when('/', {
 		templateUrl: 'Home/Partial/partial-cart',
@@ -65,102 +12,21 @@ app.config(function ($routeProvider) {
 	}).when('/result', {
 		templateUrl: 'Home/Partial/partial-result',
 		controller: 'resultCtrl'
+	}).when('/payment', {
+		templateUrl: 'Home/Partial/partial-payment',
+		controller: 'paymentCtrl'
+	}).when('/signin', {
+		templateUrl: 'Home/Partial/partial-signin',
+		controller: 'signinCtrl'
+	}).when('/signup', {
+		templateUrl: 'Home/Partial/partial-signup',
+		controller: 'signupCtrl'
 	}).when('/error', {
 		templateUrl: 'Home/Partial/partial-error',
 		controller: 'errorCtrl'
 	});
 });
 
-app.directive('ngStaticHeight', function () {
-	return function ($scope, $elem, attr) {
-		$elem.height($(window).height() - attr.ngStaticHeight);
-	};
-}).directive('convertToNumber', function () {
-	return {
-		require: 'ngModel',
-		link: function (scope, element, attrs, ngModel) {
-			ngModel.$parsers.push(function (val) {
-				return parseInt(val, 10);
-			});
-			ngModel.$formatters.push(function (val) {
-				return '' + val;
-			});
-		}
-	};
-}).directive('routeHref', ['$location', function ($location) {
-	return function ($scope, $elem, attr) {
-		$elem.click(function () {
-			$location.path(attr.routeHref);
-			$scope.$apply();
-		});
-	};
-}]);
-
-app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
-	return $q(function (resolve) {
-		$http.get('/Home/GetMenuSubClass').success(function (data) {
-			for (var i = 0; i < data.length; i++) {
-				data[i].cart = {
-					isSelected: false,
-					ordered: 0,
-				};
-			}
-
-			resolve(data);
-		}).error(function (data, status) {
-			alert(status);
-		});
-	});
-}]).factory('generateMenuDetailPromise', ['$http', '$q','getPinYinCap', function ($http, $q,PinYin) {
-	return $q(function (resolve) {
-		$http.get('/Home/GetMenuDetail').success(function (data) {
-			for (var i = 0; i < data.length; i++) {
-				data[i].pinYin = PinYin.searchCap(data[i].DisherName);
-				// delete data[i].AutoId;
-				// delete data[i].DisherCode;
-				// delete data[i].DisherEnglishName;
-				// delete data[i].DisherDescription;
-				// delete data[i].DisherSubclassID2;
-				// delete data[i].DisherStatus;
-				// delete data[i].Usable;
-				// delete data[i].DepartmentId;
-				// delete data[i].SourIndex;
-				// delete data[i].SweetIndex;
-				// delete data[i].SaltyIndex;
-				// delete data[i].SpicyIndex;
-				// delete data[i].Evaluate;
-				// delete data[i].Creator;
-				// delete data[i].Updator;
-				// delete data[i].Deletor;
-				// delete data[i].CreateDate;
-				// delete data[i].updateDate;
-				// delete data[i].DeleteDate;
-				if (data[i].DisherPoint == null) {
-					data[i].DisherPoint = 0;
-				}
-				data[i].cart = {
-					ordered: 0,
-					notes: [],
-					filteredNotes: [],
-					isNoteCollapsed: false
-				};
-			}
-			resolve(data);
-		}).error(function (data, status) {
-			alert(status);
-		});
-	});
-}]).factory('generateRemarkPromise', ['$http', '$q', function ($http, $q) {
-	return $q(function (resolve) {
-		$http.get('/Home/GetNote').success(function (data) {
-			resolve(data);
-		}).error(function (data, status) {
-			alert(status);
-		});
-	});
-}]).factory('statusRemain', function () {
-	return {};
-});
 
 
 app.controller('cartCtrl', [
@@ -173,13 +39,14 @@ app.controller('cartCtrl', [
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
 	function ($scope, $rootScope, $filter, $location, statusRemain, GMSCP, GMDP, GRP) {
-		$rootScope.isCart = true;
+		$rootScope.hideNavBar = true;
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
 				isInitialized: false,
 				sizeAll: 0,
 				priceAll: 0,
 				results: [],
+				table: null,
 				customer: 1,
 				bill: ''
 			};
@@ -328,30 +195,26 @@ app.controller('cartCtrl', [
 					filteredArr = $filter('limitTo')(filteredArr, 10);
 					break;
 				case classMode.search:
-					filteredArr = $filter('filter')(menuDetail, {
-						// DisherName: searchText,
-						pinYin: searchText
-					});
+					filteredArr = $filter('filter')(menuDetail, searchText);
 					break;
 			}
 
 			$scope.filteredMenuDetail = filteredArr;
 		}
 	}
-]);
-
-app.controller('resultCtrl', [
+]).controller('resultCtrl', [
 	'$scope',
 	'$rootScope',
 	'$location',
 	function ($scope, $rootScope, $location) {
+		$rootScope.hideNavBar = false;
+		$rootScope.viewTitle = "查看订单"
 		if ($rootScope.cart == null) {
 			$location.path('/');
 			$location.search('table', '1');
 			return;
 		}
-
-		$rootScope.isCart = false;
+		
 		$rootScope.submit = function () {
 			console.log($rootScope.cart);
 		};
@@ -359,5 +222,47 @@ app.controller('resultCtrl', [
 		angular.forEach($rootScope.cart.results, function (menu) {
 			menu.cart.isNoteCollapsed = false;
 		});
+	}
+]).controller('paymentCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	function ($scope, $rootScope, $location) {
+		$rootScope.viewTitle = "结算"
+		if ($rootScope.cart == null) {
+			// $location.path('/');
+			// $location.search('table', '1');
+			// return;
+			$rootScope.cart = {
+				isInitialized: true,
+				sizeAll: 5,
+				priceAll: 50,
+				results: [],
+				table: 10,
+				customer: 1,
+				bill: ''
+			};
+		}
+	}
+]).controller('signinCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	function ($scope, $rootScope, $location) {
+		$rootScope.viewTitle = "登录"
+		if ($rootScope.cart == null) {
+			// $location.path('/');
+			// $location.search('table', '1');
+			// return;
+			$rootScope.cart = {
+				isInitialized: true,
+				sizeAll: 5,
+				priceAll: 50,
+				results: [],
+				table: 10,
+				customer: 1,
+				bill: ''
+			};
+		}
 	}
 ]);

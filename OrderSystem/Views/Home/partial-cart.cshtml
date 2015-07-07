@@ -71,7 +71,7 @@
 						{{note.Note1}}
 						<span class="fa fa-times-circle"></span>
 					</button>
-					<div class="well well-note" ng-show="menu.cart.isNoteCollapsed">
+					<div class="well well-note" ng-if="menu.cart.isNoteCollapsed">
 						<!-- ngRepeat not added notes -->
 						<button class="btn btn-sm btn-primary btn-note"
 								ng-repeat="note in menu.cart.filteredNotes"
@@ -84,4 +84,17 @@
 			</div>
 		</li>
 	</ul>
+</section>
+<section class="cart">
+	<span class="cart-sum">
+		<span class="fa fa-shopping-cart"></span>
+		{{cart.sizeAll}}份 {{cart.priceAll | currency : "￥"}}
+	</span>
+	
+	<a class="btn btn-sm btn-primary pull-right"
+		href="javascript:;"
+		route-href="/result"
+		ng-show="cart.sizeAll">
+		查看点单
+	</a>
 </section>

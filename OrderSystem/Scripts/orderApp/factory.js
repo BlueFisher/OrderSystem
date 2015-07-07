@@ -1,3 +1,70 @@
+app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
+	return $q(function (resolve) {
+		$http.get('/Home/GetMenuSubClass').success(function (data) {
+			for (var i = 0; i < data.length; i++) {
+				data[i].cart = {
+					isSelected: false,
+					ordered: 0,
+				};
+			}
+
+			resolve(data);
+		}).error(function (data, status) {
+			alert(status);
+		});
+	});
+}]).factory('generateMenuDetailPromise', ['$http', '$q','getPinYinCap', function ($http, $q,PinYin) {
+	return $q(function (resolve) {
+		$http.get('/Home/GetMenuDetail').success(function (data) {
+			for (var i = 0; i < data.length; i++) {
+				data[i].pinYin = PinYin.searchCap(data[i].DisherName);
+				// delete data[i].AutoId;
+				// delete data[i].DisherCode;
+				// delete data[i].DisherEnglishName;
+				// delete data[i].DisherDescription;
+				// delete data[i].DisherSubclassID2;
+				// delete data[i].DisherStatus;
+				// delete data[i].Usable;
+				// delete data[i].DepartmentId;
+				// delete data[i].SourIndex;
+				// delete data[i].SweetIndex;
+				// delete data[i].SaltyIndex;
+				// delete data[i].SpicyIndex;
+				// delete data[i].Evaluate;
+				// delete data[i].Creator;
+				// delete data[i].Updator;
+				// delete data[i].Deletor;
+				// delete data[i].CreateDate;
+				// delete data[i].updateDate;
+				// delete data[i].DeleteDate;
+				if (data[i].DisherPoint == null) {
+					data[i].DisherPoint = 0;
+				}
+				data[i].cart = {
+					ordered: 0,
+					notes: [],
+					filteredNotes: [],
+					isNoteCollapsed: false
+				};
+			}
+			resolve(data);
+		}).error(function (data, status) {
+			alert(status);
+		});
+	});
+}]).factory('generateRemarkPromise', ['$http', '$q', function ($http, $q) {
+	return $q(function (resolve) {
+		$http.get('/Home/GetNote').success(function (data) {
+			resolve(data);
+		}).error(function (data, status) {
+			alert(status);
+		});
+	});
+}]).factory('statusRemain', function () {
+	return {};
+});
+
+
 app.factory('getPinYinCap', [function () {
 	var $PinYin = {};
 	$PinYin.change = function (ch) { for (var n in $PinYin.ds) { if ($PinYin.ds[n].indexOf(ch) != -1) return n; } return ch; }

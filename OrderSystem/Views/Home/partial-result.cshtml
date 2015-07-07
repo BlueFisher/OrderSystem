@@ -1,9 +1,4 @@
-﻿<section class="back">
-	<a href="javascript:;" route-href="/">
-		<span class="fa fa-chevron-left"></span> 返回
-	</a>
-</section>
-<section class="menu result-menu" ng-static-height="137">
+﻿<section class="menu result-menu">
 	<ul class="list-group">
 		<!-- ngRepeat menu -->
 		<li class="list-group-item"
@@ -63,3 +58,18 @@
 	
 </section>
 
+<section class="cart">
+
+	<span class="cart-sum">
+		<span class="fa fa-shopping-cart"></span>
+		{{cart.sizeAll}}份 {{cart.priceAll | currency : "￥"}}
+	</span>
+
+	<a class="btn btn-sm btn-danger pull-right"
+		href="javascript:;"
+		ng-show="cart.sizeAll"
+		route-href="/payment">
+		去结算
+	</a>
+	
+</section>
