@@ -265,4 +265,25 @@ app.controller('cartCtrl', [
 			};
 		}
 	}
+]).controller('signinCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	function ($scope, $rootScope, $location) {
+		$rootScope.viewTitle = "注册"
+		if ($rootScope.cart == null) {
+			// $location.path('/');
+			// $location.search('table', '1');
+			// return;
+			$rootScope.cart = {
+				isInitialized: true,
+				sizeAll: 5,
+				priceAll: 50,
+				results: [],
+				table: 10,
+				customer: 1,
+				bill: ''
+			};
+		}
+	}
 ]);
