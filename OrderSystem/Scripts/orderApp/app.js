@@ -40,7 +40,7 @@ app.controller('cartCtrl', [
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
 	function ($scope, $rootScope, $filter, $location, statusRemain, GT, GMSCP, GMDP, GRP) {
-		$rootScope.viewTitle = "菜单";
+		$rootScope.viewTitle = '菜单';
 		$rootScope.hideBackBtn = true;
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
@@ -211,7 +211,7 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$location',
 	function ($scope, $rootScope, $location) {
-		$rootScope.viewTitle = "查看订单";
+		$rootScope.viewTitle = '查看订单';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/');
@@ -228,7 +228,8 @@ app.controller('cartCtrl', [
 	'$location',
 	'$http',
 	function ($scope, $rootScope, $location, $http) {
-		$rootScope.viewTitle = "结算";
+		$rootScope.viewTitle = '结算';
+		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/');
 			return;
@@ -248,7 +249,9 @@ app.controller('signinCtrl', [
 	'$rootScope',
 	'$http',
 	function ($scope, $rootScope, $http) {
-		$rootScope.viewTitle = "登录";
+		$rootScope.viewTitle = '登录';
+		$rootScope.hideBackBtn = false;
+		
 		$scope.signinFormData = {};
 		$scope.signin = function () {
 			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
@@ -264,25 +267,43 @@ app.controller('signinCtrl', [
 	'$scope',
 	'$rootScope',
 	'$http',
-	function ($scope, $rootScope, $http) {
-		$rootScope.viewTitle = "注册";
+	'$interval',
+	function ($scope, $rootScope, $http, $interval) {
+		$rootScope.viewTitle = '注册';
+		$rootScope.hideBackBtn = false;
+		
 		$scope.signupFormData = {};
-		var form = $scope.signupFormData;
+		$scope.isSendSMS = false;
+		$scope.canSendSMS = true;
+		$scope.sendSMSBtnText = '发送验证码';
 
 		$scope.sendSMS = function () {
 			$http.post('/Account/SendSMS', {
-				Mobile: form.Mobile
+				Mobile: $scope.signupFormData.Mobile
 			}).success(function (data) {
 				if (data.IsSucceed) {
-					alert('sms success');
-				}else {
+					$scope.isSendSMS = true;
+					$scope.canSendSMS = false;
+					
+					var interval = 60;
+					var timer = $interval(function () {
+						$scope.sendSMSBtnText = interval + '秒后重发';
+						interval--;
+						if(interval == 0){
+							$scope.canSendSMS = true;
+							$scope.sendSMSBtnText = '重发';
+							interval = 60;
+							$interval.cancel(timer);
+						}
+					}, 1000);
+				} else {
 					alert(data.ErrorMessage);
 				}
 			});
 		}
 
 		$scope.signup = function () {
-			$http.post('/Account/Signup', form).success(function (data) {
+			$http.post('/Account/Signup', $scope.signupFormData).success(function (data) {
 				if (data.IsSucceed) {
 					alert('signup success');
 				} else {

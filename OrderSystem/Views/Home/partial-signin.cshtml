@@ -1,20 +1,22 @@
-﻿<ul class="list-group">
-	<li class="list-group-item">
-		<div class="input-group input-group-sm ">
-			<span class="input-group-addon">手机：</span>
-			<input class="form-control input-sm" type="number" 
-				ng-model="signupFormData.Mobile">
-		</div>
-	</li>
-	<li class="list-group-item">
-		<div class="input-group input-group-sm ">
-			<span class="input-group-addon">密码：</span>
-			<input class="form-control input-sm form-control-inline" type="password" 
-				ng-model="signupFormData.Password">
-		</div>
-	</li>
-	<li class="list-group-item">
-		<button class="btn btn-primary btn-block" 
-			ng-click="signin()">登录</button>
-	</li>
-</ul>
+﻿<form name="form">
+	<ul class="list-group">
+		<li class="list-group-item">
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">手机：</span>
+				<input class="form-control input-sm" type="number" name="mobile"
+					ng-model="signinFormData.Mobile" required ng-minlength="11" ng-maxlength="11">
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">密码：</span>
+				<input class="form-control input-sm form-control-inline" type="password"  name="password"
+					ng-model="signinFormData.Password" required>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<button class="btn btn-primary btn-block" type="button"
+				ng-disabled="!form.$valid" ng-click="signin()">登录</button>
+		</li>
+	</ul>
+</form>

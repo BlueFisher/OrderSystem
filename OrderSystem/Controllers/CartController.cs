@@ -36,7 +36,7 @@ namespace OrderSystem.Controllers {
 						Note = note,
 						SalesDiscount = menu.DisherDiscount
 					};
-					ctx.DineTempDetail.Add(dtd);
+					//ctx.DineTempDetail.Add(dtd);
 				}
 				await ctx.SaveChangesAsync();
 			}

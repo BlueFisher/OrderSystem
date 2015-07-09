@@ -1,30 +1,33 @@
-﻿<ul class="list-group">
-	<li class="list-group-item">
-		<div class="input-group input-group-sm ">
-			<span class="input-group-addon">手机：</span>
-			<input class="form-control input-sm" type="number" 
-				ng-model="signupFormData.Mobile">
-		</div>
-	</li>
-	<li class="list-group-item">
-		<div class="input-group input-group-sm ">
-			<span class="input-group-addon">验证码：</span>
-			<input type="text" class="form-control" 
-				ng-model="signupFormData.Code">
-			<div class="input-group-btn">
-				<button class="btn btn-default" ng-click="sendSMS()">发送验证码</button>
+﻿<form name="form">
+	<ul class="list-group">
+		<li class="list-group-item">
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">手机：</span>
+				<input class="form-control input-sm" type="number" name="mobile"
+					ng-model="signupFormData.Mobile" required ng-minlength="11" ng-maxlength="11">
 			</div>
-		</div>
-	</li>
-	<li class="list-group-item">
-		<div class="input-group input-group-sm ">
-			<span class="input-group-addon">密码：</span>
-			<input class="form-control input-sm form-control-inline" type="password" 
-				ng-model="signupFormData.Password">
-		</div>
-	</li>
-	<li class="list-group-item">
-		<button class="btn btn-primary btn-block"
-			ng-click="signup()">注册</button>
-	</li>
-</ul>
+		</li>
+		<li class="list-group-item">
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">验证码：</span>
+				<input type="number" class="form-control" name="code"
+					ng-model="signupFormData.Code" required ng-disabled="!isSendSMS">
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default" 
+						ng-disabled="!form.mobile.$valid || !canSendSMS" ng-click="sendSMS()">{{sendSMSBtnText}}</button>
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">密码：</span>
+				<input class="form-control input-sm form-control-inline" type="password" name="password"
+					ng-model="signupFormData.Password" required>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<button class="btn btn-primary btn-block" type="button"
+				ng-disabled="!form.$valid" ng-click="signup()">注册</button>
+		</li>
+	</ul>
+</form>
