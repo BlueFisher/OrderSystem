@@ -12,7 +12,12 @@ namespace OrderSystem.Controllers {
 		public async Task<JsonResult> Submit(SubmitViewModel model) {
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
+				string client = null;
+				if(User.Identity.IsAuthenticated) {
+					client = User.Identity.Name;
+				}
 				dti = new DineTempInfo(){
+					ClientID = client,
 					DeskID = model.Table.DeskId,
 					Roomid = model.Table.RoomId,
 					peoplecount = (short)model.Customer
@@ -36,7 +41,7 @@ namespace OrderSystem.Controllers {
 						Note = note,
 						SalesDiscount = menu.DisherDiscount
 					};
-					//ctx.DineTempDetail.Add(dtd);
+					ctx.DineTempDetail.Add(dtd);
 				}
 				await ctx.SaveChangesAsync();
 			}

@@ -12,6 +12,18 @@
 	}
 }]);
 
+app.factory('isAuthenticated',['$http', '$q', function ($http, $q) {
+	return function(){
+		return $q(function (resolve) {
+			$http.post('/Account/IsAuthenticated/').success(function (data) {
+				resolve(data);
+			}).error(function (data, status) {
+				alert(status);
+			});
+		});
+	}
+}]);
+
 app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
 	return $q(function (resolve) {
 		$http.post('/Home/GetMenuSubClass').success(function (data) {

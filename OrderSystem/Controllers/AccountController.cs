@@ -13,6 +13,14 @@ namespace OrderSystem.Controllers {
 		public ActionResult Secret() {
 			return Content("你已经登陆");
 		}
+		public JsonResult IsAuthenticated() {
+			if(User.Identity.IsAuthenticated) {
+				return Json(new JsonSucceedObj(new {
+					Name = User.Identity.Name
+				}));
+			}
+			return Json(new JsonErrorObj());
+		}
 
 		public JsonResult Signin(SigninViewModel model) {
 			using(MrCyContext ctx = new MrCyContext()) {
@@ -60,6 +68,10 @@ namespace OrderSystem.Controllers {
 				FormSignin(client);
 				return Json(new JsonSucceedObj());
 			}
+		}
+		public JsonResult Signout() {
+			FormsAuthentication.SignOut();
+			return Json(new JsonSucceedObj());
 		}
 		private void FormSignin(ClientInfo c) {
 			FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(c.ClientId, true, 60);

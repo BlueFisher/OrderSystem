@@ -138,6 +138,9 @@
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Scripts\orderApp\app.js" />
     <None Include="Views\Home\partial-cart.cshtml" />
+    <Content Include="Views\Home\partial-error.cshtml" />
+    <Content Include="Views\Home\partial-payment.cshtml" />
+    <Content Include="Views\Home\partial-client.cshtml" />
     <None Include="Views\Home\partial-result.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -244,6 +247,8 @@
     <Content Include="packages.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\partial-signin.cshtml" />
+    <Content Include="Views\Home\partial-signup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

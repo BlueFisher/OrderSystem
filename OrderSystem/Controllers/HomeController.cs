@@ -27,19 +27,19 @@ namespace OrderSystem.Controllers {
 		public async Task<JsonResult> GetMenuSubClass() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<MenuSubClass> list = await ctx.MenuSubClass.ToListAsync();
-				return Json(list, JsonRequestBehavior.AllowGet);
+				return Json(list);
 			}
 		}
 		public async Task<JsonResult> GetMenuDetail() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<MenuDetail> list = await ctx.MenuDetail.ToListAsync();
-				return Json(list, JsonRequestBehavior.AllowGet);
+				return Json(list);
 			}
 		}
 		public async Task<JsonResult> GetNote() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<Note> list = await ctx.Note.ToListAsync();
-				return Json(list, JsonRequestBehavior.AllowGet);
+				return Json(list);
 			}
 		}
 	}

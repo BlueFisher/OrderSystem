@@ -29,6 +29,11 @@ namespace OrderSystem.Models {
 		public string ErrorPosition;
 	}
 	public class JsonSucceedObj {
+		public JsonSucceedObj() { }
+		public JsonSucceedObj(object obj) {
+			Addition = obj;
+		}
 		public bool IsSucceed = true;
+		public object Addition;
 	}
 }

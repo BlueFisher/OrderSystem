@@ -21,17 +21,17 @@
 			$scope.$apply();
 		});
 	};
-}]).directive('backButton', function(){
+}]).directive('backButton', function () {
     return {
-      restrict: 'A',
+		restrict: 'A',
 
-      link: function(scope, element, attrs) {
-        element.bind('click', goBack);
+		link: function (scope, element, attrs) {
+			element.bind('click', goBack);
 
-        function goBack() {
-          history.back();
-          scope.$apply();
-        }
-      }
+			function goBack() {
+				history.back();
+				scope.$apply();
+			}
+		}
     }
 });;

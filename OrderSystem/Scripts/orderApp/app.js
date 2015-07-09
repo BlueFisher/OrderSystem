@@ -28,6 +28,37 @@ app.config(function ($routeProvider) {
 });
 
 
+app.controller('accountCtrl', [
+	'$scope',
+	'$rootScope',
+	'isAuthenticated',
+	'$http',
+	function ($scope, $rootScope, IAed, $http) {
+		$rootScope.refreshClient = function () {
+			IAed().then(function (data) {
+				console.log(data)
+				if (data.IsSucceed) {
+					$scope.isAuthenticated = true;
+					$scope.clientName = data.Addition.Name;
+				}else{
+					$scope.isAuthenticated = false;
+				}
+			});
+		}
+
+		$scope.isAuthenticated = false;
+		$rootScope.refreshClient();
+
+		$scope.signout = function () {
+			$http.post('/Account/Signout').success(function (data) {
+				if (data.IsSucceed) {
+					$rootScope.refreshClient();
+				}
+			})
+		}
+	}
+]);
+
 
 app.controller('cartCtrl', [
 	'$scope',
@@ -251,12 +282,13 @@ app.controller('signinCtrl', [
 	function ($scope, $rootScope, $http) {
 		$rootScope.viewTitle = '登录';
 		$rootScope.hideBackBtn = false;
-		
+
 		$scope.signinFormData = {};
 		$scope.signin = function () {
 			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
 				if (data.IsSucceed) {
-					alert('signin success');
+					$rootScope.refreshClient();
+					history.back();
 				} else {
 					alert(data.ErrorMessage);
 				}
@@ -271,7 +303,7 @@ app.controller('signinCtrl', [
 	function ($scope, $rootScope, $http, $interval) {
 		$rootScope.viewTitle = '注册';
 		$rootScope.hideBackBtn = false;
-		
+
 		$scope.signupFormData = {};
 		$scope.isSendSMS = false;
 		$scope.canSendSMS = true;
@@ -284,12 +316,12 @@ app.controller('signinCtrl', [
 				if (data.IsSucceed) {
 					$scope.isSendSMS = true;
 					$scope.canSendSMS = false;
-					
+
 					var interval = 60;
 					var timer = $interval(function () {
 						$scope.sendSMSBtnText = interval + '秒后重发';
 						interval--;
-						if(interval == 0){
+						if (interval == 0) {
 							$scope.canSendSMS = true;
 							$scope.sendSMSBtnText = '重发';
 							interval = 60;
@@ -305,7 +337,8 @@ app.controller('signinCtrl', [
 		$scope.signup = function () {
 			$http.post('/Account/Signup', $scope.signupFormData).success(function (data) {
 				if (data.IsSucceed) {
-					alert('signup success');
+					$rootScope.refreshClient();
+					history.back();
 				} else {
 					alert(data.ErrorMessage);
 				}

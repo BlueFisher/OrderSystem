@@ -17,7 +17,8 @@
 	<link rel="stylesheet" href="~/Content/css/global.css">
 </head>
 <body>
-	<section class="header clearfix" ng-hide="hideNavBar">
+	<section class="header clearfix" 
+		ng-hide="hideNavBar" ng-controller="accountCtrl">
 		<button type="button" class="btn btn-primary header-left" back-button ng-hide="hideBackBtn">
 			<span class="fa fa-chevron-left"></span> 返回
 		</button>
@@ -26,9 +27,13 @@
 			<button type="button" class="btn btn-primary btn-navicon dropdown-toggle" dropdown-toggle ng-disabled="disabled">
 			<span class="fa fa-navicon"></span>
 			</button>
-			<ul class="dropdown-menu" role="menu">
+			<ul class="dropdown-menu" role="menu" ng-if="!isAuthenticated">
 				<li><a route-href="/signin">会员登录</a></li>
 				<li><a route-href="/signup">注册会员</a></li>
+			</ul>
+			<ul class="dropdown-menu" role="menu" ng-if="isAuthenticated">
+				<li><a route-href="/">欢迎 {{clientName}}</a></li>
+				<li><a ng-click="signout()">注销</a></li>
 			</ul>
 		</div>
 	</section>
