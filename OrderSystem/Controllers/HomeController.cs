@@ -17,12 +17,11 @@ namespace OrderSystem.Controllers {
 			return View(id);
 		}
 
-		public async Task<JsonResult> GetTable(string id) {
+		public async Task<JsonResult> GetTable(GetTableViewModel model) {
 			using(MrCyContext ctx = new MrCyContext()) {
-				DeskInfo desk = await ctx.DeskInfo.Where(p => p.QRCode == id).FirstOrDefaultAsync();
+				DeskInfo desk = await ctx.DeskInfo.Where(p => p.QRCode == model.qrCode).FirstOrDefaultAsync();
 				return Json(desk);
 			}
-			
 		}
 
 		public async Task<JsonResult> GetMenuSubClass() {

@@ -2,11 +2,11 @@
 <section class="payment">
 	<ul class="list-group">
 		<li class="list-group-item">
-			桌号：{{cart.table.DeskName}}
+			桌号：{{cart.Table.DeskName}}
 		</li>
 		<li class="list-group-item">
 			人数：
-			<select ng-model="cart.customer" convert-to-number>
+			<select ng-model="cart.Customer" convert-to-number>
 				<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
@@ -17,11 +17,11 @@
 		<li class="list-group-item">
 			发票抬头：
 			<input class="form-control input-sm form-control-inline" type="text" placeholder="置空不开具发票"
-				ng-model="bill">
+				ng-model="cart.Bill">
 		</li>
 		<li class="list-group-item">
 			<span class="text-danger">
-				共计：{{cart.priceAll | currency : "￥"}}
+				共计：{{cart.PriceAll | currency : "￥"}}
 			</span>
 		</li>
 		<li class="list-group-item">

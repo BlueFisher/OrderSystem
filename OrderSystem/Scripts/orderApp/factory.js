@@ -1,7 +1,9 @@
-app.factory('getTable', ['$http', '$q', function ($http, $q) {
-	return function(qCode){
+﻿app.factory('getTable', ['$http', '$q', function ($http, $q) {
+	return function (qrCode) {
 		return $q(function (resolve) {
-			$http.post('/Home/GetTable/' + qCode).success(function (data) {
+			$http.post('/Home/GetTable/', {
+				qrCode: qrCode
+			}).success(function (data) {
 				resolve(data);
 			}).error(function (data, status) {
 				alert(status);
@@ -14,12 +16,11 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 	return $q(function (resolve) {
 		$http.post('/Home/GetMenuSubClass').success(function (data) {
 			for (var i = 0; i < data.length; i++) {
-				data[i].cart = {
-					isSelected: false,
-					ordered: 0,
+				data[i].Additional = {
+					IsSelected: false,
+					Ordered: 0,
 				};
 			}
-
 			resolve(data);
 		}).error(function (data, status) {
 			alert(status);
@@ -29,7 +30,7 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 	return $q(function (resolve) {
 		$http.post('/Home/GetMenuDetail').success(function (data) {
 			for (var i = 0; i < data.length; i++) {
-				data[i].pinYin = PinYin.searchCap(data[i].DisherName);
+				data[i].PinYin = PinYin.searchCap(data[i].DisherName);
 				// delete data[i].AutoId;
 				// delete data[i].DisherCode;
 				// delete data[i].DisherEnglishName;
@@ -52,11 +53,11 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 				if (data[i].DisherPoint == null) {
 					data[i].DisherPoint = 0;
 				}
-				data[i].cart = {
-					ordered: 0,
-					notes: [],
-					filteredNotes: [],
-					isNoteCollapsed: false
+				data[i].Additional = {
+					Ordered: 0,
+					Notes: [],
+					FilteredNotes: [],
+					IsNoteCollapsed: false
 				};
 			}
 			resolve(data);

@@ -2,7 +2,7 @@
 	<ul class="list-group">
 		<!-- ngRepeat menu -->
 		<li class="list-group-item"
-			ng-repeat="menu in cart.results">
+			ng-repeat="menu in cart.Results">
 			<div class="media">
 				<div class="media-left">
 					<a href="javascript:;">
@@ -15,12 +15,12 @@
 					<div class="meal-footer">
 						<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
 						<div class="cart-control pull-right">
-							<span ng-if="menu.cart.ordered>0">
+							<span ng-if="menu.Additional.Ordered>0">
 								<button class="btn btn-sm btn-cart-decrease"
 										ng-click="removeMenu(menu)">
 									<span class="fa fa-minus"></span>
 								</button>
-								<span class="cart-number">{{menu.cart.ordered}}</span>
+								<span class="cart-number">{{menu.Additional.Ordered}}</span>
 							</span>
 							<button class="btn btn-sm btn-cart-add"
 									ng-click="addMenu(menu)">
@@ -30,22 +30,22 @@
 					</div>
 				</div>
 				<!-- Remark Region -->
-				<div ng-if="menu.cart.ordered>0">
+				<div ng-if="menu.Additional.Ordered>0">
 					<button class="btn btn-sm btn-danger btn-note"
-							ng-click="menu.cart.isNoteCollapsed = !menu.cart.isNoteCollapsed">
+							ng-click="menu.Additional.IsNoteCollapsed = !menu.Additional.isNoteCollapsed">
 						备注
 					</button>
 					<!-- ngRepeat the added notes -->
 					<button class="btn btn-sm btn-success btn-note"
-							ng-repeat="note in menu.cart.notes"
+							ng-repeat="note in menu.Additional.Notes"
 							ng-click="removeNote(menu,note,$index)">
 						{{note.Note1}}
 						<span class="fa fa-times-circle"></span>
 					</button>
-					<div class="well well-note" ng-show="menu.cart.isNoteCollapsed">
+					<div class="well well-note" ng-if="menu.Additional.IsNoteCollapsed">
 						<!-- ngRepeat not added notes -->
 						<button class="btn btn-sm btn-primary btn-note"
-								ng-repeat="note in menu.cart.filteredNotes"
+								ng-repeat="note in menu.Additional.FilteredNotes"
 								ng-click="addNote(menu,note,$index)">
 							{{note.Note1}}
 							<span class="fa fa-check-circle"></span>
@@ -62,12 +62,12 @@
 
 	<span class="cart-sum">
 		<span class="fa fa-shopping-cart"></span>
-		{{cart.sizeAll}}份 {{cart.priceAll | currency : "￥"}}
+		{{cart.SizeAll}}份 {{cart.PriceAll | currency : "￥"}}
 	</span>
 
 	<a class="btn btn-sm btn-danger pull-right"
 		href="javascript:;"
-		ng-show="cart.sizeAll"
+		ng-show="cart.SizeAll"
 		route-href="/payment">
 		去结算
 	</a>

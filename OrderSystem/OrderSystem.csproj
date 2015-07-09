@@ -149,6 +149,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
@@ -194,6 +195,7 @@
     <Compile Include="Models\DineTempInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Models\MenuClass.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
@@ -227,6 +229,7 @@
     <Compile Include="Models\PrinterInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Protocal.cs" />
     <Compile Include="Models\RoomInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>

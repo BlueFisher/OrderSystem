@@ -1,4 +1,4 @@
-app.directive('ngStaticHeight', function () {
+﻿app.directive('ngStaticHeight', function () {
 	return function ($scope, $elem, attr) {
 		$elem.height($(window).height() - attr.ngStaticHeight);
 	};

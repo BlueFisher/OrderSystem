@@ -13,17 +13,17 @@ namespace OrderSystem.Controllers {
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
 				dti = new DineTempInfo(){
-					DeskID = model.table.DeskId,
-					Roomid = model.table.RoomId,
-					peoplecount = (short)model.customer
+					DeskID = model.Table.DeskId,
+					Roomid = model.Table.RoomId,
+					peoplecount = (short)model.Customer
 				};
 				ctx.DineTempInfo.Add(dti);
 				await ctx.SaveChangesAsync();
 
-				foreach(SubmitMenuDetail menu in model.results){
+				foreach(SubmitMenuDetail menu in model.Results){
 					string note = "";
-					if(menu.cart.notes != null) {
-						foreach(Note n in menu.cart.notes) {
+					if(menu.Additional.Notes != null) {
+						foreach(Note n in menu.Additional.Notes) {
 							note += (n.Note1 + " ");
 						}
 					}
@@ -31,7 +31,7 @@ namespace OrderSystem.Controllers {
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
 						DisherID = menu.DisherId,
-						DisherNum = menu.cart.ordered,
+						DisherNum = menu.Additional.Ordered,
 						DisherPrice = (decimal)menu.DisherPrice,
 						Note = note,
 						SalesDiscount = menu.DisherDiscount
@@ -40,7 +40,7 @@ namespace OrderSystem.Controllers {
 				}
 				await ctx.SaveChangesAsync();
 			}
-			return Json(null);
+			return Json(new JsonSucceedObj());
 		}
 	}
 }

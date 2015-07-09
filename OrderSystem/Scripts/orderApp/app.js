@@ -40,28 +40,28 @@ app.controller('cartCtrl', [
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
 	function ($scope, $rootScope, $filter, $location, statusRemain, GT, GMSCP, GMDP, GRP) {
-		$rootScope.hideNavBar = true;
+		$rootScope.viewTitle = "菜单";
+		$rootScope.hideBackBtn = true;
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
-				isInitialized: false,
-				sizeAll: 0,
-				priceAll: 0,
-				results: [],
-				table: null,
-				customer: 1,
-				bill: ''
+				IsInitialized: false,
+				SizeAll: 0,
+				PriceAll: 0,
+				Results: [],
+				Table: null,
+				Customer: 1,
+				Bill: ''
 			};
 		}
 		var rootCart = $rootScope.cart;
 
 		var param = $location.search();
-		if (param.qCode == undefined) {
+		if (param.qrCode == undefined) {
 			$location.path('/');
-			$location.search('qCode', '101');
+			$location.search('qrCode', '101');
 		} else {
-			GT(param.qCode).then(function (data) {
-				console.log(data);
-				rootCart.table = data;
+			GT(param.qrCode).then(function (deskInfo) {
+				rootCart.Table = deskInfo;
 			});
 		}
 
@@ -78,13 +78,13 @@ app.controller('cartCtrl', [
 				menuDetail = menus;
 
 				GRP.then(function (notes) {
-					if (!rootCart.isInitialized) {
+					if (!rootCart.IsInitialized) {
 						for (var i = 0; i < menuDetail.length; i++) {
-							menuDetail[i].cart.filteredNotes = angular.copy(notes);
+							menuDetail[i].Additional.FilteredNotes = angular.copy(notes);
 						}
 					}
 					_filterMenu();
-					rootCart.isInitialized = true;
+					rootCart.IsInitialized = true;
 				});
 			});
 		});
@@ -107,7 +107,7 @@ app.controller('cartCtrl', [
 				$scope.searchText = '';
 			}
 			if (mode != classMode.normal) {
-				statusRemain.activeClass.cart.isSelected = false;
+				statusRemain.activeClass.Additional.IsSelected = false;
 			}
 		}
 
@@ -116,8 +116,8 @@ app.controller('cartCtrl', [
 			// enter the normalMode
 			_changeMode(classMode.normal);
 
-			statusRemain.activeClass.cart.isSelected = false;
-			c.cart.isSelected = true;
+			statusRemain.activeClass.Additional.IsSelected = false;
+			c.Additional.IsSelected = true;
 			statusRemain.activeClass = c;
 			_filterMenu();
 		};
@@ -141,33 +141,33 @@ app.controller('cartCtrl', [
 		
 		// add and remove Meal
 		$rootScope.addMenu = function (menu) {
-			menu.cart.ordered++;
-			rootCart.sizeAll++;
-			rootCart.priceAll += menu.DisherPrice;
+			menu.Additional.Ordered++;
+			rootCart.SizeAll++;
+			rootCart.PriceAll += menu.DisherPrice;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].cart.ordered++;
+					$scope.menuSubClass[i].Additional.Ordered++;
 					break;
 				}
 			}
-			if (menu.cart.ordered == 1) {
-				rootCart.results.push(menu);
+			if (menu.Additional.Ordered == 1) {
+				rootCart.Results.push(menu);
 			}
 		};
 		$rootScope.removeMenu = function (menu) {
-			menu.cart.ordered--;
-			rootCart.sizeAll--;
-			rootCart.priceAll -= menu.DisherPrice;
+			menu.Additional.Ordered--;
+			rootCart.SizeAll--;
+			rootCart.PriceAll -= menu.DisherPrice;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].cart.ordered--;
+					$scope.menuSubClass[i].Additional.Ordered--;
 					break;
 				}
 			}
-			if (menu.cart.ordered == 0) {
-				for (var i = 0; i < rootCart.results.length; i++) {
-					if (angular.equals(menu, rootCart.results[i])) {
-						rootCart.results.splice(i, 1);
+			if (menu.Additional.Ordered == 0) {
+				for (var i = 0; i < rootCart.Results.length; i++) {
+					if (angular.equals(menu, rootCart.Results[i])) {
+						rootCart.Results.splice(i, 1);
 						break;
 					}
 				}
@@ -175,12 +175,12 @@ app.controller('cartCtrl', [
 		};
 		// add and remove Remark
 		$rootScope.addNote = function (menu, note, index) {
-			menu.cart.notes.push(note);
-			menu.cart.filteredNotes.splice(index, 1);
+			menu.Additional.Notes.push(note);
+			menu.Additional.FilteredNotes.splice(index, 1);
 		};
 		$rootScope.removeNote = function (menu, note, index) {
-			menu.cart.filteredNotes.push(note);
-			menu.cart.notes.splice(index, 1);
+			menu.Additional.FilteredNotes.push(note);
+			menu.Additional.Notes.splice(index, 1);
 		};
 
 
@@ -211,18 +211,15 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$location',
 	function ($scope, $rootScope, $location) {
-		$rootScope.hideNavBar = false;
 		$rootScope.viewTitle = "查看订单";
+		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/');
-			$location.search('table', '1');
 			return;
 		}
 
-
-
-		angular.forEach($rootScope.cart.results, function (menu) {
-			menu.cart.isNoteCollapsed = false;
+		angular.forEach($rootScope.cart.Results, function (menu) {
+			menu.Additional.IsNoteCollapsed = false;
 		});
 	}
 ]).controller('paymentCtrl', [
@@ -234,34 +231,34 @@ app.controller('cartCtrl', [
 		$rootScope.viewTitle = "结算";
 		if ($rootScope.cart == null) {
 			$location.path('/');
-			$location.search('table', '1');
 			return;
-			// $rootScope.cart = {
-			// 	isInitialized: true,
-			// 	sizeAll: 5,
-			// 	priceAll: 50,
-			// 	results: [],
-			// 	table: 10,
-			// 	customer: 1,
-			// 	bill: ''
-			// };
 		}
+		$scope.customersAll =
 		$scope.submit = function () {
 			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				console.log(data);
 			});
 		};
-
-
 	}
 ]);
 
 app.controller('signinCtrl', [
 	'$scope',
 	'$rootScope',
-	function ($scope, $rootScope) {
+	'$http',
+	function ($scope, $rootScope, $http) {
 		$rootScope.viewTitle = "登录";
+		$scope.signinFormData = {};
+		$scope.signin = function () {
+			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
+				if (data.IsSucceed) {
+					alert('signin success');
+				} else {
+					alert(data.ErrorMessage);
+				}
+			});
+		}
 	}
 ]).controller('signupCtrl', [
 	'$scope',
@@ -269,12 +266,29 @@ app.controller('signinCtrl', [
 	'$http',
 	function ($scope, $rootScope, $http) {
 		$rootScope.viewTitle = "注册";
+		$scope.signupFormData = {};
+		var form = $scope.signupFormData;
 
 		$scope.sendSMS = function () {
-			alert($scope.phone)
-			$http.post('/Account/SendSMS/' + $scope.phone).success(function (data) {
-				console.log(data);
-			})
+			$http.post('/Account/SendSMS', {
+				Mobile: form.Mobile
+			}).success(function (data) {
+				if (data.IsSucceed) {
+					alert('sms success');
+				}else {
+					alert(data.ErrorMessage);
+				}
+			});
+		}
+
+		$scope.signup = function () {
+			$http.post('/Account/Signup', form).success(function (data) {
+				if (data.IsSucceed) {
+					alert('signup success');
+				} else {
+					alert(data.ErrorMessage);
+				}
+			});
 		}
 	}
 ]);

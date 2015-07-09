@@ -2,13 +2,15 @@
 	<li class="list-group-item">
 		<div class="input-group input-group-sm ">
 			<span class="input-group-addon">手机：</span>
-			<input class="form-control input-sm" type="number" ng-model="phone">
+			<input class="form-control input-sm" type="number" 
+				ng-model="signupFormData.Mobile">
 		</div>
 	</li>
 	<li class="list-group-item">
 		<div class="input-group input-group-sm ">
 			<span class="input-group-addon">验证码：</span>
-			<input type="text" class="form-control">
+			<input type="text" class="form-control" 
+				ng-model="signupFormData.Code">
 			<div class="input-group-btn">
 				<button class="btn btn-default" ng-click="sendSMS()">发送验证码</button>
 			</div>
@@ -17,10 +19,12 @@
 	<li class="list-group-item">
 		<div class="input-group input-group-sm ">
 			<span class="input-group-addon">密码：</span>
-			<input class="form-control input-sm form-control-inline" type="password" ng-model="paswd">
+			<input class="form-control input-sm form-control-inline" type="password" 
+				ng-model="signupFormData.Password">
 		</div>
 	</li>
 	<li class="list-group-item">
-		<button class="btn btn-primary btn-block">注册</button>
+		<button class="btn btn-primary btn-block"
+			ng-click="signup()">注册</button>
 	</li>
 </ul>
