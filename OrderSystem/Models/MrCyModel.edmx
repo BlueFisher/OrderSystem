@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -222,18 +222,17 @@
           <Property Name="PayKind" Type="varchar" MaxLength="10" />
           <Property Name="Subtotal" Type="money" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.DineTempDetail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="DineTempDetail">
           <Key>
-            <PropertyRef Name="AutoID" />
+            <PropertyRef Name="TempDetailAutoId" />
           </Key>
           <Property Name="AutoID" Type="int" Nullable="false" />
           <Property Name="DisherID" Type="varchar" MaxLength="6" />
           <Property Name="DisherNum" Type="int" />
           <Property Name="DisherPrice" Type="money" />
           <Property Name="SalesDiscount" Type="float" />
-          <Property Name="Note" Type="varchar" MaxLength="15" />
+          <Property Name="Note" Type="varchar" MaxLength="25" />
+          <Property Name="TempDetailAutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="DineTempInfo">
           <Key>
@@ -401,6 +400,7 @@
           <EntitySet Name="DineDetailHistory" EntityType="Self.DineDetailHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DineInfo" EntityType="Self.DineInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DineInfoHistory" EntityType="Self.DineInfoHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuClass" EntityType="Self.MenuClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" Schema="dbo" store:Type="Tables" />
@@ -408,16 +408,6 @@
           <EntitySet Name="PayKind" EntityType="Self.PayKind" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [DineTempDetail].[AutoID] AS [AutoID], 
-    [DineTempDetail].[DisherID] AS [DisherID], 
-    [DineTempDetail].[DisherNum] AS [DisherNum], 
-    [DineTempDetail].[DisherPrice] AS [DisherPrice], 
-    [DineTempDetail].[SalesDiscount] AS [SalesDiscount], 
-    [DineTempDetail].[Note] AS [Note]
-    FROM [dbo].[DineTempDetail] AS [DineTempDetail]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="Note" EntityType="Self.Note" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Note].[AutoID] AS [AutoID], 
@@ -432,8 +422,7 @@
     FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -789,14 +778,15 @@
         </EntityType>
         <EntityType Name="DineTempDetail">
           <Key>
-            <PropertyRef Name="AutoID" />
+            <PropertyRef Name="TempDetailAutoId" />
           </Key>
           <Property Name="AutoID" Type="Int32" Nullable="false" />
           <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="DisherNum" Type="Int32" />
           <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SalesDiscount" Type="Double" />
-          <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Note" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TempDetailAutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Note">
           <Key>
@@ -1216,6 +1206,7 @@
           <EntitySetMapping Name="DineTempDetail">
             <EntityTypeMapping TypeName="db_MrCyModel.DineTempDetail">
               <MappingFragment StoreEntitySet="DineTempDetail">
+                <ScalarProperty Name="TempDetailAutoId" ColumnName="TempDetailAutoId" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="DisherID" ColumnName="DisherID" />
                 <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />

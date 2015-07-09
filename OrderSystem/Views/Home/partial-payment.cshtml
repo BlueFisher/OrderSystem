@@ -2,7 +2,7 @@
 <section class="payment">
 	<ul class="list-group">
 		<li class="list-group-item">
-			桌号：{{cart.table}}
+			桌号：{{cart.table.DeskName}}
 		</li>
 		<li class="list-group-item">
 			人数：
@@ -25,7 +25,8 @@
 			</span>
 		</li>
 		<li class="list-group-item">
-			<button class="btn btn-danger btn-block">确认下单</button>
+			<button class="btn btn-danger btn-block"
+				ng-click="submit();">确认下单</button>
 		</li>
 	</ul>
 </section>

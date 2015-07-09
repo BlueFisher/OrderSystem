@@ -17,6 +17,14 @@ namespace OrderSystem.Controllers {
 			return View(id);
 		}
 
+		public async Task<JsonResult> GetTable(string id) {
+			using(MrCyContext ctx = new MrCyContext()) {
+				DeskInfo desk = await ctx.DeskInfo.Where(p => p.QRCode == id).FirstOrDefaultAsync();
+				return Json(desk);
+			}
+			
+		}
+
 		public async Task<JsonResult> GetMenuSubClass() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<MenuSubClass> list = await ctx.MenuSubClass.ToListAsync();

@@ -4,27 +4,27 @@
 var app = angular.module('orderApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
-	
+
     $routeProvider
 		.when('/', {
-		templateUrl: 'Home/Partial/partial-cart',
-		controller: 'cartCtrl'
-	}).when('/result', {
-		templateUrl: 'Home/Partial/partial-result',
-		controller: 'resultCtrl'
-	}).when('/payment', {
-		templateUrl: 'Home/Partial/partial-payment',
-		controller: 'paymentCtrl'
-	}).when('/signin', {
-		templateUrl: 'Home/Partial/partial-signin',
-		controller: 'signinCtrl'
-	}).when('/signup', {
-		templateUrl: 'Home/Partial/partial-signup',
-		controller: 'signupCtrl'
-	}).when('/error', {
-		templateUrl: 'Home/Partial/partial-error',
-		controller: 'errorCtrl'
-	});
+			templateUrl: 'Home/Partial/partial-cart',
+			controller: 'cartCtrl'
+		}).when('/result', {
+			templateUrl: 'Home/Partial/partial-result',
+			controller: 'resultCtrl'
+		}).when('/payment', {
+			templateUrl: 'Home/Partial/partial-payment',
+			controller: 'paymentCtrl'
+		}).when('/signin', {
+			templateUrl: 'Home/Partial/partial-signin',
+			controller: 'signinCtrl'
+		}).when('/signup', {
+			templateUrl: 'Home/Partial/partial-signup',
+			controller: 'signupCtrl'
+		}).when('/error', {
+			templateUrl: 'Home/Partial/partial-error',
+			controller: 'errorCtrl'
+		});
 });
 
 
@@ -35,10 +35,11 @@ app.controller('cartCtrl', [
 	'$filter',
 	'$location',
 	'statusRemain',
+	'getTable',
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
-	function ($scope, $rootScope, $filter, $location, statusRemain, GMSCP, GMDP, GRP) {
+	function ($scope, $rootScope, $filter, $location, statusRemain, GT, GMSCP, GMDP, GRP) {
 		$rootScope.hideNavBar = true;
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
@@ -54,11 +55,14 @@ app.controller('cartCtrl', [
 		var rootCart = $rootScope.cart;
 
 		var param = $location.search();
-		if (param.table == undefined) {
+		if (param.qCode == undefined) {
 			$location.path('/');
-			$location.search('table', '1');
+			$location.search('qCode', '101');
 		} else {
-			rootCart.table = parseInt(param.table);
+			GT(param.qCode).then(function (data) {
+				console.log(data);
+				rootCart.table = data;
+			});
 		}
 
 		var menuDetail;
@@ -208,16 +212,14 @@ app.controller('cartCtrl', [
 	'$location',
 	function ($scope, $rootScope, $location) {
 		$rootScope.hideNavBar = false;
-		$rootScope.viewTitle = "查看订单"
+		$rootScope.viewTitle = "查看订单";
 		if ($rootScope.cart == null) {
 			$location.path('/');
 			$location.search('table', '1');
 			return;
 		}
-		
-		$rootScope.submit = function () {
-			console.log($rootScope.cart);
-		};
+
+
 
 		angular.forEach($rootScope.cart.results, function (menu) {
 			menu.cart.isNoteCollapsed = false;
@@ -227,63 +229,52 @@ app.controller('cartCtrl', [
 	'$scope',
 	'$rootScope',
 	'$location',
-	function ($scope, $rootScope, $location) {
-		$rootScope.viewTitle = "结算"
+	'$http',
+	function ($scope, $rootScope, $location, $http) {
+		$rootScope.viewTitle = "结算";
 		if ($rootScope.cart == null) {
-			// $location.path('/');
-			// $location.search('table', '1');
-			// return;
-			$rootScope.cart = {
-				isInitialized: true,
-				sizeAll: 5,
-				priceAll: 50,
-				results: [],
-				table: 10,
-				customer: 1,
-				bill: ''
-			};
+			$location.path('/');
+			$location.search('table', '1');
+			return;
+			// $rootScope.cart = {
+			// 	isInitialized: true,
+			// 	sizeAll: 5,
+			// 	priceAll: 50,
+			// 	results: [],
+			// 	table: 10,
+			// 	customer: 1,
+			// 	bill: ''
+			// };
 		}
+		$scope.submit = function () {
+			console.log($rootScope.cart);
+			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
+				console.log(data);
+			});
+		};
+
+
 	}
-]).controller('signinCtrl', [
+]);
+
+app.controller('signinCtrl', [
 	'$scope',
 	'$rootScope',
-	'$location',
-	function ($scope, $rootScope, $location) {
-		$rootScope.viewTitle = "登录"
-		if ($rootScope.cart == null) {
-			// $location.path('/');
-			// $location.search('table', '1');
-			// return;
-			$rootScope.cart = {
-				isInitialized: true,
-				sizeAll: 5,
-				priceAll: 50,
-				results: [],
-				table: 10,
-				customer: 1,
-				bill: ''
-			};
-		}
+	function ($scope, $rootScope) {
+		$rootScope.viewTitle = "登录";
 	}
 ]).controller('signupCtrl', [
 	'$scope',
 	'$rootScope',
-	'$location',
-	function ($scope, $rootScope, $location) {
-		$rootScope.viewTitle = "注册"
-		if ($rootScope.cart == null) {
-			// $location.path('/');
-			// $location.search('table', '1');
-			// return;
-			$rootScope.cart = {
-				isInitialized: true,
-				sizeAll: 5,
-				priceAll: 50,
-				results: [],
-				table: 10,
-				customer: 1,
-				bill: ''
-			};
+	'$http',
+	function ($scope, $rootScope, $http) {
+		$rootScope.viewTitle = "注册";
+
+		$scope.sendSMS = function () {
+			alert($scope.phone)
+			$http.post('/Account/SendSMS/' + $scope.phone).success(function (data) {
+				console.log(data);
+			})
 		}
 	}
 ]);

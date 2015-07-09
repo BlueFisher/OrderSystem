@@ -1,6 +1,18 @@
+app.factory('getTable', ['$http', '$q', function ($http, $q) {
+	return function(qCode){
+		return $q(function (resolve) {
+			$http.post('/Home/GetTable/' + qCode).success(function (data) {
+				resolve(data);
+			}).error(function (data, status) {
+				alert(status);
+			})
+		});
+	}
+}]);
+
 app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) {
 	return $q(function (resolve) {
-		$http.get('/Home/GetMenuSubClass').success(function (data) {
+		$http.post('/Home/GetMenuSubClass').success(function (data) {
 			for (var i = 0; i < data.length; i++) {
 				data[i].cart = {
 					isSelected: false,
@@ -13,9 +25,9 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 			alert(status);
 		});
 	});
-}]).factory('generateMenuDetailPromise', ['$http', '$q','getPinYinCap', function ($http, $q,PinYin) {
+}]).factory('generateMenuDetailPromise', ['$http', '$q', 'getPinYinCap', function ($http, $q, PinYin) {
 	return $q(function (resolve) {
-		$http.get('/Home/GetMenuDetail').success(function (data) {
+		$http.post('/Home/GetMenuDetail').success(function (data) {
 			for (var i = 0; i < data.length; i++) {
 				data[i].pinYin = PinYin.searchCap(data[i].DisherName);
 				// delete data[i].AutoId;
@@ -54,7 +66,7 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 	});
 }]).factory('generateRemarkPromise', ['$http', '$q', function ($http, $q) {
 	return $q(function (resolve) {
-		$http.get('/Home/GetNote').success(function (data) {
+		$http.post('/Home/GetNote').success(function (data) {
 			resolve(data);
 		}).error(function (data, status) {
 			alert(status);

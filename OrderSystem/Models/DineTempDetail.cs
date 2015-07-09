@@ -20,5 +20,6 @@ namespace OrderSystem.Models
         public Nullable<decimal> DisherPrice { get; set; }
         public Nullable<double> SalesDiscount { get; set; }
         public string Note { get; set; }
+        public int TempDetailAutoId { get; set; }
     }
 }

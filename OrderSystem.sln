@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderSystem", "OrderSystem\OrderSystem.csproj", "{4C78DA88-5B36-41C0-8F3A-FC4FA57D3A06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS", "SMS\SMS.csproj", "{D8238776-D885-4776-B168-353836912B18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{23E86644-27C8-49CB-A19F-28DC19D5FA3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{4C78DA88-5B36-41C0-8F3A-FC4FA57D3A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C78DA88-5B36-41C0-8F3A-FC4FA57D3A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C78DA88-5B36-41C0-8F3A-FC4FA57D3A06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8238776-D885-4776-B168-353836912B18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8238776-D885-4776-B168-353836912B18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8238776-D885-4776-B168-353836912B18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8238776-D885-4776-B168-353836912B18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E86644-27C8-49CB-A19F-28DC19D5FA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E86644-27C8-49CB-A19F-28DC19D5FA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E86644-27C8-49CB-A19F-28DC19D5FA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E86644-27C8-49CB-A19F-28DC19D5FA3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -228,6 +230,7 @@
     <Compile Include="Models\RoomInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SubmitViewModel.cs" />
     <Compile Include="Models\Waiter.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
@@ -247,9 +250,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\image\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SMS\SMS.csproj">
+      <Project>{d8238776-d885-4776-b168-353836912b18}</Project>
+      <Name>SMS</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
