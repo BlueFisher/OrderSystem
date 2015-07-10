@@ -45,11 +45,6 @@ namespace OrderSystem.Controllers {
 						SalesDiscount = menu.DisherDiscount
 					};
 					ctx.DineTempDetail.Add(dtd);
-
-					//MenuDetail m = await ctx.MenuDetail.Where(p => p.DisherId == menu.DisherId).FirstOrDefaultAsync();
-					//m.DisherPoint = m.DisherPoint == null ? 0 : m.DisherPoint + 1;
-					//ctx.Entry<MenuDetail>(m).Property(p => p.DisherPoint).IsModified = true;
-
 				}
 				await ctx.SaveChangesAsync();
 
@@ -74,7 +69,7 @@ namespace OrderSystem.Controllers {
 			return Json((SubmitViewModel)Session["savedMenu"]);
 		}
 
-		public async Task<JsonResult> GetHistoryMenuId() {
+		public async Task<JsonResult> GetHistoryDineInfo() {
 			if(!User.Identity.IsAuthenticated) {
 				return Json(new JsonErrorObj());
 			}

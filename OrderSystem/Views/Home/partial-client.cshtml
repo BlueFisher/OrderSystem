@@ -1,5 +1,11 @@
 ﻿<section class="client">
 	<ul class="list-group">
+		<li class="list-group-item">
+			桌号：{{historyMenu.Table.DeskName}}
+		</li>
+		<li class="list-group-item">
+			人数：{{historyMenu.Customer}}
+		</li>
 		<!-- ngRepeat menu -->
 		<li class="list-group-item"
 			ng-repeat="menu in historyMenu.Results">
@@ -17,8 +23,7 @@
 			<!-- ngRepeat the added notes -->
 			<div>
 				<button class="btn btn-sm btn-success btn-note"
-					ng-repeat="note in menu.Additional.Notes"
-					ng-click="removeNote(menu,note,$index)">
+					ng-repeat="note in menu.Additional.Notes">
 					{{note.Note1}}
 				</button>
 			</div>

@@ -115,6 +115,7 @@ app.controller('clientCtrl', [
 
 
 		$http.post('/Cart/GetSavedMenu').success(function (data) {
+			console.log(data)
 			$scope.historyMenu = data;
 		});
 	}
