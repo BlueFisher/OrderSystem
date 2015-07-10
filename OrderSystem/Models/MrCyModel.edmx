@@ -242,7 +242,7 @@
           <Property Name="ClientID" Type="varchar" MaxLength="20" />
           <Property Name="DeskID" Type="varchar" MaxLength="10" />
           <Property Name="Roomid" Type="varchar" MaxLength="10" />
-          <Property Name="BeginTime" Type="datetime" />
+          <Property Name="BeginTime" Type="datetime" StoreGeneratedPattern="Identity" />
           <Property Name="peoplecount" Type="smallint" />
           <Property Name="IsPaid" Type="int" />
           <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
@@ -651,7 +651,7 @@
           <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="peoplecount" Type="Int16" />
           <Property Name="IsPaid" Type="Int32" />
           <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />

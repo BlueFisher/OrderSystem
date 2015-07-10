@@ -36,7 +36,8 @@ app.controller('accountCtrl', [
 	'$rootScope',
 	'isAuthenticated',
 	'$http',
-	function ($scope, $rootScope, IAed, $http) {
+	'$location',
+	function ($scope, $rootScope, IAed, $http, $location) {
 		$rootScope.refreshClient = function () {
 			IAed().then(function (data) {
 				if (data.IsSucceed) {
@@ -55,6 +56,7 @@ app.controller('accountCtrl', [
 			$http.post('/Account/Signout').success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
+					$location.path('/');
 				}
 			})
 		}
@@ -75,9 +77,15 @@ app.controller('cartCtrl', [
 	function ($scope, $rootScope, $filter, $location, statusRemain, GT, GMSCP, GMDP, GRP) {
 		$rootScope.viewTitle = '菜单';
 		$rootScope.hideBackBtn = true;
+
+		var classMode = {
+			search: 0,
+			normal: 1,
+			rank: 2
+		};
+
 		if ($rootScope.cart == undefined) {
 			$rootScope.cart = {
-				IsInitialized: false,
 				SizeAll: 0,
 				PriceAll: 0,
 				Results: [],
@@ -87,6 +95,28 @@ app.controller('cartCtrl', [
 				IsPaid: 0,
 				PayKind: null
 			};
+
+			GMSCP().then(function (classes) {
+				$rootScope.menuSubClass = classes;
+
+				statusRemain.activeClass = $rootScope.menuSubClass[0];
+				
+				_changeMode(classMode.rank);
+
+				GMDP().then(function (menus) {
+					$rootScope.menuDetail = menus;
+
+					GRP().then(function (notes) {
+						for (var i = 0; i < $rootScope.menuDetail.length; i++) {
+							$rootScope.menuDetail[i].Additional.FilteredNotes = angular.copy(notes);
+						}
+						_filterMenu();
+					});
+				});
+			});
+		} else {
+			_changeMode(classMode.rank);
+			_filterMenu();
 		}
 		var rootCart = $rootScope.cart;
 
@@ -99,36 +129,6 @@ app.controller('cartCtrl', [
 				rootCart.Table = deskInfo;
 			});
 		}
-
-		var menuDetail;
-		GMSCP.then(function (classes) {
-			$scope.menuSubClass = classes;
-
-			if (statusRemain.activeClass == null) {
-				statusRemain.activeClass = $scope.menuSubClass[0];
-			}
-			_changeMode(classMode.rank);
-
-			GMDP.then(function (menus) {
-				menuDetail = menus;
-
-				GRP.then(function (notes) {
-					if (!rootCart.IsInitialized) {
-						for (var i = 0; i < menuDetail.length; i++) {
-							menuDetail[i].Additional.FilteredNotes = angular.copy(notes);
-						}
-					}
-					_filterMenu();
-					rootCart.IsInitialized = true;
-				});
-			});
-		});
-
-		var classMode = {
-			search: 0,
-			normal: 1,
-			rank: 2
-		};
 
 		$scope.isRankMode = function () {
 			return $scope.currentMode == classMode.rank;
@@ -218,9 +218,8 @@ app.controller('cartCtrl', [
 			menu.Additional.Notes.splice(index, 1);
 		};
 
-
 		function _filterMenu(searchText) {
-			var filteredArr = menuDetail;
+			var filteredArr = $rootScope.menuDetail;
 
 			switch ($scope.currentMode) {
 				case classMode.normal:
@@ -234,7 +233,7 @@ app.controller('cartCtrl', [
 					filteredArr = $filter('limitTo')(filteredArr, 10);
 					break;
 				case classMode.search:
-					filteredArr = $filter('filter')(menuDetail, searchText);
+					filteredArr = $filter('filter')($rootScope.menuDetail, searchText);
 					break;
 			}
 
@@ -270,12 +269,15 @@ app.controller('cartCtrl', [
 			return;
 		}
 		$scope.customersAll = [];
-		for(var i=0;i<50;i++){
-			$scope.customersAll.push(i+1);
+		for (var i = 0; i < 50; i++) {
+			$scope.customersAll.push(i + 1);
 		}
 		$scope.submit = function () {
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
-				alert('已提交订单成功，请服务员收费')
+				alert('已提交订单成功，请服务员收费');
+				delete $rootScope.cart;
+				console.log($rootScope.cart)
+				$location.path('/client');
 			});
 		};
 		$scope.hasPayName = false;
@@ -285,11 +287,13 @@ app.controller('cartCtrl', [
 				$scope.pays = data;
 			});
 		}
-		$scope.netPay = function(pay){
+		$scope.netPay = function (pay) {
 			$rootScope.cart.IsPaid = 1;
 			$rootScope.cart.PayKind = pay.PayName;
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				alert('已支付成功');
+				delete $rootScope.cart;
+				$location.path('/client');
 			});
 		}
 	}
@@ -298,17 +302,18 @@ app.controller('cartCtrl', [
 app.controller('signinCtrl', [
 	'$scope',
 	'$rootScope',
+	'$location',
 	'$http',
-	function ($scope, $rootScope, $http) {
+	function ($scope, $rootScope, $location, $http) {
 		$rootScope.viewTitle = '登录';
-		$rootScope.hideBackBtn = false;
+		$rootScope.hideBackBtn = true;
 
 		$scope.signinFormData = {};
 		$scope.signin = function () {
 			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
-					history.back();
+					$location.path('/client');
 				} else {
 					alert(data.ErrorMessage);
 				}
@@ -318,11 +323,12 @@ app.controller('signinCtrl', [
 ]).controller('signupCtrl', [
 	'$scope',
 	'$rootScope',
+	'$location',
 	'$http',
 	'$interval',
-	function ($scope, $rootScope, $http, $interval) {
+	function ($scope, $rootScope, $location, $http, $interval) {
 		$rootScope.viewTitle = '注册';
-		$rootScope.hideBackBtn = false;
+		$rootScope.hideBackBtn = true;
 
 		$scope.signupFormData = {};
 		$scope.isSendSMS = false;
@@ -358,11 +364,26 @@ app.controller('signinCtrl', [
 			$http.post('/Account/Signup', $scope.signupFormData).success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
-
+					$location.path('/client');
 				} else {
 					alert(data.ErrorMessage);
 				}
 			});
 		}
+	}
+]);
+
+app.controller('clientCtrl', [
+	'$scope',
+	'$rootScope',
+	'$http',
+	function ($scope, $rootScope, $http) {
+		$rootScope.viewTitle = '历史订单';
+		$rootScope.hideBackBtn = true;
+
+
+		$http.post('/Cart/GetSavedMenu').success(function (data) {
+			$scope.historyMenu = data;
+		});
 	}
 ]);

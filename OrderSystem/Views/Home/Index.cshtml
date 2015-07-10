@@ -19,8 +19,13 @@
 <body>
 	<section class="header clearfix" 
 		ng-hide="hideNavBar" ng-controller="accountCtrl">
-		<button type="button" class="btn btn-primary header-left" back-button ng-hide="hideBackBtn">
+		<button type="button" class="btn btn-primary header-left" 
+			back-button ng-hide="hideBackBtn">
 			<span class="fa fa-chevron-left"></span> 返回
+		</button>
+		<button type="button" class="btn btn-primary header-left" 
+			route-href="/" ng-show="hideBackBtn">
+			点菜
 		</button>
 		<div class="header-center">{{viewTitle}}</div>
 		<div class="btn-group btn-group-navicon header-right" dropdown is-open="status.isopen">
@@ -30,11 +35,12 @@
 			<ul class="dropdown-menu" role="menu" ng-if="!isAuthenticated">
 				<li><a route-href="/signin">会员登录</a></li>
 				<li><a route-href="/signup">注册会员</a></li>
-				<li>团购优惠</li>
+				<li><a route-href="/client">查看点单</a></li>
+				<li><a route-href="/">团购优惠</a></li>
 			</ul>
 			<ul class="dropdown-menu" role="menu" ng-if="isAuthenticated">
 				<li><a route-href="/">欢迎 {{clientName}}</a></li>
-				<li><a route-href="/">查看点单</a></li>
+				<li><a route-href="/client">查看点单</a></li>
 				<li><a route-href="/">团购优惠</a></li>
 				<li><a ng-click="signout()">注销</a></li>
 			</ul>

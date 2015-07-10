@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
-		// GET: Cart
+
 		public async Task<JsonResult> Submit(SubmitViewModel model) {
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
@@ -17,7 +17,7 @@ namespace OrderSystem.Controllers {
 				if(User.Identity.IsAuthenticated) {
 					client = User.Identity.Name;
 				}
-				dti = new DineTempInfo(){
+				dti = new DineTempInfo() {
 					ClientID = client,
 					DeskID = model.Table.DeskId,
 					Roomid = model.Table.RoomId,
@@ -28,14 +28,14 @@ namespace OrderSystem.Controllers {
 				ctx.DineTempInfo.Add(dti);
 				await ctx.SaveChangesAsync();
 
-				foreach(SubmitMenuDetail menu in model.Results){
+				foreach(SubmitMenuDetail menu in model.Results) {
 					string note = "";
 					if(menu.Additional.Notes != null) {
 						foreach(Note n in menu.Additional.Notes) {
 							note += (n.Note1 + " ");
 						}
 					}
-					
+
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
 						DisherID = menu.DisherId,
@@ -45,15 +45,42 @@ namespace OrderSystem.Controllers {
 						SalesDiscount = menu.DisherDiscount
 					};
 					ctx.DineTempDetail.Add(dtd);
+
+					//MenuDetail m = await ctx.MenuDetail.Where(p => p.DisherId == menu.DisherId).FirstOrDefaultAsync();
+					//m.DisherPoint = m.DisherPoint == null ? 0 : m.DisherPoint + 1;
+					//ctx.Entry<MenuDetail>(m).Property(p => p.DisherPoint).IsModified = true;
+
 				}
 				await ctx.SaveChangesAsync();
+
+				DeskInfo d = await ctx.DeskInfo.Where(p => p.DeskId == model.Table.DeskId).FirstOrDefaultAsync();
+				d.Status = 1;
+				ctx.Entry<DeskInfo>(d).Property(p => p.Status).IsModified = true;
+				await ctx.SaveChangesAsync();
+
 			}
+			Session["savedMenu"] = model;
+
 			return Json(new JsonSucceedObj());
 		}
 
 		public async Task<JsonResult> GetPayName() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<PayKind> list = await ctx.PayKind.Where(p => p.Usable == true && p.IsNetwork == true).ToListAsync();
+				return Json(list);
+			}
+		}
+		public JsonResult GetSavedMenu() {
+			return Json((SubmitViewModel)Session["savedMenu"]);
+		}
+
+		public async Task<JsonResult> GetHistoryMenuId() {
+			if(!User.Identity.IsAuthenticated) {
+				return Json(new JsonErrorObj());
+			}
+			string clientId = User.Identity.Name;
+			using(MrCyContext ctx = new MrCyContext()) {
+				List<DineInfoHistory> list = await ctx.DineInfoHistory.Where(p => p.ClientID == clientId).ToListAsync();
 				return Json(list);
 			}
 		}

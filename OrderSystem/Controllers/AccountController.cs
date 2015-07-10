@@ -9,10 +9,7 @@ using System.Web.Security;
 
 namespace OrderSystem.Controllers {
 	public class AccountController : Controller {
-		[Authorize]
-		public ActionResult Secret() {
-			return Content("你已经登陆");
-		}
+
 		public JsonResult IsAuthenticated() {
 			if(User.Identity.IsAuthenticated) {
 				return Json(new JsonSucceedObj(new {

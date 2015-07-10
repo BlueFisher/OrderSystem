@@ -118,10 +118,10 @@ section.menu .media-body p.meal-price{
 	color: #ff6000;
 	font-size: 18px;
 }
-section.menu .btn-note{
+.btn-note{
 	padding: 0 5px;
 }
-section.menu .well-note{
+.well-note{
 	padding: 2px;
 	margin: 0;
 	border-radius: 2px;
@@ -172,4 +172,22 @@ section.payment .list-group .list-group-item{
 	border-radius: 0;
 	border-left: none;
 	border-right: none;
+}
+
+/*section.client .list-group{
+	
+}*/
+section.client .list-group .list-group-item{
+	padding: 5px 10px;
+	border-radius: 0;
+	border-left: none;
+	border-right: none;
+}
+section.client .row{
+	margin-left: -10px;
+	margin-right: -10px;
+}
+section.client .col-xs-4{
+	padding-left: 10px;
+	padding-right: 10px;
 }

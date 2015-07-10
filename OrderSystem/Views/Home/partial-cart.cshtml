@@ -42,7 +42,7 @@
 					<p class="meal-title">{{menu.DisherName}}</p>
 					<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
 					<div class="meal-footer">
-						<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
+						<p class="meal-price pull-left">{{menu.DisherPrice | currency : "￥"}}</p>
 						<div class="cart-control pull-right">
 							<span ng-if="menu.Additional.Ordered>0">
 								<button class="btn btn-sm btn-cart-decrease"
@@ -75,7 +75,8 @@
 						<!-- ngRepeat not added notes -->
 						<button class="btn btn-sm btn-primary btn-note"
 								ng-repeat="note in menu.Additional.FilteredNotes"
-								ng-click="addNote(menu,note,$index)">
+								ng-click="addNote(menu,note,$index)"
+								ng-disabled="menu.Additional.Notes.length == 3">
 							{{note.Note1}}
 							<span class="fa fa-check-circle"></span>
 						</button>

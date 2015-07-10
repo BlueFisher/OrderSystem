@@ -16,6 +16,7 @@ namespace OrderSystem.Models {
 	}
 
 	public class SubmitMenuDetail {
+		public string DisherName { get; set; }
 		public string DisherId { get; set; }
 		public double DisherPrice { get; set; }
 		public double DisherDiscount { get; set; }

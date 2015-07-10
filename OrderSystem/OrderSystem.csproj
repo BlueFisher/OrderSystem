@@ -137,6 +137,7 @@
     <Content Include="Scripts\lib\angular.min.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Scripts\orderApp\app.js" />
+    <Content Include="Views\Account\Client.cshtml" />
     <None Include="Views\Home\partial-cart.cshtml" />
     <Content Include="Views\Home\partial-error.cshtml" />
     <Content Include="Views\Home\partial-payment.cshtml" />
@@ -258,7 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\image\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\Cart\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,1 +1,43 @@
-﻿<h1>User Page</h1>
+﻿<section class="client">
+	<ul class="list-group">
+		<!-- ngRepeat menu -->
+		<li class="list-group-item"
+			ng-repeat="menu in historyMenu.Results">
+			<div class="row">
+				<div class="col-xs-4">
+					{{menu.DisherName}}
+				</div>
+				<div class="col-xs-4 text-right">
+					&times;{{menu.Additional.Ordered}}
+				</div>
+				<div class="col-xs-4 text-right text-danger">
+					{{menu.DisherPrice | currency : "￥"}}
+				</div>
+			</div>
+			<!-- ngRepeat the added notes -->
+			<div>
+				<button class="btn btn-sm btn-success btn-note"
+					ng-repeat="note in menu.Additional.Notes"
+					ng-click="removeNote(menu,note,$index)">
+					{{note.Note1}}
+				</button>
+			</div>
+		</li>
+		<li class="list-group-item" ng-if="historyMenu.PriceAll">
+			<div class="row">
+				<div class="col-xs-4">
+					<span class="fa fa-shopping-cart"></span> 共计：
+				</div>
+				<div class="col-xs-4 text-right">
+					{{historyMenu.SizeAll}}份
+				</div>
+				<div class="col-xs-4 text-right text-danger">
+					{{historyMenu.PriceAll | currency : "￥"}}
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item" ng-if="!historyMenu.PriceAll">
+			暂无订单
+		</li>
+	</ul>
+</section>
