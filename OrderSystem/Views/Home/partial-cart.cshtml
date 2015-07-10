@@ -12,6 +12,11 @@
 			搜索结果
 		</li>
 		<li class="list-group-item"
+			ng-class="{active:isResultMode()}"
+			ng-click="enterResultMode()">
+			<span class="fa fa-shopping-cart"></span> 查看点单
+		</li>
+		<li class="list-group-item"
 			ng-class="{active:isRankMode()}"
 			ng-click="enterRankMode()">
 			<span class="fa fa-star"></span> 销量排行
@@ -92,10 +97,16 @@
 		{{cart.SizeAll}}份 {{cart.PriceAll | currency : "￥"}}
 	</span>
 	
-	<a class="btn btn-sm btn-primary pull-right"
+	<!--<a class="btn btn-sm btn-primary pull-right"
 		href="javascript:;"
 		route-href="/result"
 		ng-show="cart.SizeAll">
 		查看点单
+	</a>-->
+	<a class="btn btn-sm btn-danger pull-right"
+		href="javascript:;"
+		ng-show="cart.SizeAll"
+		route-href="/payment">
+		去结算
 	</a>
 </section>

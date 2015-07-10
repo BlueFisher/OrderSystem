@@ -22,15 +22,10 @@
 		</li>
 		<li class="list-group-item">
 			<button class="btn btn-danger btn-block"
-				ng-click="submit();">现金支付</button>
+				ng-click="offlinePay();">现金支付</button>
 			<button class="btn btn-primary btn-block"
-				ng-click="pay();" ng-hide="hasPayName">在线支付</button>
-			<div class="row" ng-show="hasPayName">
-				<div class="col-xs-6" ng-repeat="pay in pays">
-					<button class="btn btn-primary btn-block"
-						ng-click="netPay(pay)">{{pay.PayName}}</button>
-				</div>
-			</div>
+				ng-repeat="pay in pays"
+				ng-click="onlinePay(pay)">{{pay.PayName}}</button>
 		</li>
 	</ul>
 </section>
