@@ -7,11 +7,7 @@
 		<li class="list-group-item">
 			人数：
 			<select ng-model="cart.Customer" convert-to-number>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
+				<option ng-repeat="c in customersAll" value="{{c}}">{{c}}</option>
 			</select>
 		</li>
 		<li class="list-group-item">
@@ -26,7 +22,15 @@
 		</li>
 		<li class="list-group-item">
 			<button class="btn btn-danger btn-block"
-				ng-click="submit();">确认下单</button>
+				ng-click="submit();">现金支付</button>
+			<button class="btn btn-primary btn-block"
+				ng-click="pay();" ng-hide="hasPayName">在线支付</button>
+			<div class="row" ng-show="hasPayName">
+				<div class="col-xs-6" ng-repeat="pay in pays">
+					<button class="btn btn-primary btn-block"
+						ng-click="netPay(pay)">{{pay.PayName}}</button>
+				</div>
+			</div>
 		</li>
 	</ul>
 </section>

@@ -11,6 +11,8 @@ namespace OrderSystem.Models {
 		public DeskInfo Table { get; set; }
 		public int Customer { get; set; }
 		public string Bill { get; set; }
+		public int IsPaid { get; set; }
+		public string PayKind { get; set; }
 	}
 
 	public class SubmitMenuDetail {

@@ -30,9 +30,12 @@
 			<ul class="dropdown-menu" role="menu" ng-if="!isAuthenticated">
 				<li><a route-href="/signin">会员登录</a></li>
 				<li><a route-href="/signup">注册会员</a></li>
+				<li>团购优惠</li>
 			</ul>
 			<ul class="dropdown-menu" role="menu" ng-if="isAuthenticated">
 				<li><a route-href="/">欢迎 {{clientName}}</a></li>
+				<li><a route-href="/">查看点单</a></li>
+				<li><a route-href="/">团购优惠</a></li>
 				<li><a ng-click="signout()">注销</a></li>
 			</ul>
 		</div>

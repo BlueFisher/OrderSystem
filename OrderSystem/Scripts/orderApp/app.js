@@ -21,6 +21,9 @@ app.config(function ($routeProvider) {
 		}).when('/signup', {
 			templateUrl: 'Home/Partial/partial-signup',
 			controller: 'signupCtrl'
+		}).when('/client', {
+			templateUrl: 'Home/Partial/partial-client',
+			controller: 'clientCtrl'
 		}).when('/error', {
 			templateUrl: 'Home/Partial/partial-error',
 			controller: 'errorCtrl'
@@ -36,11 +39,10 @@ app.controller('accountCtrl', [
 	function ($scope, $rootScope, IAed, $http) {
 		$rootScope.refreshClient = function () {
 			IAed().then(function (data) {
-				console.log(data)
 				if (data.IsSucceed) {
 					$scope.isAuthenticated = true;
 					$scope.clientName = data.Addition.Name;
-				}else{
+				} else {
 					$scope.isAuthenticated = false;
 				}
 			});
@@ -81,7 +83,9 @@ app.controller('cartCtrl', [
 				Results: [],
 				Table: null,
 				Customer: 1,
-				Bill: ''
+				Bill: '',
+				IsPaid: 0,
+				PayKind: null
 			};
 		}
 		var rootCart = $rootScope.cart;
@@ -265,13 +269,29 @@ app.controller('cartCtrl', [
 			$location.path('/');
 			return;
 		}
-		$scope.customersAll =
+		$scope.customersAll = [];
+		for(var i=0;i<50;i++){
+			$scope.customersAll.push(i+1);
+		}
 		$scope.submit = function () {
-			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
-				console.log(data);
+				alert('已提交订单成功，请服务员收费')
 			});
 		};
+		$scope.hasPayName = false;
+		$scope.pay = function () {
+			$http.post('/Cart/GetPayName').success(function (data) {
+				$scope.hasPayName = true;
+				$scope.pays = data;
+			});
+		}
+		$scope.netPay = function(pay){
+			$rootScope.cart.IsPaid = 1;
+			$rootScope.cart.PayKind = pay.PayName;
+			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
+				alert('已支付成功');
+			});
+		}
 	}
 ]);
 
@@ -338,7 +358,7 @@ app.controller('signinCtrl', [
 			$http.post('/Account/Signup', $scope.signupFormData).success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
-					history.back();
+
 				} else {
 					alert(data.ErrorMessage);
 				}

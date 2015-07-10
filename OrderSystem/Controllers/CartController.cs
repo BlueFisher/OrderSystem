@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OrderSystem.Models;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace OrderSystem.Controllers {
@@ -20,7 +21,9 @@ namespace OrderSystem.Controllers {
 					ClientID = client,
 					DeskID = model.Table.DeskId,
 					Roomid = model.Table.RoomId,
-					peoplecount = (short)model.Customer
+					peoplecount = (short)model.Customer,
+					IsPaid = model.IsPaid,
+					PayKind = model.PayKind
 				};
 				ctx.DineTempInfo.Add(dti);
 				await ctx.SaveChangesAsync();
@@ -46,6 +49,13 @@ namespace OrderSystem.Controllers {
 				await ctx.SaveChangesAsync();
 			}
 			return Json(new JsonSucceedObj());
+		}
+
+		public async Task<JsonResult> GetPayName() {
+			using(MrCyContext ctx = new MrCyContext()) {
+				List<PayKind> list = await ctx.PayKind.Where(p => p.Usable == true && p.IsNetwork == true).ToListAsync();
+				return Json(list);
+			}
 		}
 	}
 }
