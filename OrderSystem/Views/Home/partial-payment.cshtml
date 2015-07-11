@@ -1,5 +1,4 @@
-﻿
-<section class="payment">
+﻿<section class="payment">
 	<ul class="list-group">
 		<li class="list-group-item">
 			桌号：{{cart.Table.DeskName}}
@@ -17,7 +16,8 @@
 		</li>
 		<li class="list-group-item">
 			<span class="text-danger">
-				共计：{{cart.PriceAll | currency : "￥"}}
+				共计：{{cart.PriceAll | currency : "￥"}} + 
+				{{tablewareFee | currency : "￥"}}&times;{{cart.Customer}}(餐具费)
 			</span>
 		</li>
 		<li class="list-group-item">

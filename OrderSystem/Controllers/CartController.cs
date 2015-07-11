@@ -65,18 +65,91 @@ namespace OrderSystem.Controllers {
 				return Json(list);
 			}
 		}
+		public async Task<JsonResult> GetTablewareFeeFee() {
+			using(MrCyContext ctx = new MrCyContext()) {
+				BaseInfo info = await ctx.BaseInfo.Where(p => p.InfoName == "TablewareFee").FirstOrDefaultAsync();
+				return Json(new {
+					TablewareFee = info.InfoContent
+				});
+			}
+		}
+
 		public JsonResult GetSavedMenu() {
-			return Json((SubmitViewModel)Session["savedMenu"]);
+			SubmitViewModel tempMenu = (SubmitViewModel)Session["savedMenu"];
+			if(tempMenu == null) {
+				return Json(null);
+			}
+			HistoryMenuModel menuModel = new HistoryMenuModel() {
+				PriceAll = (double)tempMenu.PriceAll,
+				SizeAll = tempMenu.SizeAll,
+				Table = tempMenu.Table,
+				Customer = tempMenu.Customer,
+				PayKind = tempMenu.PayKind,
+				Results = new List<HistoryMenuDetail>()
+			};
+			foreach(SubmitMenuDetail menu in tempMenu.Results) {
+				string note = "";
+				if(menu.Additional.Notes != null) {
+					foreach(Note n in menu.Additional.Notes) {
+						note += (n.Note1 + " ");
+					}
+				}
+				menuModel.Results.Add(new HistoryMenuDetail() {
+					DisherId = menu.DisherId,
+					DisherName = menu.DisherName,
+					DisherDiscount = menu.DisherDiscount,
+					DisherPrice = menu.DisherPrice,
+					Note = note,
+					Ordered = menu.Additional.Ordered
+				});
+			}
+			return Json(menuModel);
 		}
 
 		public async Task<JsonResult> GetHistoryDineInfo() {
 			if(!User.Identity.IsAuthenticated) {
-				return Json(new JsonErrorObj());
+				return Json(null);
 			}
 			string clientId = User.Identity.Name;
 			using(MrCyContext ctx = new MrCyContext()) {
 				List<DineInfoHistory> list = await ctx.DineInfoHistory.Where(p => p.ClientID == clientId).ToListAsync();
-				return Json(list);
+				List<HistoryDineInfoModel> infoList = new List<HistoryDineInfoModel>();
+				foreach(DineInfoHistory info in list) {
+					infoList.Add(new HistoryDineInfoModel() {
+						CheckID = info.CheckID,
+						BeginTime = info.BeginTime.ToString()
+					});
+				}
+				return Json(infoList);
+			}
+		}
+		public async Task<JsonResult> GetHistoryMenu(GetHistoryMenuViewModel model) {
+			using(MrCyContext ctx = new MrCyContext()) {
+				DineInfoHistory dineInfo = await ctx.DineInfoHistory.Where(p => p.CheckID == model.CheckID).FirstOrDefaultAsync();
+				DeskInfo desk = await ctx.DeskInfo.Where(p => p.DeskId == dineInfo.DeskID).FirstOrDefaultAsync();
+				HistoryMenuModel menuModel = new HistoryMenuModel() {
+					CheckID = dineInfo.CheckID,
+					BeginTime = dineInfo.BeginTime.ToString(),
+					PriceAll = (double)dineInfo.Subtotal,
+					Table = desk,
+					Customer = (int)dineInfo.ClientNum,
+					PayKind = dineInfo.PayKind,
+					Results = new List<HistoryMenuDetail>()
+				};
+				List<DineDetailHistory> list = await ctx.DineDetailHistory.Where(p => p.CheckID == dineInfo.CheckID).ToListAsync();
+				foreach(DineDetailHistory menu in list) {
+					MenuDetail md = await ctx.MenuDetail.Where(p => p.DisherId == menu.DisherID).FirstOrDefaultAsync();
+					HistoryMenuDetail newDetail = new HistoryMenuDetail() {
+						DisherName = md.DisherName,
+						DisherId = menu.DisherID,
+						DisherPrice = menu.SalesPrice == null ? 0 : (double)menu.SalesPrice,
+						DisherDiscount = (double)menu.SalesDiscount,
+						Note = menu.Note,
+						Ordered = (int)menu.DisherNum
+					};
+					menuModel.Results.Add(newDetail);
+				}
+				return Json(menuModel);
 			}
 		}
 	}

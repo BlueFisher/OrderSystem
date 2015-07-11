@@ -1,4 +1,20 @@
-﻿<section class="client">
+﻿<section class="category" ng-static-height="38">
+	<ul class="list-group">
+		<li class="list-group-item"
+			ng-class="{active:isCurrentMode}"
+			ng-click="enterCurrentMode()">
+			当前订单
+		</li>
+		<!-- ngRepeat class -->
+		<li class="list-group-item"
+			ng-repeat="info in historyInfo"
+			ng-class="{active: info.Additional.IsSelected}"
+			ng-click="toggleSelected(info)">
+			{{info.BeginTime}}
+		</li>
+	</ul>
+</section>
+<section class="client" ng-static-height="38">
 	<ul class="list-group">
 		<li class="list-group-item">
 			桌号：{{historyMenu.Table.DeskName}}
@@ -14,19 +30,13 @@
 					{{menu.DisherName}}
 				</div>
 				<div class="col-xs-4 text-right">
-					&times;{{menu.Additional.Ordered}}
+					&times;{{menu.Ordered}}
 				</div>
 				<div class="col-xs-4 text-right text-danger">
 					{{menu.DisherPrice | currency : "￥"}}
 				</div>
 			</div>
-			<!-- ngRepeat the added notes -->
-			<div>
-				<button class="btn btn-sm btn-success btn-note"
-					ng-repeat="note in menu.Additional.Notes">
-					{{note.Note1}}
-				</button>
-			</div>
+			<div ng-if="menu.Note">备注：{{menu.Note}}</div>
 		</li>
 		<li class="list-group-item" ng-if="historyMenu.PriceAll">
 			<div class="row">

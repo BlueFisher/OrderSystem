@@ -1,3 +1,5 @@
+/* global app */
+
 // Root
 app.controller('accountCtrl', [
 	'$scope',
@@ -113,6 +115,41 @@ app.controller('clientCtrl', [
 		$rootScope.viewTitle = '历史订单';
 		$rootScope.hideBackBtn = true;
 
+		var activeInfo;
+		$http.post('/Cart/GetHistoryDineInfo').success(function (data) {
+			for (var i = 0; i < data.length; i++) {
+				data[i].Additional = {
+					IsSelected: false
+				}
+			}
+			$scope.historyInfo = data;
+			activeInfo = data[0];
+		});
+
+		$scope.isCurrentMode = true;
+		$scope.enterCurrentMode = function () {
+			$scope.isCurrentMode = true;
+			activeInfo.Additional.IsSelected = false;
+			$http.post('/Cart/GetSavedMenu').success(function (data) {
+				console.log(data)
+				$scope.historyMenu = data;
+			});
+		}
+
+		$scope.toggleSelected = function (info) {
+			$scope.isCurrentMode = false;
+			activeInfo.Additional.IsSelected = false;
+			info.Additional.IsSelected = true;
+			activeInfo = info;
+			$http.post('/Cart/GetHistoryMenu', {
+				CheckID: info.CheckID
+			}).success(function (data) {
+				for (var i = 0; i < data.Results.length; i++) {
+					data.SizeAll += data.Results[i].Ordered;
+				}
+				$scope.historyMenu = data;
+			});
+		}
 
 		$http.post('/Cart/GetSavedMenu').success(function (data) {
 			console.log(data)
@@ -120,3 +157,7 @@ app.controller('clientCtrl', [
 		});
 	}
 ]);
+
+app.controller('privilegeCtrl',function(){
+	
+});

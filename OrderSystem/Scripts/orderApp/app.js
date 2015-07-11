@@ -22,6 +22,9 @@ app.config(function ($routeProvider) {
 	}).when('/client', {
 		templateUrl: 'Home/Partial/partial-client',
 		controller: 'clientCtrl'
+	}).when('/privilege', {
+		templateUrl: 'Home/Partial/partial-privilege',
+		controller: 'privilegeCtrl'
 	}).when('/error', {
 		templateUrl: 'Home/Partial/partial-error',
 		controller: 'errorCtrl'

@@ -174,11 +174,12 @@ section.payment .list-group .list-group-item{
 	border-right: none;
 }
 
-/*section.client .list-group{
-	
-}*/
+section.client{
+	width: 75%;
+	float: left;
+	overflow-y: scroll;
+}
 section.client .list-group .list-group-item{
-	padding: 5px 10px;
 	border-radius: 0;
 	border-left: none;
 	border-right: none;

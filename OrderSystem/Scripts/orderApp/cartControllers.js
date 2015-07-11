@@ -1,3 +1,5 @@
+/* global angular */
+
 app.controller('cartCtrl', [
 	'$scope',
 	'$rootScope',
@@ -224,6 +226,11 @@ app.controller('cartCtrl', [
 			return;
 		}
 		
+		// unselect all the classes
+		angular.forEach($rootScope.menuSubClass, function (menu) {
+			menu.Additional.IsSelected = false;
+		});
+		
 		$scope.customersAll = [];
 		for (var i = 0; i < 50; i++) {
 			$scope.customersAll.push(i + 1);
@@ -231,12 +238,15 @@ app.controller('cartCtrl', [
 		$http.post('/Cart/GetPayName').success(function (data) {
 			$scope.pays = data;
 		});
+		$http.post('/Cart/GetTablewareFeeFee').success(function(data){
+			$scope.tablewareFee = parseInt(data.TablewareFee);
+		});
 		
 		$scope.offlinePay = function () {
+			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $scope.tablewareFee;
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				alert('已提交订单成功，请服务员收费');
 				delete $rootScope.cart;
-				console.log($rootScope.cart)
 				$location.path('/client');
 			});
 		};
@@ -244,6 +254,7 @@ app.controller('cartCtrl', [
 		$scope.onlinePay = function (pay) {
 			$rootScope.cart.IsPaid = 1;
 			$rootScope.cart.PayKind = pay.PayName;
+			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $scope.tablewareFee;
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				alert('已支付成功');
 				delete $rootScope.cart;
