@@ -15,7 +15,7 @@ app.controller('cartCtrl', [
 			$location.search('qrCode', '101');
 			return;
 		}
-		
+
 		$rootScope.viewTitle = '菜单';
 		$rootScope.hideBackBtn = true;
 
@@ -34,7 +34,7 @@ app.controller('cartCtrl', [
 				PriceAll: 0,
 				Results: [],
 				Table: null,
-				Customer: 1,
+				Customer: 0,
 				Bill: '',
 				IsPaid: 0,
 				PayKind: null
@@ -52,7 +52,7 @@ app.controller('cartCtrl', [
 			GMSCP().then(function (classes) {
 				$rootScope.menuSubClass = classes;
 				activeClass = classes[0];
-				
+
 				_changeMode(classMode.rank);
 				
 				// GetMenuDetail
@@ -64,6 +64,7 @@ app.controller('cartCtrl', [
 						for (var i = 0; i < $rootScope.menuDetail.length; i++) {
 							$rootScope.menuDetail[i].Additional.FilteredNotes = angular.copy(notes);
 						}
+						_hasHistoryCart();
 						
 					});
 				});
@@ -72,18 +73,38 @@ app.controller('cartCtrl', [
 			// If the $rootScope is defined
 			rootCart = $rootScope.cart;
 			activeClass = $rootScope.menuSubClass[0];
-			
+
 			_changeMode(classMode.rank);
 			_filterMenu();
+			
+			_hasHistoryCart();
 		}
 		
+		function _hasHistoryCart(){
+			if ($rootScope.historyCart != null) {
+				$rootScope.cart.Customer = $rootScope.historyCart.Customer;
+				
+				for (var i = 0; i < $rootScope.historyCart.Results.length; i++) {
+					for (var j = 0; j < $rootScope.menuDetail.length; j++) {
+						if ($rootScope.historyCart.Results[i].DisherId == $rootScope.menuDetail[j].DisherId) {
+							for (var k = 0; k < $rootScope.historyCart.Results[i].Ordered; k++) {
+								$rootScope.addMenu($rootScope.menuDetail[j]);
+							}
+							break;
+						}
+					}
+				}
+			}
+			$rootScope.historyCart = null;
+		}
+
 		$scope.isRankMode = function () {
 			return $scope.currentMode == classMode.rank;
 		};
 		$scope.isSearchMode = function () {
 			return $scope.currentMode == classMode.search;
 		};
-		$scope.isResultMode = function(){
+		$scope.isResultMode = function () {
 			return $scope.currentMode == classMode.result;
 		}
 		function _changeMode(mode) {
@@ -111,7 +132,7 @@ app.controller('cartCtrl', [
 			_changeMode(classMode.rank);
 			_filterMenu();
 		};
-		$scope.enterResultMode = function(){
+		$scope.enterResultMode = function () {
 			_changeMode(classMode.result);
 			_filterMenu();
 		}
@@ -230,7 +251,7 @@ app.controller('cartCtrl', [
 		angular.forEach($rootScope.menuSubClass, function (menu) {
 			menu.Additional.IsSelected = false;
 		});
-		
+
 		$scope.customersAll = [];
 		for (var i = 0; i < 50; i++) {
 			$scope.customersAll.push(i + 1);
@@ -238,10 +259,10 @@ app.controller('cartCtrl', [
 		$http.post('/Cart/GetPayName').success(function (data) {
 			$scope.pays = data;
 		});
-		$http.post('/Cart/GetTablewareFeeFee').success(function(data){
+		$http.post('/Cart/GetTablewareFeeFee').success(function (data) {
 			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
-		
+
 		$scope.offlinePay = function () {
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $scope.tablewareFee;
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
@@ -250,7 +271,7 @@ app.controller('cartCtrl', [
 				$location.path('/client');
 			});
 		};
-		
+
 		$scope.onlinePay = function (pay) {
 			$rootScope.cart.IsPaid = 1;
 			$rootScope.cart.PayKind = pay.PayName;

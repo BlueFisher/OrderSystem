@@ -111,8 +111,9 @@ app.controller('clientCtrl', [
 	'$scope',
 	'$rootScope',
 	'$http',
-	function ($scope, $rootScope, $http) {
-		$rootScope.viewTitle = '历史订单';
+	'$location',
+	function ($scope, $rootScope, $http,$location) {
+		$rootScope.viewTitle = '我的点单';
 		$rootScope.hideBackBtn = true;
 
 		var activeInfo;
@@ -124,6 +125,9 @@ app.controller('clientCtrl', [
 			}
 			$scope.historyInfo = data;
 			activeInfo = data[0];
+		});
+		$http.post('/Cart/GetTablewareFeeFee').success(function(data){
+			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
 
 		$scope.isCurrentMode = true;
@@ -155,6 +159,14 @@ app.controller('clientCtrl', [
 			console.log(data)
 			$scope.historyMenu = data;
 		});
+		
+		$scope.tryAgain = function(){
+			$rootScope.historyCart = {
+				Customer: $scope.historyMenu.Customer,
+				Results: $scope.historyMenu.Results
+			}
+			$location.path('/');
+		}
 	}
 ]);
 

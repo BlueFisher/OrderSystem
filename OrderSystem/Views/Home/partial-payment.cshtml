@@ -6,7 +6,8 @@
 		<li class="list-group-item">
 			人数：
 			<select ng-model="cart.Customer" convert-to-number>
-				<option ng-repeat="c in customersAll" value="{{c}}">{{c}}</option>
+				<option ng-repeat="c in customersAll" value="{{c}}"
+					ng-selected="cart.Customer == c">{{c}}</option>
 			</select>
 		</li>
 		<li class="list-group-item">
@@ -22,10 +23,12 @@
 		</li>
 		<li class="list-group-item">
 			<button class="btn btn-danger btn-block"
-				ng-click="offlinePay();">现金支付</button>
+				ng-click="offlinePay();"
+				ng-disabled="cart.Customer == 0">现场支付</button>
 			<button class="btn btn-primary btn-block"
 				ng-repeat="pay in pays"
-				ng-click="onlinePay(pay)">{{pay.PayName}}</button>
+				ng-click="onlinePay(pay)"
+				ng-disabled="cart.Customer == 0">{{pay.PayName}}</button>
 		</li>
 	</ul>
 </section>

@@ -3,7 +3,7 @@
 		<li class="list-group-item"
 			ng-class="{active:isCurrentMode}"
 			ng-click="enterCurrentMode()">
-			当前订单
+			当前点单
 		</li>
 		<!-- ngRepeat class -->
 		<li class="list-group-item"
@@ -15,7 +15,7 @@
 	</ul>
 </section>
 <section class="client" ng-static-height="38">
-	<ul class="list-group">
+	<ul class="list-group" ng-if="historyMenu.PriceAll">
 		<li class="list-group-item">
 			桌号：{{historyMenu.Table.DeskName}}
 		</li>
@@ -38,20 +38,36 @@
 			</div>
 			<div ng-if="menu.Note">备注：{{menu.Note}}</div>
 		</li>
-		<li class="list-group-item" ng-if="historyMenu.PriceAll">
+		<li class="list-group-item">
 			<div class="row">
 				<div class="col-xs-4">
-					<span class="fa fa-shopping-cart"></span> 共计：
+					餐具
 				</div>
 				<div class="col-xs-4 text-right">
-					{{historyMenu.SizeAll}}份
+					&times;{{historyMenu.Customer}}
 				</div>
 				<div class="col-xs-4 text-right text-danger">
+					{{tablewareFee | currency : "￥"}}
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-xs-6">
+					<span class="fa fa-shopping-cart"></span> 共计：
+				</div>
+				<div class="col-xs-6 text-right text-danger">
 					{{historyMenu.PriceAll | currency : "￥"}}
 				</div>
 			</div>
 		</li>
-		<li class="list-group-item" ng-if="!historyMenu.PriceAll">
+		<li class="list-group-item">
+			<button class="btn btn-primary btn-sm"
+				ng-click="tryAgain()">再来一份</button>
+		</li>
+	</ul>
+	<ul class="list-group" ng-if="!historyMenu.PriceAll">
+		<li class="list-group-item">
 			暂无订单
 		</li>
 	</ul>
