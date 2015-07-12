@@ -259,7 +259,7 @@ app.controller('cartCtrl', [
 		$http.post('/Cart/GetPayName').success(function (data) {
 			$scope.pays = data;
 		});
-		$http.post('/Cart/GetTablewareFeeFee').success(function (data) {
+		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
 

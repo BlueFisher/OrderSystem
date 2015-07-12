@@ -25,6 +25,9 @@ app.config(function ($routeProvider) {
 	}).when('/privilege', {
 		templateUrl: 'Home/Partial/partial-privilege',
 		controller: 'privilegeCtrl'
+	}).when('/forget', {
+		templateUrl: 'Home/Partial/partial-forget',
+		controller: 'forgetCtrl'
 	}).when('/error', {
 		templateUrl: 'Home/Partial/partial-error',
 		controller: 'errorCtrl'

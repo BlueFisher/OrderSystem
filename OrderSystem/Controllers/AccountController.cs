@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using OrderSystem.Models;
 using System.Threading.Tasks;
 using System.Web.Security;
+using OrderSystem.Utility;
 
 namespace OrderSystem.Controllers {
 	public class AccountController : Controller {
@@ -19,13 +20,53 @@ namespace OrderSystem.Controllers {
 			return Json(new JsonErrorObj());
 		}
 
+		public FileContentResult CodeImage() {
+			string code = Util.CreateRandomCode();
+			Session["CodeImg"] = code.ToLower();
+			return File(Util.CreateCheckCodeImage(code), "image/jpeg");
+		}
+
 		public JsonResult Signin(SigninViewModel model) {
+			if(model.CodeImg.ToLower() != (string)Session["CodeImg"]) {
+				return Json(new JsonErrorObj("验证码不正确"));
+			}
 			using(MrCyContext ctx = new MrCyContext()) {
 				ClientInfo client = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile && p.LoginPwd == model.Password).FirstOrDefault();
 				if(client == null) {
 					return Json(new JsonErrorObj("手机或密码不正确"));
 				}
 				FormSignin(client);
+				return Json(new JsonSucceedObj());
+			}
+		}
+
+		public ActionResult SendForgetSMS(SMSSendViewModel model) {
+			using(MrCyContext ctx = new MrCyContext()) {
+				int count = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile).ToList().Count;
+				if(count == 0) {
+					return Json(new JsonErrorObj("此号码未注册"), "Mobile");
+				}
+			}
+			Random rand = new Random(unchecked((int)DateTime.Now.Ticks));
+			string code = "";
+			for(int i = 0; i < 6; i++) {
+				code += rand.Next(10);
+			}
+			Session["SMSForgetCode"] = code;
+			if(SMS.SMSSender.Send(model.Mobile, code)) {
+				return Json(new JsonSucceedObj());
+			}
+			return Json(new JsonErrorObj());
+		}
+		public async Task<JsonResult> Forget(SignupViewModel model) {
+			if(Session["SMSForgetCode"].ToString() != model.Code) {
+				return Json(new JsonErrorObj("验证码不正确", "code"));
+			}
+			using(MrCyContext ctx = new MrCyContext()) {
+				ClientInfo client = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile).FirstOrDefault();
+				client.LoginPwd = model.Password;
+				ctx.Entry(client).Property(p => p.LoginPwd).IsModified = true;
+				await ctx.SaveChangesAsync();
 				return Json(new JsonSucceedObj());
 			}
 		}

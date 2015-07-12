@@ -192,3 +192,10 @@ section.client .col-xs-4{
 	padding-left: 10px;
 	padding-right: 10px;
 }
+
+.input-group-sm>.input-group-addon-code{
+	padding: 0;
+}
+.input-group-sm>.input-group-addon-code img{
+	height: 28px;
+}

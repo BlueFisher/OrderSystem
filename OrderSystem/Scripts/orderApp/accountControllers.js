@@ -42,6 +42,15 @@ app.controller('signinCtrl', [
 		$rootScope.viewTitle = '登录';
 		$rootScope.hideBackBtn = true;
 
+		$scope.codeImgSrc = '/Account/CodeImage'
+		$scope.changeCodeImg = function () {
+			$scope.codeImgSrc = '/Account/CodeImage?' + Math.random();
+		}
+
+		$scope.forget = function () {
+
+		}
+
 		$scope.signinFormData = {};
 		$scope.signin = function () {
 			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
@@ -95,6 +104,11 @@ app.controller('signinCtrl', [
 		}
 
 		$scope.signup = function () {
+			if ($scope.signupFormData.Passwordaga != $scope.signupFormData.Password) {
+				$scope.signupFormData.Passwordaga = '';
+				alert('两次密码不匹配');
+				return;
+			}
 			$http.post('/Account/Signup', $scope.signupFormData).success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
@@ -112,7 +126,7 @@ app.controller('clientCtrl', [
 	'$rootScope',
 	'$http',
 	'$location',
-	function ($scope, $rootScope, $http,$location) {
+	function ($scope, $rootScope, $http, $location) {
 		$rootScope.viewTitle = '我的点单';
 		$rootScope.hideBackBtn = true;
 
@@ -126,7 +140,7 @@ app.controller('clientCtrl', [
 			$scope.historyInfo = data;
 			activeInfo = data[0];
 		});
-		$http.post('/Cart/GetTablewareFeeFee').success(function(data){
+		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
 
@@ -159,8 +173,8 @@ app.controller('clientCtrl', [
 			console.log(data)
 			$scope.historyMenu = data;
 		});
-		
-		$scope.tryAgain = function(){
+
+		$scope.tryAgain = function () {
 			$rootScope.historyCart = {
 				Customer: $scope.historyMenu.Customer,
 				Results: $scope.historyMenu.Results
@@ -170,6 +184,63 @@ app.controller('clientCtrl', [
 	}
 ]);
 
-app.controller('privilegeCtrl',function(){
-	
+app.controller('privilegeCtrl', function () {
+
 });
+app.controller('forgetCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	'$http',
+	'$interval',
+	function ($scope, $rootScope, $location, $http, $interval) {
+		$rootScope.viewTitle = '忘记密码';
+		$rootScope.hideBackBtn = true;
+
+		$scope.signupFormData = {};
+		$scope.isSendSMS = false;
+		$scope.canSendSMS = true;
+		$scope.sendSMSBtnText = '发送验证码';
+
+		$scope.sendSMS = function () {
+			$http.post('/Account/SendForgetSMS', {
+				Mobile: $scope.signupFormData.Mobile
+			}).success(function (data) {
+				if (data.IsSucceed) {
+					$scope.isSendSMS = true;
+					$scope.canSendSMS = false;
+
+					var interval = 60;
+					var timer = $interval(function () {
+						$scope.sendSMSBtnText = interval + '秒后重发';
+						interval--;
+						if (interval == 0) {
+							$scope.canSendSMS = true;
+							$scope.sendSMSBtnText = '重发';
+							interval = 60;
+							$interval.cancel(timer);
+						}
+					}, 1000);
+				} else {
+					alert(data.ErrorMessage);
+				}
+			});
+		}
+
+		$scope.forget = function () {
+			if ($scope.signupFormData.Passwordaga != $scope.signupFormData.Password) {
+				$scope.signupFormData.Passwordaga = '';
+				alert('两次密码不匹配');
+				return;
+			}
+			$http.post('/Account/Forget', $scope.signupFormData).success(function (data) {
+				if (data.IsSucceed) {
+					$rootScope.refreshClient();
+					$location.path('/signin');
+				} else {
+					alert(data.ErrorMessage);
+				}
+			});
+		}
+	}
+]);

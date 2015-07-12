@@ -424,6 +424,10 @@
       <Project>{d8238776-d885-4776-b168-353836912b18}</Project>
       <Name>SMS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{01fe6eea-9513-415f-8394-e41e0f63dd92}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

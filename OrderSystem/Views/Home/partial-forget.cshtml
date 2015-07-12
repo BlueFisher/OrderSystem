@@ -20,7 +20,7 @@
 		</li>
 		<li class="list-group-item">
 			<div class="input-group input-group-sm ">
-				<span class="input-group-addon">密码：</span>
+				<span class="input-group-addon">新密码：</span>
 				<input class="form-control input-sm form-control-inline" type="password" name="password"
 					ng-model="signupFormData.Password" required>
 			</div>
@@ -34,7 +34,7 @@
 		</li>
 		<li class="list-group-item">
 			<button class="btn btn-primary btn-block" type="button"
-				ng-disabled="!form.$valid" ng-click="signup()">注册</button>
+				ng-disabled="!form.$valid" ng-click="forget()">重置密码</button>
 		</li>
 	</ul>
 </form>

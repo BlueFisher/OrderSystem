@@ -65,7 +65,7 @@ namespace OrderSystem.Controllers {
 				return Json(list);
 			}
 		}
-		public async Task<JsonResult> GetTablewareFeeFee() {
+		public async Task<JsonResult> GetTablewareFee() {
 			using(MrCyContext ctx = new MrCyContext()) {
 				BaseInfo info = await ctx.BaseInfo.Where(p => p.InfoName == "TablewareFee").FirstOrDefaultAsync();
 				return Json(new {

@@ -12,11 +12,36 @@
 				<span class="input-group-addon">密码：</span>
 				<input class="form-control input-sm form-control-inline" type="password"  name="password"
 					ng-model="signinFormData.Password" required>
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default" 
+						route-href="/forget">忘记密码</button>
+				</div>
 			</div>
 		</li>
 		<li class="list-group-item">
-			<button class="btn btn-primary btn-block" type="button"
-				ng-disabled="!form.$valid" ng-click="signin()">登录</button>
+			<div class="text-right">
+				<img ng-src="{{codeImgSrc}}" ng-click="changeCodeImg()">
+			</div>
+			<div class="input-group input-group-sm ">
+				<span class="input-group-addon">验证码：</span>
+				<input class="form-control input-sm form-control-inline" type="password"  name="code"
+					ng-model="signinFormData.CodeImg" required>
+				
+			</div>
+			
+		</li>
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-xs-8">
+					<button class="btn btn-primary btn-block" type="button"
+						ng-disabled="!form.$valid" ng-click="signin()">登录</button>
+				</div>
+				<div class="col-xs-4">
+					<button class="btn btn-primary btn-block" type="button"
+						route-href="/signup">注册</button>
+				</div>
+			</div>
+			
 		</li>
 	</ul>
 </form>

@@ -16,6 +16,7 @@ namespace OrderSystem.Models {
 	public class SigninViewModel {
 		public string Mobile { get; set; }
 		public string Password { get; set; }
+		public string CodeImg { get; set; }
 	}
 
 	
