@@ -406,6 +406,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\partial-signin.cshtml" />
     <Content Include="Views\Home\partial-signup.cshtml" />
+    <Content Include="Views\Home\partial-forget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

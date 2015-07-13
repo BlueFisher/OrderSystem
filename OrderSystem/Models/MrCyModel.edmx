@@ -247,6 +247,7 @@
           <Property Name="IsPaid" Type="int" />
           <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
           <Property Name="PayKind" Type="varchar" MaxLength="20" />
+          <Property Name="Subtotal" Type="money" />
         </EntityType>
         <EntityType Name="MenuClass">
           <Key>
@@ -656,6 +657,7 @@
           <Property Name="IsPaid" Type="Int32" />
           <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PayKind" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="MenuClass">
           <Key>
@@ -1066,6 +1068,7 @@
           <EntitySetMapping Name="DineTempInfo">
             <EntityTypeMapping TypeName="db_MrCyModel.DineTempInfo">
               <MappingFragment StoreEntitySet="DineTempInfo">
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="DeskID" ColumnName="DeskID" />

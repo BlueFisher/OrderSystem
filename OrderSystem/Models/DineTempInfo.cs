@@ -23,5 +23,6 @@ namespace OrderSystem.Models
         public Nullable<int> IsPaid { get; set; }
         public string PaidAccount { get; set; }
         public string PayKind { get; set; }
+        public Nullable<decimal> Subtotal { get; set; }
     }
 }

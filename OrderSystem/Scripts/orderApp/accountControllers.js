@@ -148,7 +148,9 @@ app.controller('clientCtrl', [
 		$scope.enterCurrentMode = function () {
 			$scope.isCurrentMode = true;
 			activeInfo.Additional.IsSelected = false;
-			$http.post('/Cart/GetSavedMenu').success(function (data) {
+			$http.post('/Cart/GetSavedMenu', {
+				qrCode: $location.search().qrCode
+			}).success(function (data) {
 				console.log(data)
 				$scope.historyMenu = data;
 			});
@@ -169,7 +171,9 @@ app.controller('clientCtrl', [
 			});
 		}
 
-		$http.post('/Cart/GetSavedMenu').success(function (data) {
+		$http.post('/Cart/GetSavedMenu', {
+			qrCode: $location.search().qrCode
+		}).success(function (data) {
 			console.log(data)
 			$scope.historyMenu = data;
 		});
