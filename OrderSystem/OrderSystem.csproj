@@ -407,6 +407,8 @@
     <Content Include="Views\Home\partial-signin.cshtml" />
     <Content Include="Views\Home\partial-signup.cshtml" />
     <Content Include="Views\Home\partial-forget.cshtml" />
+    <Content Include="Views\Home\partial-history.cshtml" />
+    <Content Include="Views\Home\partial-index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

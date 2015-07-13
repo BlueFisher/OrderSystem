@@ -66,8 +66,8 @@
 				<!-- Remark Region -->
 				<div ng-if="menu.Additional.Ordered>0">
 					<button class="btn btn-sm btn-danger btn-note"
-							ng-click="menu.Additional.IsNoteCollapsed = !menu.Additional.IsNoteCollapsed">
-						备注
+							ng-click="toggleNote(menu)">
+						个性服务
 					</button>
 					<!-- ngRepeat the added notes -->
 					<button class="btn btn-sm btn-success btn-note"
@@ -97,15 +97,15 @@
 		{{cart.SizeAll}}份 {{cart.PriceAll | currency : "￥"}}
 	</span>
 	
-	<!--<a class="btn btn-sm btn-primary pull-right"
+	<a class="btn btn-sm btn-primary pull-right"
 		href="javascript:;"
-		route-href="/result"
-		ng-show="cart.SizeAll">
+		ng-click="enterResultMode()"
+		ng-show="cart.SizeAll && !isResultMode()">
 		查看点单
-	</a>-->
+	</a>
 	<a class="btn btn-sm btn-danger pull-right"
 		href="javascript:;"
-		ng-show="cart.SizeAll"
+		ng-show="cart.SizeAll && isResultMode()"
 		route-href="/payment">
 		去结算
 	</a>

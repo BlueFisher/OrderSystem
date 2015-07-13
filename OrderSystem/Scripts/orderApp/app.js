@@ -5,6 +5,9 @@ var app = angular.module('orderApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', {
+		templateUrl: 'Home/Partial/partial-index',
+		controller: 'indexCtrl'
+	}).when('/cart', {
 		templateUrl: 'Home/Partial/partial-cart',
 		controller: 'cartCtrl'
 	}).when('/result', {
@@ -22,6 +25,9 @@ app.config(function ($routeProvider) {
 	}).when('/client', {
 		templateUrl: 'Home/Partial/partial-client',
 		controller: 'clientCtrl'
+	}).when('/history', {
+		templateUrl: 'Home/Partial/partial-history',
+		controller: 'historyCtrl'
 	}).when('/privilege', {
 		templateUrl: 'Home/Partial/partial-privilege',
 		controller: 'privilegeCtrl'

@@ -1,5 +1,16 @@
 /* global angular */
 
+app.controller('indexCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	function ($scope, $rootScope, $location) {
+		$rootScope.viewTitle = '店小二';
+		$rootScope.hideBackBtn = true;
+	}
+]);
+
+
 app.controller('cartCtrl', [
 	'$scope',
 	'$rootScope',
@@ -183,6 +194,14 @@ app.controller('cartCtrl', [
 				}
 			}
 		};
+		var activeNote = null;
+		$scope.toggleNote = function(menu){
+			if(activeNote != null && activeNote != menu){
+				activeNote.Additional.IsNoteCollapsed = false;
+			}
+			activeNote = menu;
+			menu.Additional.IsNoteCollapsed = !menu.Additional.IsNoteCollapsed
+		}
 		// add and remove Remark
 		$rootScope.addNote = function (menu, note, index) {
 			menu.Additional.Notes.push(note);
@@ -251,6 +270,9 @@ app.controller('cartCtrl', [
 		angular.forEach($rootScope.menuSubClass, function (menu) {
 			menu.Additional.IsSelected = false;
 		});
+		angular.forEach($rootScope.menuDetail,function(menu){
+			menu.Additional.IsNoteCollapsed = false;
+		})
 
 		$scope.customersAll = [];
 		for (var i = 0; i < 50; i++) {

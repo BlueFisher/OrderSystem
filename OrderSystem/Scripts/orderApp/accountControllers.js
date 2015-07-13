@@ -47,16 +47,12 @@ app.controller('signinCtrl', [
 			$scope.codeImgSrc = '/Account/CodeImage?' + Math.random();
 		}
 
-		$scope.forget = function () {
-
-		}
-
 		$scope.signinFormData = {};
 		$scope.signin = function () {
 			$http.post('/Account/Signin', $scope.signinFormData).success(function (data) {
 				if (data.IsSucceed) {
 					$rootScope.refreshClient();
-					$location.path('/client');
+					$location.path('/history');
 				} else {
 					alert(data.ErrorMessage);
 				}
@@ -126,8 +122,38 @@ app.controller('clientCtrl', [
 	'$rootScope',
 	'$http',
 	'$location',
-	function ($scope, $rootScope, $http, $location) {
-		$rootScope.viewTitle = '我的点单';
+	'$routeParams',
+	function ($scope, $rootScope, $http, $location,$param) {
+		$rootScope.viewTitle = '当前点单';
+		$rootScope.hideBackBtn = true;
+
+		$http.post('/Cart/GetSavedMenu', {
+			qrCode: $location.search().qrCode
+		}).success(function (data) {
+			console.log(data)
+			$scope.historyMenu = data;
+		});
+		
+		$http.post('/Cart/GetTablewareFee').success(function (data) {
+			$scope.tablewareFee = parseInt(data.TablewareFee);
+		});
+		
+		$scope.tryAgain = function () {
+			$rootScope.historyCart = {
+				Customer: $scope.historyMenu.Customer,
+				Results: $scope.historyMenu.Results
+			}
+			$location.path('/cart');
+		}
+	}
+]).controller('historyCtrl', [
+	'$scope',
+	'$rootScope',
+	'$http',
+	'$location',
+	'$routeParams',
+	function ($scope, $rootScope, $http, $location,$param) {
+		$rootScope.viewTitle = '历史点单';
 		$rootScope.hideBackBtn = true;
 
 		var activeInfo;
@@ -139,54 +165,35 @@ app.controller('clientCtrl', [
 			}
 			$scope.historyInfo = data;
 			activeInfo = data[0];
+			$scope.toggleSelected(activeInfo);
 		});
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
 
-		$scope.isCurrentMode = true;
-		$scope.enterCurrentMode = function () {
-			$scope.isCurrentMode = true;
-			activeInfo.Additional.IsSelected = false;
-			$http.post('/Cart/GetSavedMenu', {
-				qrCode: $location.search().qrCode
-			}).success(function (data) {
-				console.log(data)
-				$scope.historyMenu = data;
-			});
-		}
 
 		$scope.toggleSelected = function (info) {
-			$scope.isCurrentMode = false;
 			activeInfo.Additional.IsSelected = false;
 			info.Additional.IsSelected = true;
 			activeInfo = info;
 			$http.post('/Cart/GetHistoryMenu', {
 				CheckID: info.CheckID
 			}).success(function (data) {
-				for (var i = 0; i < data.Results.length; i++) {
-					data.SizeAll += data.Results[i].Ordered;
-				}
 				$scope.historyMenu = data;
 			});
 		}
-
-		$http.post('/Cart/GetSavedMenu', {
-			qrCode: $location.search().qrCode
-		}).success(function (data) {
-			console.log(data)
-			$scope.historyMenu = data;
-		});
+		
 
 		$scope.tryAgain = function () {
 			$rootScope.historyCart = {
 				Customer: $scope.historyMenu.Customer,
 				Results: $scope.historyMenu.Results
 			}
-			$location.path('/');
+			$location.path('/cart');
 		}
 	}
 ]);
+
 
 app.controller('privilegeCtrl', function () {
 

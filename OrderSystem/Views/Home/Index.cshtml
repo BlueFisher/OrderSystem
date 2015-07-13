@@ -24,7 +24,7 @@
 			<span class="fa fa-chevron-left"></span> 返回
 		</button>
 		<button type="button" class="btn btn-primary header-left" 
-			route-href="/" ng-show="hideBackBtn">
+			route-href="/cart" ng-show="hideBackBtn">
 			点菜
 		</button>
 		<div class="header-center">{{viewTitle}}</div>
@@ -41,6 +41,7 @@
 			<ul class="dropdown-menu" role="menu" ng-if="isAuthenticated">
 				<li><a route-href="/">欢迎 {{clientName}}</a></li>
 				<li><a route-href="/client">查看点单</a></li>
+				<li><a route-href="/history">历史订单</a></li>
 				<li><a route-href="/privilege">团购优惠</a></li>
 				<li><a ng-click="signout()">退出</a></li>
 			</ul>

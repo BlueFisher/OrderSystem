@@ -174,23 +174,24 @@ section.payment .list-group .list-group-item{
 	border-right: none;
 }
 
-section.client{
-	width: 75%;
-	float: left;
-	overflow-y: scroll;
-}
-section.client .list-group .list-group-item{
+section.history .list-group .list-group-item{
 	border-radius: 0;
 	border-left: none;
 	border-right: none;
 }
-section.client .row{
+section.history .row{
 	margin-left: -10px;
 	margin-right: -10px;
 }
-section.client .col-xs-4{
+section.history .col-xs-4{
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+section.right{
+	width: 75%;
+	float: left;
+	overflow-y: scroll;
 }
 
 .input-group-sm>.input-group-addon-code{

@@ -1,4 +1,15 @@
-﻿<section class="history">
+﻿<section class="category" ng-static-height="38">
+	<ul class="list-group">
+		<!-- ngRepeat class -->
+		<li class="list-group-item"
+			ng-repeat="info in historyInfo"
+			ng-class="{active: info.Additional.IsSelected}"
+			ng-click="toggleSelected(info)">
+			{{info.BeginTime}}
+		</li>
+	</ul>
+</section>
+<section class="history right" ng-static-height="38">
 	<ul class="list-group" ng-if="historyMenu.PriceAll">
 		<li class="list-group-item">
 			桌号：{{historyMenu.Table.DeskName}}
