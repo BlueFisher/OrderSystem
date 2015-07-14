@@ -253,6 +253,7 @@
     <Content Include="Content\image\10\鱼香肉丝盖饭.jpg" />
     <Content Include="Content\image\11\五粮醇.jpg" />
     <Content Include="Content\image\11\西凤来一杯.jpg" />
+    <Content Include="Content\image\index.jpg" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
@@ -409,6 +410,7 @@
     <Content Include="Views\Home\partial-forget.cshtml" />
     <Content Include="Views\Home\partial-history.cshtml" />
     <Content Include="Views\Home\partial-index.cshtml" />
+    <Content Include="Views\Home\partial-paycompleted.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

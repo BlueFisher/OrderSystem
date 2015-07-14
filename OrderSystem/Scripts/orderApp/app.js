@@ -4,7 +4,7 @@
 var app = angular.module('orderApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', {
+	$routeProvider.when('/', {
 		templateUrl: 'Home/Partial/partial-index',
 		controller: 'indexCtrl'
 	}).when('/cart', {
@@ -16,6 +16,9 @@ app.config(function ($routeProvider) {
 	}).when('/payment', {
 		templateUrl: 'Home/Partial/partial-payment',
 		controller: 'paymentCtrl'
+	}).when('/paycompleted', {
+		templateUrl: 'Home/Partial/partial-paycompleted',
+		controller: 'paycompletedCtrl'
 	}).when('/signin', {
 		templateUrl: 'Home/Partial/partial-signin',
 		controller: 'signinCtrl'

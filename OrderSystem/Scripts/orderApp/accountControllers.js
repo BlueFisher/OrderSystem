@@ -137,14 +137,6 @@ app.controller('clientCtrl', [
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$scope.tablewareFee = parseInt(data.TablewareFee);
 		});
-		
-		$scope.tryAgain = function () {
-			$rootScope.historyCart = {
-				Customer: $scope.historyMenu.Customer,
-				Results: $scope.historyMenu.Results
-			}
-			$location.path('/cart');
-		}
 	}
 ]).controller('historyCtrl', [
 	'$scope',
@@ -158,6 +150,10 @@ app.controller('clientCtrl', [
 
 		var activeInfo;
 		$http.post('/Cart/GetHistoryDineInfo').success(function (data) {
+			if(data.length == 0){
+				$scope.isNULL = true;
+				return;
+			}
 			for (var i = 0; i < data.length; i++) {
 				data[i].Additional = {
 					IsSelected: false

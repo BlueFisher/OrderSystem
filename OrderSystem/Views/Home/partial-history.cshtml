@@ -56,14 +56,19 @@
 				</div>
 			</div>
 		</li>
-		<li class="list-group-item">
+		<li class="list-group-item text-right">
 			<button class="btn btn-primary btn-sm"
-				ng-click="tryAgain()">再来一份</button>
+				ng-click="tryAgain()">再品尝一次</button>
 		</li>
 	</ul>
-	<ul class="list-group" ng-if="!historyMenu.PriceAll">
+	<ul class="list-group" ng-if="!historyMenu.PriceAll && !isNULL">
 		<li class="list-group-item">
-			暂无订单
+			正在查找...
+		</li>
+	</ul>
+	<ul class="list-group" ng-if="isNULL">
+		<li class="list-group-item">
+			暂无点单
 		</li>
 	</ul>
 </section>

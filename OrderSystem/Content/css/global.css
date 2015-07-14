@@ -21,6 +21,11 @@ body{
 	width:auto;
 }
 
+img.img-index{
+	width: 100%;
+	max-width: 500px;
+}
+
 section.search .input-group-addon,
 section.search input{
 	border-radius: 0;

@@ -46,25 +46,6 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 			$http.post('/Home/GetMenuDetail').success(function (data) {
 				for (var i = 0; i < data.length; i++) {
 					data[i].PinYin = PinYin.searchCap(data[i].DisherName);
-					// delete data[i].AutoId;
-					// delete data[i].DisherCode;
-					// delete data[i].DisherEnglishName;
-					// delete data[i].DisherDescription;
-					// delete data[i].DisherSubclassID2;
-					// delete data[i].DisherStatus;
-					// delete data[i].Usable;
-					// delete data[i].DepartmentId;
-					// delete data[i].SourIndex;
-					// delete data[i].SweetIndex;
-					// delete data[i].SaltyIndex;
-					// delete data[i].SpicyIndex;
-					// delete data[i].Evaluate;
-					// delete data[i].Creator;
-					// delete data[i].Updator;
-					// delete data[i].Deletor;
-					// delete data[i].CreateDate;
-					// delete data[i].updateDate;
-					// delete data[i].DeleteDate;
 					if (data[i].DisherPoint == null) {
 						data[i].DisherPoint = 0;
 					}

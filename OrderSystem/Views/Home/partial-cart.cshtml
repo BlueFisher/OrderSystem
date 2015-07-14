@@ -1,4 +1,14 @@
-﻿<section class="search">
+﻿<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+		<button type="button" class="close" ng-click="close()"><span>&times;</span></button>
+		<h3 class="modal-title">{{currentDisherName}}</h3>
+    </div>
+    <div class="modal-body text-center">
+       <img class="img-index" ng-src="/Content/image/{{currentImgSrc}}">
+    </div>
+</script>
+
+<section class="search">
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-search"></span></span>
 		<input type="text" class="form-control" placeholder="搜索"
@@ -11,11 +21,11 @@
 			ng-show="isSearchMode()">
 			搜索结果
 		</li>
-		<li class="list-group-item"
+		<!--<li class="list-group-item"
 			ng-class="{active:isResultMode()}"
 			ng-click="enterResultMode()">
 			<span class="fa fa-shopping-cart"></span> 查看点单
-		</li>
+		</li>-->
 		<li class="list-group-item"
 			ng-class="{active:isRankMode()}"
 			ng-click="enterRankMode()">
@@ -40,7 +50,9 @@
 			<div class="media">
 				<div class="media-left">
 					<a href="javascript:;">
-						<img class="media-object" ng-src="~/Content/image/{{menu.DisherPicture}}">
+						<img class="media-object" 
+							ng-src="~/Content/image/{{menu.DisherPicture}}"
+							ng-click="showModal(menu)">
 					</a>
 				</div>
 				<div class="media-body">
@@ -67,7 +79,9 @@
 				<div ng-if="menu.Additional.Ordered>0">
 					<button class="btn btn-sm btn-danger btn-note"
 							ng-click="toggleNote(menu)">
-						个性服务
+						个性服务 
+						<span class="fa fa-chevron-circle-down" ng-show="!menu.Additional.IsNoteCollapsed"></span>
+						<span class="fa fa-chevron-circle-up" ng-show="menu.Additional.IsNoteCollapsed"></span>
 					</button>
 					<!-- ngRepeat the added notes -->
 					<button class="btn btn-sm btn-success btn-note"
@@ -99,14 +113,14 @@
 	
 	<a class="btn btn-sm btn-primary pull-right"
 		href="javascript:;"
-		ng-click="enterResultMode()"
-		ng-show="cart.SizeAll && !isResultMode()">
+		route-href="/result"
+		ng-show="cart.SizeAll">
 		查看点单
 	</a>
-	<a class="btn btn-sm btn-danger pull-right"
+	<!--<a class="btn btn-sm btn-danger pull-right"
 		href="javascript:;"
 		ng-show="cart.SizeAll && isResultMode()"
 		route-href="/payment">
 		去结算
-	</a>
+	</a>-->
 </section>

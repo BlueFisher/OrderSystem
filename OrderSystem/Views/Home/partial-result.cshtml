@@ -1,4 +1,13 @@
-﻿<section class="menu result-menu">
+﻿<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+		<button type="button" class="close" ng-click="close()"><span>&times;</span></button>
+		<h3 class="modal-title">{{currentDisherName}}</h3>
+    </div>
+    <div class="modal-body text-center">
+       <img class="img-index" ng-src="/Content/image/{{currentImgSrc}}">
+    </div>
+</script>
+<section class="menu result-menu">
 	<ul class="list-group">
 		<!-- ngRepeat menu -->
 		<li class="list-group-item"
@@ -6,14 +15,15 @@
 			<div class="media">
 				<div class="media-left">
 					<a href="javascript:;">
-						<img class="media-object" ng-src="~/Content/image/{{menu.DisherPicture}}">
+						<img class="media-object" ng-src="~/Content/image/{{menu.DisherPicture}}"
+							ng-click="showModal(menu)">
 					</a>
 				</div>
 				<div class="media-body">
 					<p class="meal-title">{{menu.DisherName}}</p>
 					<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
 					<div class="meal-footer">
-						<p class="meal-price pull-left">￥{{menu.DisherPrice}}</p>
+						<p class="meal-price pull-left">{{menu.DisherPrice | currency : "￥"}}</p>
 						<div class="cart-control pull-right">
 							<span ng-if="menu.Additional.Ordered>0">
 								<button class="btn btn-sm btn-cart-decrease"
@@ -32,8 +42,10 @@
 				<!-- Remark Region -->
 				<div ng-if="menu.Additional.Ordered>0">
 					<button class="btn btn-sm btn-danger btn-note"
-							ng-click="menu.Additional.IsNoteCollapsed = !menu.Additional.IsNoteCollapsed">
-						备注
+							ng-click="toggleNote(menu)">
+						个性服务
+						<span class="fa fa-chevron-circle-down" ng-show="!menu.Additional.IsNoteCollapsed"></span>
+						<span class="fa fa-chevron-circle-up" ng-show="menu.Additional.IsNoteCollapsed"></span>
 					</button>
 					<!-- ngRepeat the added notes -->
 					<button class="btn btn-sm btn-success btn-note"
@@ -46,7 +58,8 @@
 						<!-- ngRepeat not added notes -->
 						<button class="btn btn-sm btn-primary btn-note"
 								ng-repeat="note in menu.Additional.FilteredNotes"
-								ng-click="addNote(menu,note,$index)">
+								ng-click="addNote(menu,note,$index)"
+								ng-disabled="menu.Additional.Notes.length == 3">
 							{{note.Note1}}
 							<span class="fa fa-check-circle"></span>
 						</button>
@@ -55,7 +68,6 @@
 			</div>
 		</li>
 	</ul>
-	
 </section>
 
 <section class="cart">
