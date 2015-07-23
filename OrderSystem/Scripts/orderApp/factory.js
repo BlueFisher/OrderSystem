@@ -76,7 +76,41 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 
 }]).factory('statusRemain', function () {
 	return {};
+}).factory('filterObject',function(){
+	return function(oriObject){
+		for(var i=0;i<oriObject.length;i++){
+			delete oriObject[i].AutoId;
+			delete oriObject[i].DisherCode;
+			delete oriObject[i].DisherEnglishName;
+			delete oriObject[i].DisherDescription;
+			delete oriObject[i].DisherSubclassID2;
+			delete oriObject[i].DisherStatus;
+			delete oriObject[i].Usable;
+			delete oriObject[i].DepartmentId;
+			delete oriObject[i].SourIndex;
+			delete oriObject[i].SweetIndex;
+			delete oriObject[i].SaltyIndex;
+			delete oriObject[i].SpicyIndex;
+			delete oriObject[i].Evaluate;
+			delete oriObject[i].Creator;
+			delete oriObject[i].Updator;
+			delete oriObject[i].Deletor;
+			delete oriObject[i].CreateDate;
+			delete oriObject[i].updateDate;
+			delete oriObject[i].DeleteDate;
+			delete oriObject[i].DisherPicture;
+			delete oriObject[i].DisherPoint;
+			delete oriObject[i].DisherSize;
+			delete oriObject[i].DisherSubclassID1;
+			delete oriObject[i].PinYin;
+			delete oriObject[i].Additional.FilteredNotes;
+			delete oriObject[i].Additional.IsNoteCollapsed;
+		}
+		return oriObject;
+	}
 });
+
+
 
 
 app.factory('getPinYinCap', [function () {

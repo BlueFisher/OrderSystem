@@ -18,13 +18,11 @@ namespace OrderSystem.Controllers {
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
 			SortedDictionary<string, string> sPara = GetRequestPost();
 
-			if(sPara.Count > 0)//判断是否有带返回参数
-        {
+			if(sPara.Count > 0) {//判断是否有带返回参数
 				Notify aliNotify = new Notify();
 				bool verifyResult = aliNotify.Verify(sPara, Request.Form["notify_id"], Request.Form["sign"]);
 
-				if(verifyResult)//验证成功
-            {
+				if(verifyResult) {//验证成功
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					//请在这里加上商户的业务逻辑程序代码
 
@@ -50,7 +48,6 @@ namespace OrderSystem.Controllers {
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
 						Response.Write("success");  //请不要修改或删除
-						sw.WriteLine("success");
 					}
 					else if(Request.Form["trade_status"] == "WAIT_SELLER_SEND_GOODS") {//该判断示买家已在支付宝交易管理中产生了交易记录且付款成功，但卖家没有发货
 
@@ -58,7 +55,6 @@ namespace OrderSystem.Controllers {
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
 						Response.Write("success");  //请不要修改或删除
-						sw.WriteLine("success");
 					}
 					else if(Request.Form["trade_status"] == "WAIT_BUYER_CONFIRM_GOODS") {//该判断表示卖家已经发了货，但买家还没有做确认收货的操作
 
@@ -66,7 +62,6 @@ namespace OrderSystem.Controllers {
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
 						Response.Write("success");  //请不要修改或删除
-						sw.WriteLine("success");
 					}
 					else if(Request.Form["trade_status"] == "TRADE_FINISHED") {//该判断表示买家已经确认收货，这笔交易完成
 
@@ -74,9 +69,8 @@ namespace OrderSystem.Controllers {
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
 
-						
 						sw.WriteLine(out_trade_no);
-						
+
 						using(MrCyContext ctx = new MrCyContext()) {
 							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == Convert.ToInt32(out_trade_no)).FirstOrDefault();
 							info.IsPaid = 1;
@@ -85,19 +79,16 @@ namespace OrderSystem.Controllers {
 						}
 
 						Response.Write("success");  //请不要修改或删除
-						sw.WriteLine("success");
 					}
 					else {
 						Response.Write("success");  //其他状态判断。
-						sw.WriteLine("success");
 					}
 
 					//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				}
-				else//验证失败
-            {
+				else {//验证失败
 					Response.Write("fail");
 					sw.WriteLine("fail");
 				}
@@ -107,39 +98,17 @@ namespace OrderSystem.Controllers {
 				sw.WriteLine("无通知参数");
 			}
 			sw.Dispose();
-			return Content("");
+			return null;
 		}
 
-		public SortedDictionary<string, string> GetRequestPost() {
-			int i = 0;
-			SortedDictionary<string, string> sArray = new SortedDictionary<string, string>();
-			NameValueCollection coll;
-			//Load Form variables into NameValueCollection variable.
-			coll = Request.Form;
-
-			// Get names of all forms into a string array.
-			String[] requestItem = coll.AllKeys;
-
-			for(i = 0; i < requestItem.Length; i++) {
-				sArray.Add(requestItem[i], Request.Form[requestItem[i]]);
-			}
-
-			return sArray;
-		}
-
-		public ActionResult Index() {
-			System.IO.FileStream fs = new System.IO.FileStream("d:/temp.txt", System.IO.FileMode.Append);
-			System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
-			sw.WriteLine("index");
+		public RedirectResult Index() {
 			SortedDictionary<string, string> sPara = GetRequestGet();
 
-			if(sPara.Count > 0)//判断是否有带返回参数
-        {
+			if(sPara.Count > 0) {//判断是否有带返回参数
 				Notify aliNotify = new Notify();
 				bool verifyResult = aliNotify.Verify(sPara, Request.QueryString["notify_id"], Request.QueryString["sign"]);
 
-				if(verifyResult)//验证成功
-            {
+				if(verifyResult) {//验证成功
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					//请在这里加上商户的业务逻辑程序代码
 
@@ -196,24 +165,38 @@ namespace OrderSystem.Controllers {
 					}
 
 					//打印页面
-					Response.Write("验证成功<br />");
+					return Redirect("/#/onlinepaysuccess");
 
 					//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				}
-				else//验证失败
-            {
-					Response.Write("验证失败");
+				else {//验证失败
+					return Redirect("/#/onlinepayfail");
 				}
 			}
 			else {
-				Response.Write("无返回参数");
+				return Redirect("/#/onlinepayfail");
 			}
-			sw.Dispose();
-			return Content("");
 		}
 
+
+		#region 辅助函数
+		public SortedDictionary<string, string> GetRequestPost() {
+			int i = 0;
+			SortedDictionary<string, string> sArray = new SortedDictionary<string, string>();
+			NameValueCollection coll;
+			//Load Form variables into NameValueCollection variable.
+			coll = Request.Form;
+
+			// Get names of all forms into a string array.
+			String[] requestItem = coll.AllKeys;
+
+			for(i = 0; i < requestItem.Length; i++) {
+				sArray.Add(requestItem[i], Request.Form[requestItem[i]]);
+			}
+			return sArray;
+		}
 		public SortedDictionary<string, string> GetRequestGet() {
 			int i = 0;
 			SortedDictionary<string, string> sArray = new SortedDictionary<string, string>();
@@ -230,6 +213,7 @@ namespace OrderSystem.Controllers {
 
 			return sArray;
 		}
+		#endregion
 	}
 
 

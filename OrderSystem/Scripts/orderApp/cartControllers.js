@@ -1,3 +1,4 @@
+/* global app */
 /* global angular */
 
 app.controller('indexCtrl', [
@@ -21,7 +22,7 @@ app.controller('cartCtrl', [
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
 	'$modal',
-	function ($scope, $rootScope, $filter, $location, GT, GMSCP, GMDP, GRP,$modal) {
+	function ($scope, $rootScope, $filter, $location, GT, GMSCP, GMDP, GRP, $modal) {
 		// test! if the url doesn't have qrCode data then redirect to the one has qrCode = 101
 		if ($location.search().qrCode == undefined) {
 			$location.search('qrCode', '101');
@@ -77,7 +78,7 @@ app.controller('cartCtrl', [
 							$rootScope.menuDetail[i].Additional.FilteredNotes = angular.copy(notes);
 						}
 						_hasHistoryCart();
-						
+
 					});
 				});
 			});
@@ -88,14 +89,14 @@ app.controller('cartCtrl', [
 
 			_changeMode(classMode.rank);
 			_filterMenu();
-			
+
 			_hasHistoryCart();
 		}
-		
-		function _hasHistoryCart(){
+
+		function _hasHistoryCart() {
 			if ($rootScope.historyCart != null) {
 				$rootScope.cart.Customer = $rootScope.historyCart.Customer;
-				
+
 				for (var i = 0; i < $rootScope.historyCart.Results.length; i++) {
 					for (var j = 0; j < $rootScope.menuDetail.length; j++) {
 						if ($rootScope.historyCart.Results[i].DisherId == $rootScope.menuDetail[j].DisherId) {
@@ -109,8 +110,8 @@ app.controller('cartCtrl', [
 			}
 			$rootScope.historyCart = null;
 		}
-		
-		$scope.showModal = function(menu){
+
+		$scope.showModal = function (menu) {
 			var modalInstance = $modal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'myModalContent.html',
@@ -206,12 +207,12 @@ app.controller('cartCtrl', [
 				}
 			}
 		};
-		angular.forEach($rootScope.menuDetail,function(menu){
+		angular.forEach($rootScope.menuDetail, function (menu) {
 			menu.Additional.IsNoteCollapsed = false;
 		});
 		var activeNote = null;
-		$scope.toggleNote = function(menu){
-			if(activeNote != null && activeNote != menu){
+		$scope.toggleNote = function (menu) {
+			if (activeNote != null && activeNote != menu) {
 				activeNote.Additional.IsNoteCollapsed = false;
 			}
 			activeNote = menu;
@@ -257,15 +258,15 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$location',
 	'$modal',
-	function ($scope, $rootScope, $location,$modal) {
+	function ($scope, $rootScope, $location, $modal) {
 		$rootScope.viewTitle = '查看订单';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
 		}
-		$scope.showModal = function(menu){
-			var modalInstance = $modal.open({
+		$scope.showModal = function (menu) {
+			$modal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'myModalContent.html',
 				controller: 'ModalInstanceCtrl',
@@ -275,8 +276,8 @@ app.controller('cartCtrl', [
 			$rootScope.currentDisherName = menu.DisherName;
 		}
 		var activeNote = null;
-		$scope.toggleNote = function(menu){
-			if(activeNote != null && activeNote != menu){
+		$scope.toggleNote = function (menu) {
+			if (activeNote != null && activeNote != menu) {
 				activeNote.Additional.IsNoteCollapsed = false;
 			}
 			activeNote = menu;
@@ -287,7 +288,7 @@ app.controller('cartCtrl', [
 		angular.forEach($rootScope.menuSubClass, function (menu) {
 			menu.Additional.IsSelected = false;
 		});
-		angular.forEach($rootScope.menuDetail,function(menu){
+		angular.forEach($rootScope.menuDetail, function (menu) {
 			menu.Additional.IsNoteCollapsed = false;
 		});
 	}
@@ -316,92 +317,96 @@ app.controller('cartCtrl', [
 		});
 
 		$scope.offlinePay = function () {
-			$rootScope.isOfflinePayment = true;
-			$location.path('/paycompleted');
+			$location.path('/offlinepay');
 		};
 
 		$scope.onlinePay = function (pay) {
-			$rootScope.isOfflinePayment = false;
 			$rootScope.pay = pay;
-			$location.path('/paycompleted');
+			$location.path('/onlinepay');
 		}
 	}
-]).controller('paycompletedCtrl', [
+]).controller('offlinepayCtrl', [
 	'$scope',
 	'$rootScope',
 	'$location',
 	'$http',
-	'$sce',
-	function ($scope, $rootScope, $location, $http,$sce) {
+	'filterObject',
+	function ($scope, $rootScope, $location, $http, filterObject) {
 		$rootScope.viewTitle = '完成点单';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
 		}
-		
+
 		$scope.isCompleted = false;
 		$scope.table = angular.copy($rootScope.cart.Table);
-		
-		function filter(data){
-			for(var i=0;i<data.length;i++){
-				delete data[i].AutoId;
-				delete data[i].DisherCode;
-				delete data[i].DisherEnglishName;
-				delete data[i].DisherDescription;
-				delete data[i].DisherSubclassID2;
-				delete data[i].DisherStatus;
-				delete data[i].Usable;
-				delete data[i].DepartmentId;
-				delete data[i].SourIndex;
-				delete data[i].SweetIndex;
-				delete data[i].SaltyIndex;
-				delete data[i].SpicyIndex;
-				delete data[i].Evaluate;
-				delete data[i].Creator;
-				delete data[i].Updator;
-				delete data[i].Deletor;
-				delete data[i].CreateDate;
-				delete data[i].updateDate;
-				delete data[i].DeleteDate;
-				delete data[i].DisherPicture;
-				delete data[i].DisherPoint;
-				delete data[i].DisherSize;
-				delete data[i].DisherSubclassID1;
-				delete data[i].PinYin;
-				delete data[i].Additional.FilteredNotes;
-				delete data[i].Additional.IsNoteCollapsed;
-			}
-			
-		}
-		
-		$scope.offlinePay = function () {
+
+		$scope.pay = function () {
 			$scope.isCompleted = true;
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
-			filter($rootScope.cart.Results);
+			filterObject($rootScope.cart.Results);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;
 			});
 		};
+	}
+]).controller('onlinepayCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	'$http',
+	'$sce',
+	'filterObject',
+	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
+		$rootScope.viewTitle = '完成点单';
+		$rootScope.hideBackBtn = false;
+		if ($rootScope.cart == null) {
+			$location.path('/cart');
+			return;
+		}
 
-		$scope.onlinePay = function () {
+		var onlinePay = function () {
 			$scope.isCompleted = true;
 			$rootScope.cart.IsPaid = 1;
 			$rootScope.cart.PayKind = $rootScope.pay.PayName;
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
-			filter($rootScope.cart.Results);
+			filterObject($rootScope.cart.Results);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;
-				$scope.redirectHtml=$sce.trustAsHtml(data);
+				$scope.redirectHtml = $sce.trustAsHtml(data);
 			});
 		}
-		if(!$rootScope.isOfflinePayment){
-			$scope.onlinePay();
-		}
+		
+		onlinePay();
 	}
 ]);
 
-app.controller('ModalInstanceCtrl',function($scope,$modalInstance){
+app.controller('onlinepaysuccessCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	'$http',
+	'$sce',
+	'filterObject',
+	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
+		$rootScope.viewTitle = '完成点单';
+		$rootScope.hideBackBtn = false;
+	}
+]).controller('onlinepayfailCtrl', [
+	'$scope',
+	'$rootScope',
+	'$location',
+	'$http',
+	'$sce',
+	'filterObject',
+	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
+		$rootScope.viewTitle = '完成点单';
+		$rootScope.hideBackBtn = false;
+	}
+]);
+
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
 	$scope.close = function () {
 		$modalInstance.dismiss('cancel');
 	};

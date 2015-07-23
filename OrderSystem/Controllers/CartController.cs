@@ -40,7 +40,7 @@ namespace OrderSystem.Controllers {
 
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
-						DisherID = menu.DisherId,
+						DisherID = menu.DisherId, 
 						DisherNum = menu.Additional.Ordered,
 						DisherPrice = (decimal)menu.DisherPrice,
 						Note = note,
@@ -58,7 +58,15 @@ namespace OrderSystem.Controllers {
 			}
 			Session["savedMenu"] = model;
 
+			string returnContent = "";
+			if(model.PayKind != null) {
+				returnContent = alipaySubmit(dti.AutoID.ToString(), dti.Subtotal.ToString());
+			}
 
+			return Content(returnContent);
+		}
+
+		private string alipaySubmit(string pid,string pprice){
 			string payment_type = "1";
 			//必填，不能修改
 			//服务器异步通知页面路径
@@ -66,11 +74,11 @@ namespace OrderSystem.Controllers {
 			//需http://格式的完整路径，不能加?id=123这类自定义参数
 
 			//页面跳转同步通知页面路径
-			string return_url = "http://www.choice.shu.edu.cn/Pay/Index";
+			string return_url = "http://192.168.1.101/Pay/Index";
 			//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 
 			//商户订单号
-			string out_trade_no = dti.AutoID.ToString();
+			string out_trade_no = pid;
 			//商户网站订单系统中唯一订单号，必填
 
 			//订单名称
@@ -78,7 +86,7 @@ namespace OrderSystem.Controllers {
 			//必填
 
 			//付款金额
-			string price = dti.Subtotal.ToString();
+			string price = pprice;
 			//必填
 
 			//商品数量
@@ -149,13 +157,8 @@ namespace OrderSystem.Controllers {
 
 			//建立请求
 
-			string sHtmlText = Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
-			Response.Write(sHtmlText);
-
-
-			return Content(sHtmlText);
+			return Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
 		}
-
 
 
 		public async Task<JsonResult> GetPayName() {

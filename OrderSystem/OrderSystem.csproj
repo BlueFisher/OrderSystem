@@ -411,7 +411,10 @@
     <Content Include="Views\Home\partial-forget.cshtml" />
     <Content Include="Views\Home\partial-history.cshtml" />
     <Content Include="Views\Home\partial-index.cshtml" />
-    <Content Include="Views\Home\partial-paycompleted.cshtml" />
+    <Content Include="Views\Home\partial-offlinepay.cshtml" />
+    <Content Include="Views\Home\partial-onlinepay.cshtml" />
+    <Content Include="Views\Home\partial-onlinepaysuccess.cshtml" />
+    <Content Include="Views\Home\partial-onlinepayfail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -2,10 +2,9 @@
 	<img class="img-index" src="/content/image/index.jpg" alt="">
 	<div ng-show="!isCompleted">
 		<h3>点餐完成，叫店小二收钱</h3>
-		<button class="btn btn-primary" ng-click="offlinePay()">确认</button>
+		<button class="btn btn-primary" ng-click="pay()">确认</button>
 	</div>
 	<div ng-show="isCompleted">
 		<h3>{{table.DeskName}}，上菜喽！</h3>
 	</div>
-	<div ng-bind-html="redirectHtml"></div>
 </div>

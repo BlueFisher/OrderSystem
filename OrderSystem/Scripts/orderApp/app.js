@@ -16,9 +16,18 @@ app.config(function ($routeProvider) {
 	}).when('/payment', {
 		templateUrl: 'Home/Partial/partial-payment',
 		controller: 'paymentCtrl'
-	}).when('/paycompleted', {
-		templateUrl: 'Home/Partial/partial-paycompleted',
-		controller: 'paycompletedCtrl'
+	}).when('/offlinepay', {
+		templateUrl: 'Home/Partial/partial-offlinepay',
+		controller: 'offlinepayCtrl'
+	}).when('/onlinepay', {
+		templateUrl: 'Home/Partial/partial-onlinepay',
+		controller: 'onlinepayCtrl'
+	}).when('/onlinepaysuccess', {
+		templateUrl: 'Home/Partial/partial-onlinepaysuccess',
+		controller: 'onlinepaysuccessCtrl'
+	}).when('/onlinepayfail', {
+		templateUrl: 'Home/Partial/partial-onlinepayfail',
+		controller: 'onlinepayfailCtrl'
 	}).when('/signin', {
 		templateUrl: 'Home/Partial/partial-signin',
 		controller: 'signinCtrl'
