@@ -62,11 +62,11 @@ namespace OrderSystem.Controllers {
 			string payment_type = "1";
 			//必填，不能修改
 			//服务器异步通知页面路径
-			string notify_url = "http://10.1.131.37/Pay/Completed";
+			string notify_url = "http://www.choice.shu.edu.cn/Pay/Completed";
 			//需http://格式的完整路径，不能加?id=123这类自定义参数
 
 			//页面跳转同步通知页面路径
-			string return_url = "http://10.1.131.37/Pay/Indexx";
+			string return_url = "http://www.choice.shu.edu.cn/Pay/Index";
 			//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
 
 			//商户订单号
