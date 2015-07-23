@@ -6,11 +6,12 @@ using System.Web.Mvc;
 using OrderSystem.Models;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using Com.Alipay;
 
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
 
-		public async Task<JsonResult> Submit(SubmitViewModel model) {
+		public async Task<ContentResult> Submit(SubmitViewModel model) {
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
 				string client = null;
@@ -22,7 +23,7 @@ namespace OrderSystem.Controllers {
 					DeskID = model.Table.DeskId,
 					Roomid = model.Table.RoomId,
 					peoplecount = (short)model.Customer,
-					IsPaid = model.IsPaid,
+					IsPaid = 0,
 					PayKind = model.PayKind,
 					Subtotal = (decimal)model.PriceAll
 				};
@@ -57,8 +58,105 @@ namespace OrderSystem.Controllers {
 			}
 			Session["savedMenu"] = model;
 
-			return Json(new JsonSucceedObj());
+
+			string payment_type = "1";
+			//必填，不能修改
+			//服务器异步通知页面路径
+			string notify_url = "http://10.1.131.37/Pay/Completed";
+			//需http://格式的完整路径，不能加?id=123这类自定义参数
+
+			//页面跳转同步通知页面路径
+			string return_url = "http://10.1.131.37/Pay/Indexx";
+			//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
+
+			//商户订单号
+			string out_trade_no = dti.AutoID.ToString();
+			//商户网站订单系统中唯一订单号，必填
+
+			//订单名称
+			string subject = "上海乔曦信息技术有限";
+			//必填
+
+			//付款金额
+			string price = dti.Subtotal.ToString();
+			//必填
+
+			//商品数量
+			string quantity = "1";
+			//必填，建议默认为1，不改变值，把一次交易看成是一次下订单而非购买一件商品
+			//物流费用
+			string logistics_fee = "0.00";
+			//必填，即运费
+			//物流类型
+			string logistics_type = "EXPRESS";
+			//必填，三个值可选：EXPRESS（快递）、POST（平邮）、EMS（EMS）
+			//物流支付方式
+			string logistics_payment = "SELLER_PAY";
+			//必填，两个值可选：SELLER_PAY（卖家承担运费）、BUYER_PAY（买家承担运费）
+			//订单描述
+
+			string body = "";
+			//商品展示地址
+			string show_url = "";
+			//需以http://开头的完整路径，如：http://www.商户网站.com/myorder.html
+
+			//收货人姓名
+			string receive_name = "";
+			//如：张三
+
+			//收货人地址
+			string receive_address = "";
+			//如：XX省XXX市XXX区XXX路XXX小区XXX栋XXX单元XXX号
+
+			//收货人邮编
+			string receive_zip = "";
+			//如：123456
+
+			//收货人电话号码
+			string receive_phone = "";
+			//如：0571-88158090
+
+			//收货人手机号码
+			string receive_mobile = "";
+			//如：13312341234
+
+
+			////////////////////////////////////////////////////////////////////////////////////////////////
+
+			//把请求参数打包成数组
+			SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
+			sParaTemp.Add("partner", Config.Partner);
+			sParaTemp.Add("seller_email", Config.Seller_email);
+			sParaTemp.Add("_input_charset", Config.Input_charset.ToLower());
+			sParaTemp.Add("service", "create_partner_trade_by_buyer");
+			sParaTemp.Add("payment_type", payment_type);
+			sParaTemp.Add("notify_url", notify_url);
+			sParaTemp.Add("return_url", return_url);
+			sParaTemp.Add("out_trade_no", out_trade_no);
+			sParaTemp.Add("subject", subject);
+			sParaTemp.Add("price", price);
+			sParaTemp.Add("quantity", quantity);
+			sParaTemp.Add("logistics_fee", logistics_fee);
+			sParaTemp.Add("logistics_type", logistics_type);
+			sParaTemp.Add("logistics_payment", logistics_payment);
+			sParaTemp.Add("body", body);
+			sParaTemp.Add("show_url", show_url);
+			sParaTemp.Add("receive_name", receive_name);
+			sParaTemp.Add("receive_address", receive_address);
+			sParaTemp.Add("receive_zip", receive_zip);
+			sParaTemp.Add("receive_phone", receive_phone);
+			sParaTemp.Add("receive_mobile", receive_mobile);
+
+			//建立请求
+
+			string sHtmlText = Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
+			Response.Write(sHtmlText);
+
+
+			return Content(sHtmlText);
 		}
+
+
 
 		public async Task<JsonResult> GetPayName() {
 			using(MrCyContext ctx = new MrCyContext()) {
@@ -206,7 +304,7 @@ namespace OrderSystem.Controllers {
 						HistoryMenuDetail newDetail = new HistoryMenuDetail() {
 							DisherName = md.DisherName,
 							DisherId = menu.DisherID,
-							DisherPrice = menu.SalesPrice == null ? 0 : (double)menu.SalesPrice,
+							DisherPrice = menu.DisherPrice == null ? 0 : (double)menu.DisherPrice,
 							DisherDiscount = (double)menu.SalesDiscount,
 							Note = menu.Note,
 							Ordered = (int)menu.DisherNum
@@ -221,7 +319,7 @@ namespace OrderSystem.Controllers {
 						HistoryMenuDetail newDetail = new HistoryMenuDetail() {
 							DisherName = md.DisherName,
 							DisherId = menu.DisherID,
-							DisherPrice = menu.SalesPrice == null ? 0 : (double)menu.SalesPrice,
+							DisherPrice = menu.DisherPrice == null ? 0 : (double)menu.DisherPrice,
 							DisherDiscount = (double)menu.SalesDiscount,
 							Note = menu.Note,
 							Ordered = (int)menu.DisherNum

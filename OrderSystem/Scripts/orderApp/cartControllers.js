@@ -331,7 +331,8 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$location',
 	'$http',
-	function ($scope, $rootScope, $location, $http) {
+	'$sce',
+	function ($scope, $rootScope, $location, $http,$sce) {
 		$rootScope.viewTitle = '完成点单';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
@@ -391,6 +392,7 @@ app.controller('cartCtrl', [
 			filter($rootScope.cart.Results);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;
+				$scope.redirectHtml=$sce.trustAsHtml(data);
 			});
 		}
 		if(!$rootScope.isOfflinePayment){
