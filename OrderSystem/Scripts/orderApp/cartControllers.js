@@ -385,22 +385,14 @@ app.controller('cartCtrl', [
 app.controller('onlinepaysuccessCtrl', [
 	'$scope',
 	'$rootScope',
-	'$location',
-	'$http',
-	'$sce',
-	'filterObject',
-	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
+	function ($scope, $rootScope) {
 		$rootScope.viewTitle = '完成点单';
 		$rootScope.hideBackBtn = false;
 	}
 ]).controller('onlinepayfailCtrl', [
 	'$scope',
 	'$rootScope',
-	'$location',
-	'$http',
-	'$sce',
-	'filterObject',
-	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
+	function ($scope, $rootScope) {
 		$rootScope.viewTitle = '完成点单';
 		$rootScope.hideBackBtn = false;
 	}

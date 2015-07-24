@@ -13,7 +13,7 @@ namespace OrderSystem.Controllers {
 	public class PayController : Controller {
 		// GET: Pay
 
-		public ActionResult Completed() {
+		public ContentResult Completed() {
 			System.IO.FileStream fs = new System.IO.FileStream("d:/temp.txt", System.IO.FileMode.Append);
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
 			SortedDictionary<string, string> sPara = GetRequestPost();
@@ -41,35 +41,38 @@ namespace OrderSystem.Controllers {
 					//交易状态
 					string trade_status = Request.Form["trade_status"];
 					sw.WriteLine(trade_status);
+					sw.WriteLine(out_trade_no);
+					sw.Close();
 
 					if(Request.Form["trade_status"] == "WAIT_BUYER_PAY") {//该判断表示买家已在支付宝交易管理中产生了交易记录，但没有付款
 
 						//判断该笔订单是否在商户网站中已经做过处理
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
-						Response.Write("success");  //请不要修改或删除
+					
+						return Content("success");
 					}
 					else if(Request.Form["trade_status"] == "WAIT_SELLER_SEND_GOODS") {//该判断示买家已在支付宝交易管理中产生了交易记录且付款成功，但卖家没有发货
 
 						//判断该笔订单是否在商户网站中已经做过处理
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
-						Response.Write("success");  //请不要修改或删除
+						return Content("success");
 					}
 					else if(Request.Form["trade_status"] == "WAIT_BUYER_CONFIRM_GOODS") {//该判断表示卖家已经发了货，但买家还没有做确认收货的操作
 
 						//判断该笔订单是否在商户网站中已经做过处理
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
-						Response.Write("success");  //请不要修改或删除
+						return Content("success");
 					}
-					else if(Request.Form["trade_status"] == "TRADE_FINISHED") {//该判断表示买家已经确认收货，这笔交易完成
+					else if(Request.Form["trade_status"] == "TRADE_FINISHED" || Request.Form["trade_status"] == "TRADE_SUCCESS") {//该判断表示买家已经确认收货，这笔交易完成
 
 						//判断该笔订单是否在商户网站中已经做过处理
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//如果有做过处理，不执行商户的业务程序
 
-						sw.WriteLine(out_trade_no);
+						
 
 						using(MrCyContext ctx = new MrCyContext()) {
 							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == Convert.ToInt32(out_trade_no)).FirstOrDefault();
@@ -78,10 +81,10 @@ namespace OrderSystem.Controllers {
 							ctx.SaveChanges();
 						}
 
-						Response.Write("success");  //请不要修改或删除
+						return Content("success");
 					}
 					else {
-						Response.Write("success");  //其他状态判断。
+						return Content("success");
 					}
 
 					//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
@@ -89,16 +92,19 @@ namespace OrderSystem.Controllers {
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				}
 				else {//验证失败
-					Response.Write("fail");
+					
 					sw.WriteLine("fail");
+					sw.Close();
+					return Content("success");
 				}
 			}
 			else {
-				Response.Write("无通知参数");
+				
 				sw.WriteLine("无通知参数");
+				sw.Close();
+				return Content("fail");
 			}
-			sw.Dispose();
-			return null;
+			
 		}
 
 		public RedirectResult Index() {
