@@ -14,8 +14,6 @@ namespace OrderSystem.Controllers {
 		// GET: Pay
 
 		public ContentResult Completed() {
-			System.IO.FileStream fs = new System.IO.FileStream("d:/temp.txt", System.IO.FileMode.Append);
-			System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
 			SortedDictionary<string, string> sPara = GetRequestPost();
 
 			if(sPara.Count > 0) {//判断是否有带返回参数
@@ -40,9 +38,6 @@ namespace OrderSystem.Controllers {
 
 					//交易状态
 					string trade_status = Request.Form["trade_status"];
-					sw.WriteLine(trade_status);
-					sw.WriteLine(out_trade_no);
-					sw.Close();
 
 					if(Request.Form["trade_status"] == "WAIT_BUYER_PAY") {//该判断表示买家已在支付宝交易管理中产生了交易记录，但没有付款
 
@@ -93,16 +88,10 @@ namespace OrderSystem.Controllers {
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				}
 				else {//验证失败
-					
-					sw.WriteLine("fail");
-					sw.Close();
-					
 					return Content("success");
 				}
 			}
 			else {
-				sw.WriteLine("无通知参数");
-				sw.Close();
 				return Content("fail");
 			}
 			
