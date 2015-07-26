@@ -75,7 +75,8 @@ namespace OrderSystem.Controllers {
 						
 
 						using(MrCyContext ctx = new MrCyContext()) {
-							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == Convert.ToInt32(out_trade_no)).FirstOrDefault();
+							int id = Convert.ToInt32(out_trade_no);
+							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
 							info.IsPaid = 1;
 							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 							ctx.SaveChanges();
@@ -95,11 +96,11 @@ namespace OrderSystem.Controllers {
 					
 					sw.WriteLine("fail");
 					sw.Close();
+					
 					return Content("success");
 				}
 			}
 			else {
-				
 				sw.WriteLine("无通知参数");
 				sw.Close();
 				return Content("fail");
