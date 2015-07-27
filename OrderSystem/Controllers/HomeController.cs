@@ -32,7 +32,7 @@ namespace OrderSystem.Controllers {
 		}
 		public async Task<JsonResult> GetMenuDetail() {
 			using(MrCyContext ctx = new MrCyContext()) {
-				List<MenuDetail> list = await ctx.MenuDetail.ToListAsync();
+				List<MenuDetail> list = await ctx.MenuDetail.Where(p=>p.Usable == true && p.CanSelect == true).ToListAsync();
 				return Json(list);
 			}
 		}

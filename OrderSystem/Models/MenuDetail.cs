@@ -43,5 +43,6 @@ namespace OrderSystem.Models
         public Nullable<System.DateTime> updateDate { get; set; }
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
+        public Nullable<bool> CanSelect { get; set; }
     }
 }
