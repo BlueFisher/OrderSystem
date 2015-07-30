@@ -9,11 +9,16 @@ using System.Threading.Tasks;
 using Com.Alipay;
 using WeiPay;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
+using System.IO;
 
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
 
 		public async Task<ContentResult> Submit(SubmitViewModel model) {
+			string result = HttpPost("http://localhost:49451/Cart/test",JsonConvert.SerializeObject(model));
+
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
 				string client = null;
@@ -60,6 +65,7 @@ namespace OrderSystem.Controllers {
 			}
 			Session["savedMenu"] = model;
 
+
 			string returnContent = "";
 			if(model.PayKind == "支付宝") {
 				returnContent = alipaySubmit(dti.AutoID.ToString(), dti.Subtotal.ToString());
@@ -67,10 +73,41 @@ namespace OrderSystem.Controllers {
 			else {
 				Session["pid"] = dti.AutoID.ToString();
 				Session["pprice"] = dti.Subtotal.ToString();
-				returnContent =  string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
+				returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
 			}
 
 			return Content(returnContent);
+		}
+
+		private string HttpPost(string Url, string postDataStr) {
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+			request.CookieContainer = new CookieContainer();
+			CookieContainer cookie = request.CookieContainer;//如果用不到Cookie，删去即可  
+			//以下是发送的http头，随便加，其中referer挺重要的，有些网站会根据这个来反盗链  
+			request.Referer = Url;
+			request.Accept = "application/json, text/plain, */*";
+			request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36";
+			request.KeepAlive = true;
+			//上面的http头看情况而定，但是下面俩必须加  
+			request.ContentType = "application/json;charset=UTF-8";
+			request.Method = "POST";
+
+			Encoding encoding = Encoding.UTF8;//根据网站的编码自定义  
+			byte[] postData = encoding.GetBytes(postDataStr);//postDataStr即为发送的数据，格式还是和上次说的一样  
+			request.ContentLength = postData.Length;
+			Stream requestStream = request.GetRequestStream();
+			requestStream.Write(postData, 0, postData.Length);
+
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+			Stream responseStream = response.GetResponseStream();
+
+			StreamReader streamReader = new StreamReader(responseStream, encoding);
+			string retString = streamReader.ReadToEnd();
+
+			streamReader.Close();
+			responseStream.Close();
+
+			return retString;
 		}
 
 		private string alipaySubmit(string pid, string pprice) {
@@ -167,7 +204,6 @@ namespace OrderSystem.Controllers {
 			return Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
 		}
 
-
 		public ActionResult weixinSubmit() {
 			string UserOpenId = "";
 
@@ -213,7 +249,6 @@ namespace OrderSystem.Controllers {
 			//跳转到 WeiPay.aspx 页面，请设置函数中WeiPay.aspx的页面地址
 			return Redirect(model.ToString());
 		}
-
 
 		public async Task<JsonResult> GetPayName() {
 			using(MrCyContext ctx = new MrCyContext()) {

@@ -8,7 +8,6 @@ using System.Collections.Specialized;
 using OrderSystem.Models;
 using System.Data.Entity;
 using WeiPay;
-using Newtonsoft.Json;
 using System.Xml;
 
 
@@ -215,6 +214,7 @@ namespace OrderSystem.Controllers {
 		#endregion
 
 
+		#region weixin
 		public static string Code = "";     //微信端传来的code
 		public static string PrepayId = ""; //预支付ID
 		public static string Sign = "";     //为了获取预支付ID的签名
@@ -227,7 +227,8 @@ namespace OrderSystem.Controllers {
 		protected string Body = ""; //商品描述
 		protected string TotalFee = "";  //总支付金额，单位为：分，不能有小数
 		protected string Attach = ""; //用户自定义参数，原样返回
-		protected string UserOpenId = "";//微信用户openid
+		protected string UserOpenId = "";//微信用户openid 
+		#endregion
 
 		public ActionResult Weixin() {
 			this.OrderSN = this.Request.QueryString["OrderSN"];

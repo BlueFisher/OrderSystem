@@ -297,7 +297,8 @@ app.controller('cartCtrl', [
 	'$rootScope',
 	'$location',
 	'$http',
-	function ($scope, $rootScope, $location, $http) {
+	'filterObject',
+	function ($scope, $rootScope, $location, $http,filterObject) {
 		$rootScope.viewTitle = '结算';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
@@ -321,6 +322,7 @@ app.controller('cartCtrl', [
 		};
 
 		$scope.onlinePay = function (pay) {
+			filterObject($rootScope.cart.Results);
 			$rootScope.pay = pay;
 			if (pay.PayName == '微信支付') {
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
