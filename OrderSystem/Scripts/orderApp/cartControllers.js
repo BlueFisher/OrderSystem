@@ -322,7 +322,15 @@ app.controller('cartCtrl', [
 
 		$scope.onlinePay = function (pay) {
 			$rootScope.pay = pay;
-			$location.path('/onlinepay');
+			if (pay.PayName == '微信支付') {
+				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
+					delete $rootScope.cart;
+					location.href = data;
+				});
+			} else {
+				$location.path('/onlinepay');
+			}
+
 		}
 	}
 ]).controller('offlinepayCtrl', [
@@ -377,7 +385,7 @@ app.controller('cartCtrl', [
 				$scope.redirectHtml = $sce.trustAsHtml(data);
 			});
 		}
-		
+
 		onlinePay();
 	}
 ]);

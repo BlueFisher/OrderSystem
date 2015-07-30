@@ -45,6 +45,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -294,6 +298,8 @@
     <Content Include="Scripts\orderApp\cartControllers.js" />
     <Content Include="Scripts\orderApp\directive.js" />
     <Content Include="Scripts\orderApp\factory.js" />
+    <Content Include="Scripts\weixin\jquery.js" />
+    <Content Include="Scripts\weixin\lazyloadv3.js" />
     <Content Include="Views\Account\Client.cshtml" />
     <Content Include="Views\Home\partial-cart.cshtml" />
     <Content Include="Views\Home\partial-error.cshtml" />
@@ -400,6 +406,7 @@
     <Compile Include="Models\Waiter.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\weixinSubmitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +422,7 @@
     <Content Include="Views\Home\partial-onlinepay.cshtml" />
     <Content Include="Views\Home\partial-onlinepaysuccess.cshtml" />
     <Content Include="Views\Home\partial-onlinepayfail.cshtml" />
+    <Content Include="Views\Pay\Weixin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -424,7 +432,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Cart\" />
-    <Folder Include="Views\Pay\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -437,6 +444,10 @@
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{01fe6eea-9513-415f-8394-e41e0f63dd92}</Project>
       <Name>Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WeiPay\WeiPay.csproj">
+      <Project>{8bd73d13-5eff-45ce-9b9c-355056711fa0}</Project>
+      <Name>WeiPay</Name>
     </ProjectReference>
     <ProjectReference Include="..\Zhifubao\Zhifubao.csproj">
       <Project>{459889ad-4928-44db-9b9b-528489350941}</Project>

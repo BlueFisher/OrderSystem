@@ -31,7 +31,7 @@ namespace OrderSystem.Controllers {
 				return Json(new JsonErrorObj("验证码不正确"));
 			}
 			using(MrCyContext ctx = new MrCyContext()) {
-				ClientInfo client = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile && p.LoginPwd == model.Password).FirstOrDefault();
+				ClientInfo client = ctx.ClientInfo.Where(p => p.LoginName == model.Mobile && p.LoginPwd == model.Password).FirstOrDefault();
 				if(client == null) {
 					return Json(new JsonErrorObj("手机或密码不正确"));
 				}
@@ -42,7 +42,7 @@ namespace OrderSystem.Controllers {
 
 		public ActionResult SendForgetSMS(SMSSendViewModel model) {
 			using(MrCyContext ctx = new MrCyContext()) {
-				int count = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile).ToList().Count;
+				int count = ctx.ClientInfo.Where(p => p.LoginName == model.Mobile).ToList().Count;
 				if(count == 0) {
 					return Json(new JsonErrorObj("此号码未注册"), "Mobile");
 				}
@@ -63,7 +63,7 @@ namespace OrderSystem.Controllers {
 				return Json(new JsonErrorObj("验证码不正确", "code"));
 			}
 			using(MrCyContext ctx = new MrCyContext()) {
-				ClientInfo client = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile).FirstOrDefault();
+				ClientInfo client = ctx.ClientInfo.Where(p => p.LoginName == model.Mobile).FirstOrDefault();
 				client.LoginPwd = model.Password;
 				ctx.Entry(client).Property(p => p.LoginPwd).IsModified = true;
 				await ctx.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace OrderSystem.Controllers {
 
 		public ActionResult SendSMS(SMSSendViewModel model) {
 			using(MrCyContext ctx = new MrCyContext()) {
-				int count = ctx.ClientInfo.Where(p => p.ClientId == model.Mobile).ToList().Count;
+				int count = ctx.ClientInfo.Where(p => p.LoginName == model.Mobile).ToList().Count;
 				if(count > 0) {
 					return Json(new JsonErrorObj("此号码已注册"), "Mobile");
 				}

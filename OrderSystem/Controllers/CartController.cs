@@ -7,6 +7,8 @@ using OrderSystem.Models;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Com.Alipay;
+using WeiPay;
+using Newtonsoft.Json;
 
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
@@ -40,7 +42,7 @@ namespace OrderSystem.Controllers {
 
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
-						DisherID = menu.DisherId, 
+						DisherID = menu.DisherId,
 						DisherNum = menu.Additional.Ordered,
 						DisherPrice = (decimal)menu.DisherPrice,
 						Note = note,
@@ -59,14 +61,19 @@ namespace OrderSystem.Controllers {
 			Session["savedMenu"] = model;
 
 			string returnContent = "";
-			if(model.PayKind != null) {
+			if(model.PayKind == "支付宝") {
 				returnContent = alipaySubmit(dti.AutoID.ToString(), dti.Subtotal.ToString());
+			}
+			else {
+				Session["pid"] = dti.AutoID.ToString();
+				Session["pprice"] = dti.Subtotal.ToString();
+				returnContent =  string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
 			}
 
 			return Content(returnContent);
 		}
 
-		private string alipaySubmit(string pid,string pprice){
+		private string alipaySubmit(string pid, string pprice) {
 			string payment_type = "1";
 			//必填，不能修改
 			//服务器异步通知页面路径
@@ -158,6 +165,53 @@ namespace OrderSystem.Controllers {
 			//建立请求
 
 			return Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
+		}
+
+
+		public ActionResult weixinSubmit() {
+			string UserOpenId = "";
+
+			string code = Request.QueryString["code"];
+			if(string.IsNullOrEmpty(code)) {
+				string code_url = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
+				return Redirect(code_url);
+			}
+			else {
+				LogUtil.WriteLog(" ============ 开始 获取微信用户相关信息 =====================");
+
+				#region 获取支付用户 OpenID================
+				string url = string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", PayConfig.AppId, PayConfig.AppSecret, code);
+				string returnStr = HttpUtil.Send("", url);
+				LogUtil.WriteLog("Send 页面  returnStr 第一个：" + returnStr);
+
+				var obj = JsonConvert.DeserializeObject<OpenModel>(returnStr);
+
+				url = string.Format("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type=refresh_token&refresh_token={1}", PayConfig.AppId, obj.refresh_token);
+				returnStr = HttpUtil.Send("", url);
+				obj = JsonConvert.DeserializeObject<OpenModel>(returnStr);
+
+				LogUtil.WriteLog("Send 页面  access_token：" + obj.access_token);
+				LogUtil.WriteLog("Send 页面  openid=" + obj.openid);
+
+				url = string.Format("https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}", obj.access_token, obj.openid);
+				returnStr = HttpUtil.Send("", url);
+				LogUtil.WriteLog("Send 页面  returnStr：" + returnStr);
+
+				UserOpenId = obj.openid;
+
+				LogUtil.WriteLog(" ============ 结束 获取微信用户相关信息 =====================");
+				#endregion
+			}
+
+			PayModel model = new PayModel();
+			model.OrderSN = Session["pid"].ToString();
+			model.TotalFee = Convert.ToInt32(Convert.ToDouble(Session["pprice"]) * 100);
+			model.Body = "";
+			model.Attach = "";
+			model.OpenId = UserOpenId;
+
+			//跳转到 WeiPay.aspx 页面，请设置函数中WeiPay.aspx的页面地址
+			return Redirect(model.ToString());
 		}
 
 
@@ -253,14 +307,14 @@ namespace OrderSystem.Controllers {
 						BeginTime = info.BeginTime.ToString()
 					});
 				}
-				
+
 				foreach(DineInfoHistory info in list) {
 					infoList.Add(new HistoryDineInfoModel() {
 						CheckID = info.CheckID,
 						BeginTime = info.BeginTime.ToString()
 					});
 				}
-				
+
 				return Json(infoList);
 			}
 		}
@@ -298,8 +352,8 @@ namespace OrderSystem.Controllers {
 					};
 				}
 
-				
-				
+
+
 				if(dineInfo != null) {
 					List<DineDetailHistory> list = await ctx.DineDetailHistory.Where(p => p.CheckID == dineInfo.CheckID).ToListAsync();
 					foreach(DineDetailHistory menu in list) {
@@ -330,7 +384,7 @@ namespace OrderSystem.Controllers {
 						menuModel.Results.Add(newDetail);
 					}
 				}
-				
+
 				return Json(menuModel);
 			}
 		}
