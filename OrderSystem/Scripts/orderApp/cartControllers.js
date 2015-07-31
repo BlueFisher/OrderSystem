@@ -311,7 +311,9 @@ app.controller('cartCtrl', [
 			$rootScope.customersAll.push(i + 1);
 		}
 		$http.post('/Cart/GetPayName').success(function (data) {
-			$rootScope.pays = data;
+			$rootScope.pays = [{
+				PayName:'微信支付'
+			}];
 		});
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$rootScope.tablewareFee = parseInt(data.TablewareFee);
@@ -351,6 +353,7 @@ app.controller('cartCtrl', [
 
 		$scope.isCompleted = false;
 		$scope.table = angular.copy($rootScope.cart.Table);
+		$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
 
 		$scope.pay = function () {
 			$scope.isCompleted = true;

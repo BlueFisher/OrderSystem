@@ -96,7 +96,7 @@ namespace OrderSystem.Controllers {
 			}
 			using(MrCyContext ctx = new MrCyContext()) {
 				ClientInfo client = new ClientInfo() {
-					ClientId = model.Mobile,
+					ClientId = (DateTime.Now.Year%100).ToString() + model.Mobile,
 					ClientName = model.Mobile,
 					LoginName = model.Mobile,
 					LoginPwd = model.Password

@@ -12,12 +12,14 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using System.IO;
+using System.Timers;
+
 
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
 
 		public async Task<ContentResult> Submit(SubmitViewModel model) {
-			string result = HttpPost("http://localhost:49451/Cart/test",JsonConvert.SerializeObject(model));
+
 
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
@@ -64,16 +66,43 @@ namespace OrderSystem.Controllers {
 
 			}
 			Session["savedMenu"] = model;
-
+			Timer t = new Timer(1000*10);
+			t.Elapsed += (object sender, ElapsedEventArgs e) => {
+				string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=aaaaaaaab" + dti.AutoID.ToString());
+				FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
+				StreamWriter sw = new StreamWriter(fs);
+				sw.WriteLine(result);
+				
+				if(result == "1") {
+					using(MrCyContext ctx = new MrCyContext()) {
+						int id = Convert.ToInt32(dti.AutoID.ToString());
+						DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
+						info.IsPaid = 1;
+						ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
+						ctx.SaveChanges();
+					}
+					sw.WriteLine("1");
+					t.Stop();
+				}
+				else if(result == "0") {
+					sw.WriteLine("0");
+					t.Stop();
+				}
+				sw.Close();
+			};
+			t.Start();
+			//string result = HttpPost("http://www.choice.shu.edu.cn/weixin/Send.aspx", "ordersn=" + dti.AutoID.ToString() + "&price=" + dti.Subtotal.ToString());
 
 			string returnContent = "";
 			if(model.PayKind == "支付宝") {
-				returnContent = alipaySubmit(dti.AutoID.ToString(), dti.Subtotal.ToString());
+
 			}
 			else {
-				Session["pid"] = dti.AutoID.ToString();
-				Session["pprice"] = dti.Subtotal.ToString();
-				returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
+				//Session["pid"] = dti.AutoID.ToString();
+				//Session["pprice"] = dti.Subtotal.ToString();
+				//returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
+
+				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + dti.AutoID.ToString() + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100);
 			}
 
 			return Content(returnContent);
@@ -85,7 +114,7 @@ namespace OrderSystem.Controllers {
 			CookieContainer cookie = request.CookieContainer;//如果用不到Cookie，删去即可  
 			//以下是发送的http头，随便加，其中referer挺重要的，有些网站会根据这个来反盗链  
 			request.Referer = Url;
-			request.Accept = "application/json, text/plain, */*";
+			request.Accept = "application/x-www-form-urlencoded";
 			request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36";
 			request.KeepAlive = true;
 			//上面的http头看情况而定，但是下面俩必须加  
@@ -106,6 +135,20 @@ namespace OrderSystem.Controllers {
 
 			streamReader.Close();
 			responseStream.Close();
+
+			return retString;
+		}
+		public string HttpGet(string Url) {
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+			request.Method = "GET";
+			request.ContentType = "text/plain;charset=UTF-8";
+
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+			Stream myResponseStream = response.GetResponseStream();
+			StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
+			string retString = myStreamReader.ReadToEnd();
+			myStreamReader.Close();
+			myResponseStream.Close();
 
 			return retString;
 		}

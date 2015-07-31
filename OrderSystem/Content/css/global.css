@@ -210,3 +210,6 @@ section.right{
 .input-group-sm>.input-group-addon-code img{
 	height: 28px;
 }
+.list-group{
+	margin-bottom:40px;
+}
