@@ -38,6 +38,7 @@ namespace OrderSystem.Models
         public virtual DbSet<DineDetailHistory> DineDetailHistory { get; set; }
         public virtual DbSet<DineInfo> DineInfo { get; set; }
         public virtual DbSet<DineInfoHistory> DineInfoHistory { get; set; }
+        public virtual DbSet<DineTempDetail> DineTempDetail { get; set; }
         public virtual DbSet<DineTempInfo> DineTempInfo { get; set; }
         public virtual DbSet<MenuClass> MenuClass { get; set; }
         public virtual DbSet<MenuDetail> MenuDetail { get; set; }
@@ -45,7 +46,6 @@ namespace OrderSystem.Models
         public virtual DbSet<PayKind> PayKind { get; set; }
         public virtual DbSet<PrinterInfo> PrinterInfo { get; set; }
         public virtual DbSet<RoomInfo> RoomInfo { get; set; }
-        public virtual DbSet<DineTempDetail> DineTempDetail { get; set; }
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<Waiter> Waiter { get; set; }
     }

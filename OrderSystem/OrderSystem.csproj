@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -265,25 +266,25 @@
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\fonts\FontAwesome.otf" />
-    <EntityDeploy Include="Models\MrCyModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MrCyModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\MrCyModel.Context.tt">
+    <Content Include="Models\MrCy.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrCyModel.edmx</DependentUpon>
-      <LastGenOutput>MrCyModel.Context.cs</LastGenOutput>
+      <DependentUpon>MrCy.edmx</DependentUpon>
+      <LastGenOutput>MrCy.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\MrCyModel.edmx.diagram">
-      <DependentUpon>MrCyModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\MrCyModel.tt">
+    <Content Include="Models\MrCy.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrCyModel.edmx</DependentUpon>
-      <LastGenOutput>MrCyModel.cs</LastGenOutput>
+      <DependentUpon>MrCy.edmx</DependentUpon>
+      <LastGenOutput>MrCy.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\lib\angular-animate.js" />
     <Content Include="Scripts\lib\angular-route.min.js" />
+    <EntityDeploy Include="Models\MrCy.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MrCy.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\MrCy.edmx.diagram">
+      <DependentUpon>MrCy.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Config.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
@@ -320,91 +321,91 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\BaseInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BatchNo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ClerkGroup.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ClerkInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ClientInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentClass.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentPrinter.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DeskInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineDetail.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineDetailHistory.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineInfoHistory.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineTempDetail.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DineTempInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Models\MenuClass.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MenuDetail.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MenuSubClass.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MrCyModel.Context.cs">
+    <Compile Include="Models\MrCy.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MrCyModel.Context.tt</DependentUpon>
+      <DependentUpon>MrCy.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MrCyModel.cs">
+    <Compile Include="Models\MrCy.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MrCyModel.Designer.cs">
+    <Compile Include="Models\MrCy.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MrCyModel.edmx</DependentUpon>
+      <DependentUpon>MrCy.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Note.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PayKind.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PrinterInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Protocal.cs" />
     <Compile Include="Models\RoomInfo.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SubmitViewModel.cs" />
     <Compile Include="Models\Waiter.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
+      <DependentUpon>MrCy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\weixinSubmitModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

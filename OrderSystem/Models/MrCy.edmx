@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -242,7 +242,7 @@
           <Property Name="ClientID" Type="varchar" MaxLength="20" />
           <Property Name="DeskID" Type="varchar" MaxLength="10" />
           <Property Name="Roomid" Type="varchar" MaxLength="10" />
-          <Property Name="BeginTime" Type="datetime" StoreGeneratedPattern="Identity" />
+          <Property Name="BeginTime" Type="datetime" />
           <Property Name="peoplecount" Type="smallint" />
           <Property Name="IsPaid" Type="int" />
           <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
@@ -424,7 +424,8 @@
     FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -645,6 +646,18 @@
           <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
+        <EntityType Name="DineTempDetail">
+          <Key>
+            <PropertyRef Name="TempDetailAutoId" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" />
+          <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherNum" Type="Int32" />
+          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SalesDiscount" Type="Double" />
+          <Property Name="Note" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TempDetailAutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
         <EntityType Name="DineTempInfo">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -653,7 +666,7 @@
           <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="BeginTime" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" />
           <Property Name="peoplecount" Type="Int16" />
           <Property Name="IsPaid" Type="Int32" />
           <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -780,18 +793,6 @@
           <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="DineTempDetail">
-          <Key>
-            <PropertyRef Name="TempDetailAutoId" />
-          </Key>
-          <Property Name="AutoID" Type="Int32" Nullable="false" />
-          <Property Name="DisherID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="DisherNum" Type="Int32" />
-          <Property Name="DisherPrice" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="SalesDiscount" Type="Double" />
-          <Property Name="Note" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="TempDetailAutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityType Name="Note">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -821,6 +822,7 @@
           <EntitySet Name="DineDetailHistory" EntityType="Self.DineDetailHistory" />
           <EntitySet Name="DineInfo" EntityType="Self.DineInfo" />
           <EntitySet Name="DineInfoHistory" EntityType="Self.DineInfoHistory" />
+          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" />
           <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" />
           <EntitySet Name="MenuClass" EntityType="Self.MenuClass" />
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" />
@@ -828,7 +830,6 @@
           <EntitySet Name="PayKind" EntityType="Self.PayKind" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" />
-          <EntitySet Name="DineTempDetail" EntityType="Self.DineTempDetail" />
           <EntitySet Name="Note" EntityType="Self.Note" />
           <EntitySet Name="Waiter" EntityType="Self.Waiter" />
         </EntityContainer>
@@ -1067,10 +1068,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DineTempDetail">
+            <EntityTypeMapping TypeName="db_MrCyModel.DineTempDetail">
+              <MappingFragment StoreEntitySet="DineTempDetail">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="DisherID" ColumnName="DisherID" />
+                <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />
+                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
+                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="TempDetailAutoId" ColumnName="TempDetailAutoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DineTempInfo">
             <EntityTypeMapping TypeName="db_MrCyModel.DineTempInfo">
               <MappingFragment StoreEntitySet="DineTempInfo">
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="DeskID" ColumnName="DeskID" />
@@ -1080,6 +1093,7 @@
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
                 <ScalarProperty Name="PayKind" ColumnName="PayKind" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1103,7 +1117,6 @@
           <EntitySetMapping Name="MenuDetail">
             <EntityTypeMapping TypeName="db_MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
-                <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DisherId" ColumnName="DisherId" />
                 <ScalarProperty Name="DisherCode" ColumnName="DisherCode" />
@@ -1133,6 +1146,7 @@
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
                 <ScalarProperty Name="Deletor" ColumnName="Deletor" />
                 <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1206,19 +1220,6 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="Deletor" ColumnName="Deletor" />
                 <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DineTempDetail">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineTempDetail">
-              <MappingFragment StoreEntitySet="DineTempDetail">
-                <ScalarProperty Name="TempDetailAutoId" ColumnName="TempDetailAutoId" />
-                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
-                <ScalarProperty Name="DisherID" ColumnName="DisherID" />
-                <ScalarProperty Name="DisherNum" ColumnName="DisherNum" />
-                <ScalarProperty Name="DisherPrice" ColumnName="DisherPrice" />
-                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
