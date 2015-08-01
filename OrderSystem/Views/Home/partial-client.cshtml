@@ -10,24 +10,24 @@
 		<li class="list-group-item"
 			ng-repeat="menu in historyMenu.Results">
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-xs-6">
 					{{menu.DisherName}}
 				</div>
-				<div class="col-xs-4 text-right">
+				<div class="col-xs-2 text-right">
 					&times;{{menu.Ordered}}
 				</div>
 				<div class="col-xs-4 text-right text-danger">
 					{{menu.DisherPrice | currency : "￥"}}
 				</div>
 			</div>
-			<div ng-if="menu.Note">备注：{{menu.Note}}</div>
+			<div ng-if="menu.Note">个性服务：{{menu.Note}}</div>
 		</li>
 		<li class="list-group-item">
 			<div class="row">
-				<div class="col-xs-4">
+				<div class="col-xs-6">
 					餐具
 				</div>
-				<div class="col-xs-4 text-right">
+				<div class="col-xs-2 text-right">
 					&times;{{historyMenu.Customer}}
 				</div>
 				<div class="col-xs-4 text-right text-danger">

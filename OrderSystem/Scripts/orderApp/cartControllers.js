@@ -325,13 +325,18 @@ app.controller('cartCtrl', [
 
 		$scope.onlinePay = function (pay) {
 			filterObject($rootScope.cart.Results);
-			$rootScope.pay = pay;
+			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
+			console.log($rootScope.cart);
+			
 			if (pay.PayName == '微信支付') {
+				$rootScope.cart.PayKind = '微信支付';
+				
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 					delete $rootScope.cart;
 					location.href = data;
 				});
 			} else {
+				$rootScope.cart.PayKind = '';
 				$location.path('/onlinepay');
 			}
 
@@ -353,12 +358,14 @@ app.controller('cartCtrl', [
 
 		$scope.isCompleted = false;
 		$scope.table = angular.copy($rootScope.cart.Table);
-		$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
+		$scope.TempPriceAll = $rootScope.cart.PriceAll + $rootScope.cart.Customer * $rootScope.tablewareFee;
 
 		$scope.pay = function () {
 			$scope.isCompleted = true;
-			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
+			$rootScope.cart.PriceAll = $scope.TempPriceAll;
+			
 			filterObject($rootScope.cart.Results);
+			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;
 			});
@@ -382,9 +389,9 @@ app.controller('cartCtrl', [
 		var onlinePay = function () {
 			$scope.isCompleted = true;
 			$rootScope.cart.IsPaid = 1;
-			$rootScope.cart.PayKind = $rootScope.pay.PayName;
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
 			filterObject($rootScope.cart.Results);
+			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;
 				$scope.redirectHtml = $sce.trustAsHtml(data);

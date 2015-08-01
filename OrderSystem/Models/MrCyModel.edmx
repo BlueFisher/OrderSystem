@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="db_MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -242,7 +242,7 @@
           <Property Name="ClientID" Type="varchar" MaxLength="20" />
           <Property Name="DeskID" Type="varchar" MaxLength="10" />
           <Property Name="Roomid" Type="varchar" MaxLength="10" />
-          <Property Name="BeginTime" Type="datetime" />
+          <Property Name="BeginTime" Type="datetime" StoreGeneratedPattern="Identity" />
           <Property Name="peoplecount" Type="smallint" />
           <Property Name="IsPaid" Type="int" />
           <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
@@ -388,7 +388,7 @@
           <Property Name="ID" Type="varchar" MaxLength="20" />
           <Property Name="name" Type="varchar" MaxLength="20" />
         </EntityType>
-        <EntityContainer Name="db_MrCyModelStoreContainer">
+        <EntityContainer Name="MrCyModelStoreContainer">
           <EntitySet Name="BaseInfo" EntityType="Self.BaseInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BatchNo" EntityType="Self.BatchNo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClerkGroup" EntityType="Self.ClerkGroup" Schema="dbo" store:Type="Tables" />
@@ -428,7 +428,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="db_MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -666,7 +666,7 @@
           <Property Name="ClientID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DeskID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Roomid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="BeginTime" Type="DateTime" Precision="3" />
+          <Property Name="BeginTime" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
           <Property Name="peoplecount" Type="Int16" />
           <Property Name="IsPaid" Type="Int32" />
           <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -838,9 +838,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="db_MrCyModelStoreContainer" CdmEntityContainer="MrCyContext">
+        <EntityContainerMapping StorageEntityContainer="MrCyModelStoreContainer" CdmEntityContainer="MrCyContext">
           <EntitySetMapping Name="BaseInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.BaseInfo">
+            <EntityTypeMapping TypeName="MrCyModel.BaseInfo">
               <MappingFragment StoreEntitySet="BaseInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="InfoId" ColumnName="InfoId" />
@@ -851,7 +851,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BatchNo">
-            <EntityTypeMapping TypeName="db_MrCyModel.BatchNo">
+            <EntityTypeMapping TypeName="MrCyModel.BatchNo">
               <MappingFragment StoreEntitySet="BatchNo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="PosNo" ColumnName="PosNo" />
@@ -860,7 +860,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClerkGroup">
-            <EntityTypeMapping TypeName="db_MrCyModel.ClerkGroup">
+            <EntityTypeMapping TypeName="MrCyModel.ClerkGroup">
               <MappingFragment StoreEntitySet="ClerkGroup">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
@@ -890,7 +890,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClerkInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.ClerkInfo">
+            <EntityTypeMapping TypeName="MrCyModel.ClerkInfo">
               <MappingFragment StoreEntitySet="ClerkInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="ClerkId" ColumnName="ClerkId" />
@@ -911,7 +911,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClientInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.ClientInfo">
+            <EntityTypeMapping TypeName="MrCyModel.ClientInfo">
               <MappingFragment StoreEntitySet="ClientInfo">
                 <ScalarProperty Name="ClientAutoId" ColumnName="ClientAutoId" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
@@ -922,7 +922,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DepartmentClass">
-            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentClass">
+            <EntityTypeMapping TypeName="MrCyModel.DepartmentClass">
               <MappingFragment StoreEntitySet="DepartmentClass">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
@@ -939,7 +939,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DepartmentInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentInfo">
+            <EntityTypeMapping TypeName="MrCyModel.DepartmentInfo">
               <MappingFragment StoreEntitySet="DepartmentInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
@@ -958,7 +958,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DepartmentPrinter">
-            <EntityTypeMapping TypeName="db_MrCyModel.DepartmentPrinter">
+            <EntityTypeMapping TypeName="MrCyModel.DepartmentPrinter">
               <MappingFragment StoreEntitySet="DepartmentPrinter">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
@@ -974,7 +974,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DeskInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.DeskInfo">
+            <EntityTypeMapping TypeName="MrCyModel.DeskInfo">
               <MappingFragment StoreEntitySet="DeskInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DeskId" ColumnName="DeskId" />
@@ -1000,7 +1000,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineDetail">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineDetail">
+            <EntityTypeMapping TypeName="MrCyModel.DineDetail">
               <MappingFragment StoreEntitySet="DineDetail">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
@@ -1016,7 +1016,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineDetailHistory">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineDetailHistory">
+            <EntityTypeMapping TypeName="MrCyModel.DineDetailHistory">
               <MappingFragment StoreEntitySet="DineDetailHistory">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
@@ -1032,7 +1032,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineInfo">
+            <EntityTypeMapping TypeName="MrCyModel.DineInfo">
               <MappingFragment StoreEntitySet="DineInfo">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
@@ -1051,7 +1051,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineInfoHistory">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineInfoHistory">
+            <EntityTypeMapping TypeName="MrCyModel.DineInfoHistory">
               <MappingFragment StoreEntitySet="DineInfoHistory">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
@@ -1069,7 +1069,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineTempDetail">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineTempDetail">
+            <EntityTypeMapping TypeName="MrCyModel.DineTempDetail">
               <MappingFragment StoreEntitySet="DineTempDetail">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="DisherID" ColumnName="DisherID" />
@@ -1082,7 +1082,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DineTempInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.DineTempInfo">
+            <EntityTypeMapping TypeName="MrCyModel.DineTempInfo">
               <MappingFragment StoreEntitySet="DineTempInfo">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
@@ -1098,7 +1098,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MenuClass">
-            <EntityTypeMapping TypeName="db_MrCyModel.MenuClass">
+            <EntityTypeMapping TypeName="MrCyModel.MenuClass">
               <MappingFragment StoreEntitySet="MenuClass">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="ClassId" ColumnName="ClassId" />
@@ -1115,7 +1115,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MenuDetail">
-            <EntityTypeMapping TypeName="db_MrCyModel.MenuDetail">
+            <EntityTypeMapping TypeName="MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DisherId" ColumnName="DisherId" />
@@ -1151,7 +1151,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MenuSubClass">
-            <EntityTypeMapping TypeName="db_MrCyModel.MenuSubClass">
+            <EntityTypeMapping TypeName="MrCyModel.MenuSubClass">
               <MappingFragment StoreEntitySet="MenuSubClass">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="SubClassId" ColumnName="SubClassId" />
@@ -1169,7 +1169,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PayKind">
-            <EntityTypeMapping TypeName="db_MrCyModel.PayKind">
+            <EntityTypeMapping TypeName="MrCyModel.PayKind">
               <MappingFragment StoreEntitySet="PayKind">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="Kind" ColumnName="Kind" />
@@ -1190,7 +1190,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PrinterInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.PrinterInfo">
+            <EntityTypeMapping TypeName="MrCyModel.PrinterInfo">
               <MappingFragment StoreEntitySet="PrinterInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="PrinterId" ColumnName="PrinterId" />
@@ -1207,7 +1207,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoomInfo">
-            <EntityTypeMapping TypeName="db_MrCyModel.RoomInfo">
+            <EntityTypeMapping TypeName="MrCyModel.RoomInfo">
               <MappingFragment StoreEntitySet="RoomInfo">
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
@@ -1224,7 +1224,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Note">
-            <EntityTypeMapping TypeName="db_MrCyModel.Note">
+            <EntityTypeMapping TypeName="MrCyModel.Note">
               <MappingFragment StoreEntitySet="Note">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="Note1" ColumnName="Note" />
@@ -1232,7 +1232,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Waiter">
-            <EntityTypeMapping TypeName="db_MrCyModel.Waiter">
+            <EntityTypeMapping TypeName="MrCyModel.Waiter">
               <MappingFragment StoreEntitySet="Waiter">
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

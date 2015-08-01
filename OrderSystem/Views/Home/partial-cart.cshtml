@@ -36,9 +36,11 @@
 			ng-repeat="class in menuSubClass"
 			ng-class="{active: class.Additional.IsSelected}"
 			ng-click="toggleSelected(class)">
+			
+			{{class.SubClassName}}
+			
 			<span class="label label-primary"
 				  ng-show="class.Additional.Ordered>0">{{class.Additional.Ordered}}</span>
-			{{class.SubClassName}}
 		</li>
 	</ul>
 </section>

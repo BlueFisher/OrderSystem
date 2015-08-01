@@ -47,6 +47,7 @@ namespace OrderSystem.Controllers {
 						}
 					}
 
+
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
 						DisherID = menu.DisherId,
@@ -66,43 +67,50 @@ namespace OrderSystem.Controllers {
 
 			}
 			Session["savedMenu"] = model;
-			Timer t = new Timer(1000*10);
-			t.Elapsed += (object sender, ElapsedEventArgs e) => {
-				string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=aaaaaaaab" + dti.AutoID.ToString());
-				FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
-				StreamWriter sw = new StreamWriter(fs);
-				sw.WriteLine(result);
-				
-				if(result == "1") {
-					using(MrCyContext ctx = new MrCyContext()) {
-						int id = Convert.ToInt32(dti.AutoID.ToString());
-						DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
-						info.IsPaid = 1;
-						ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
-						ctx.SaveChanges();
-					}
-					sw.WriteLine("1");
-					t.Stop();
-				}
-				else if(result == "0") {
-					sw.WriteLine("0");
-					t.Stop();
-				}
-				sw.Close();
-			};
-			t.Start();
+			
 			//string result = HttpPost("http://www.choice.shu.edu.cn/weixin/Send.aspx", "ordersn=" + dti.AutoID.ToString() + "&price=" + dti.Subtotal.ToString());
 
 			string returnContent = "";
 			if(model.PayKind == "支付宝") {
 
 			}
-			else {
+			else if(model.PayKind=="微信支付") {
 				//Session["pid"] = dti.AutoID.ToString();
 				//Session["pprice"] = dti.Subtotal.ToString();
 				//returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
+				string tempId = dti.AutoID.ToString() + DateTime.Now.ToFileTime();
+                returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100);
 
-				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + dti.AutoID.ToString() + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100);
+				Timer t = new Timer(1000 * 10);
+				t.Elapsed += (object sender, ElapsedEventArgs e) => {
+					string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
+					FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
+					StreamWriter sw = new StreamWriter(fs);
+					sw.WriteLine("订单号：" + dti.AutoID.ToString() + " " + tempId);
+					sw.WriteLine("接收到" + result);
+					result = result.Trim();
+					if(result == "1") {
+						using(MrCyContext ctx = new MrCyContext()) {
+							int id = Convert.ToInt32(dti.AutoID.ToString());
+							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
+							info.IsPaid = 1;
+							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
+							ctx.SaveChanges();
+						}
+						sw.WriteLine("支付成功");
+						((Timer)sender).Stop();
+					}
+					else if(result == "0") {
+						sw.WriteLine("支付失败");
+						((Timer)sender).Stop();
+					}
+					else {
+						sw.WriteLine("未支付");
+					}
+					
+					sw.Close();
+				};
+				t.Start();
 			}
 
 			return Content(returnContent);

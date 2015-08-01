@@ -2,7 +2,8 @@
 	<img class="img-index" src="/content/image/index.jpg" alt="">
 	<div ng-show="!isCompleted">
 		<h3>点餐完成，叫店小二收钱</h3>
-		<button class="btn btn-primary btn-lg btn-block" ng-click="pay()">确认</button>
+		<p>共计：{{TempPriceAll | currency : "￥"}}</p>
+		<button class="btn btn-primary btn-lg" ng-click="pay()">确认</button>
 	</div>
 	<div ng-show="isCompleted">
 		<h3>{{table.DeskName}}，上菜喽！</h3>
