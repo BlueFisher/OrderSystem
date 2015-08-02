@@ -177,7 +177,7 @@ app.controller('cartCtrl', [
 		$rootScope.addMenu = function (menu) {
 			menu.Additional.Ordered++;
 			rootCart.SizeAll++;
-			rootCart.PriceAll += menu.DisherPrice;
+			rootCart.PriceAll += menu.DisherPrice * menu.DisherDiscount;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
 					$scope.menuSubClass[i].Additional.Ordered++;
@@ -326,7 +326,6 @@ app.controller('cartCtrl', [
 		$scope.onlinePay = function (pay) {
 			filterObject($rootScope.cart.Results);
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
-			console.log($rootScope.cart);
 			
 			if (pay.PayName == '微信支付') {
 				$rootScope.cart.PayKind = '微信支付';

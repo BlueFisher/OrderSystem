@@ -79,7 +79,11 @@ namespace OrderSystem.Controllers {
 				//Session["pprice"] = dti.Subtotal.ToString();
 				//returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
 				string tempId = dti.AutoID.ToString() + DateTime.Now.ToFileTime();
-				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100);
+				string hotelid = "";
+				using(MrCyContext ctx = new MrCyContext()) {
+					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
+				}
+				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100) + "&hotelid=" + hotelid;
 
 				Timer t = new Timer(1000 * 10);
 				t.Elapsed += (object sender, ElapsedEventArgs e) => {
