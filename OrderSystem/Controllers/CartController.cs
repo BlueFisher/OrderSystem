@@ -83,7 +83,7 @@ namespace OrderSystem.Controllers {
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
 				}
-				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=aaaaaaaab" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100) + "&hotelid=" + hotelid;
+				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100) + "&hotelid=" + hotelid;
 
 				Timer t = new Timer(1000 * 10);
 				t.Elapsed += (object sender, ElapsedEventArgs e) => {
