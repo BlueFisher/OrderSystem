@@ -121,9 +121,11 @@ namespace OrderSystem.Controllers {
 					}
 					catch(Exception error) {
 						sw.WriteLine(error);
+					}
+					finally {
 						sw.Close();
 					}
-					sw.Close();
+					
 
 				};
 				t.Start();
@@ -325,7 +327,13 @@ namespace OrderSystem.Controllers {
 		}
 		public async Task<JsonResult> GetTablewareFee() {
 			using(MrCyContext ctx = new MrCyContext()) {
-				BaseInfo info = await ctx.BaseInfo.Where(p => p.InfoName == "TablewareFee").FirstOrDefaultAsync();
+				BaseInfo info = await ctx.BaseInfo.Where(p => p.InfoName == "HasTablewareFee").FirstOrDefaultAsync();
+				if(info.InfoContent == "false") {
+					return Json(new {
+						TablewareFee = 0
+					});
+				}
+				info = await ctx.BaseInfo.Where(p => p.InfoName == "TablewareFee").FirstOrDefaultAsync();
 				return Json(new {
 					TablewareFee = info.InfoContent
 				});

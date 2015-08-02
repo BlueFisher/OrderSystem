@@ -18,13 +18,13 @@ namespace OrderSystem.Models
         public string DeskId { get; set; }
         public string DeskName { get; set; }
         public string RoomId { get; set; }
-        public string RoomRemark { get; set; }
+        public string DeskRemark { get; set; }
         public bool Usable { get; set; }
         public Nullable<int> DinerNumber { get; set; }
         public string DinerCircumstance { get; set; }
         public Nullable<bool> IsRoom { get; set; }
         public string QRCode { get; set; }
-        public Nullable<decimal> MinConsuption { get; set; }
+        public Nullable<decimal> MinConsumption { get; set; }
         public Nullable<short> Status { get; set; }
         public Nullable<int> UsedNum { get; set; }
         public string AreaID { get; set; }

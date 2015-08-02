@@ -322,6 +322,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AreaInfo.cs">
+      <DependentUpon>MrCyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BaseInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
@@ -396,9 +399,6 @@
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PayKind.cs">
-      <DependentUpon>MrCyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PayStatus.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PosInfo.cs">

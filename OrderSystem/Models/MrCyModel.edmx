@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.AreaInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="AreaInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AreaID" Type="varchar" MaxLength="5" />
+          <Property Name="AreaName" Type="varchar" MaxLength="20" />
+          <Property Name="Description" Type="varchar" MaxLength="30" />
+        </EntityType>
         <EntityType Name="BaseInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -140,13 +151,13 @@
           <Property Name="DeskId" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="DeskName" Type="varchar" MaxLength="30" />
           <Property Name="RoomId" Type="varchar" MaxLength="10" />
-          <Property Name="RoomRemark" Type="varchar" MaxLength="50" />
+          <Property Name="DeskRemark" Type="varchar" MaxLength="50" />
           <Property Name="Usable" Type="bit" Nullable="false" />
           <Property Name="DinerNumber" Type="int" />
           <Property Name="DinerCircumstance" Type="varchar" MaxLength="50" />
           <Property Name="IsRoom" Type="bit" />
           <Property Name="QRCode" Type="varchar" MaxLength="10" />
-          <Property Name="MinConsuption" Type="money" />
+          <Property Name="MinConsumption" Type="money" />
           <Property Name="Status" Type="smallint" />
           <Property Name="UsedNum" Type="int" />
           <Property Name="AreaID" Type="varchar" MaxLength="6" />
@@ -204,6 +215,7 @@
           <Property Name="PayKind" Type="varchar" MaxLength="10" />
           <Property Name="Subtotal" Type="money" />
           <Property Name="PaidAccount" Type="varchar" MaxLength="20" />
+          <Property Name="IsRefund" Type="bit" />
         </EntityType>
         <EntityType Name="DineInfoHistory">
           <Key>
@@ -255,7 +267,7 @@
           <Key>
             <PropertyRef Name="ClassId" />
           </Key>
-          <Property Name="AutoId" Type="int" />
+          <Property Name="AutoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClassId" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="ClassName" Type="varchar" MaxLength="10" />
           <Property Name="ClassRemark" Type="varchar" MaxLength="50" />
@@ -348,18 +360,6 @@
           <Property Name="Deletor" Type="varchar" MaxLength="20" />
           <Property Name="DeleteDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="PayStatus">
-          <Key>
-            <PropertyRef Name="index" />
-          </Key>
-          <Property Name="index" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PayKind" Type="varchar" MaxLength="50" />
-          <Property Name="Status" Type="smallint" Nullable="false" />
-          <Property Name="OrderSN" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Price" Type="smallint" />
-          <Property Name="OpenID" Type="varchar" MaxLength="50" />
-          <Property Name="WeiPaySN" Type="varchar" MaxLength="50" />
-        </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.PosInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="PosInfo">
@@ -433,9 +433,16 @@
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PayKind" EntityType="Self.PayKind" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PayStatus" EntityType="Self.PayStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AreaInfo" EntityType="Self.AreaInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AreaInfo].[AutoID] AS [AutoID], 
+    [AreaInfo].[AreaID] AS [AreaID], 
+    [AreaInfo].[AreaName] AS [AreaName], 
+    [AreaInfo].[Description] AS [Description]
+    FROM [dbo].[AreaInfo] AS [AreaInfo]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Note" EntityType="Self.Note" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Note].[AutoID] AS [AutoID], 
@@ -598,13 +605,13 @@
           <Property Name="DeskId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DeskName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="RoomId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="RoomRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeskRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Usable" Type="Boolean" Nullable="false" />
           <Property Name="DinerNumber" Type="Int32" />
           <Property Name="DinerCircumstance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsRoom" Type="Boolean" />
           <Property Name="QRCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="MinConsuption" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MinConsumption" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Status" Type="Int16" />
           <Property Name="UsedNum" Type="Int32" />
           <Property Name="AreaID" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
@@ -662,6 +669,7 @@
           <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="PaidAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsRefund" Type="Boolean" />
         </EntityType>
         <EntityType Name="DineInfoHistory">
           <Key>
@@ -713,7 +721,7 @@
           <Key>
             <PropertyRef Name="ClassId" />
           </Key>
-          <Property Name="AutoId" Type="Int32" />
+          <Property Name="AutoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClassId" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ClassName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="ClassRemark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -797,18 +805,6 @@
           <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="PayStatus">
-          <Key>
-            <PropertyRef Name="index" />
-          </Key>
-          <Property Name="index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PayKind" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int16" Nullable="false" />
-          <Property Name="OrderSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Price" Type="Int16" />
-          <Property Name="OpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WeiPaySN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="PrinterInfo">
           <Key>
             <PropertyRef Name="PrinterId" />
@@ -840,6 +836,15 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="AreaInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AreaID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="AreaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Note">
           <Key>
@@ -885,9 +890,9 @@
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" />
           <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" />
           <EntitySet Name="PayKind" EntityType="Self.PayKind" />
-          <EntitySet Name="PayStatus" EntityType="Self.PayStatus" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" />
+          <EntitySet Name="AreaInfo" EntityType="Self.AreaInfo" />
           <EntitySet Name="Note" EntityType="Self.Note" />
           <EntitySet Name="PosInfo" EntityType="Self.PosInfo" />
           <EntitySet Name="Waiter" EntityType="Self.Waiter" />
@@ -1039,13 +1044,13 @@
                 <ScalarProperty Name="DeskId" ColumnName="DeskId" />
                 <ScalarProperty Name="DeskName" ColumnName="DeskName" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="RoomRemark" ColumnName="RoomRemark" />
+                <ScalarProperty Name="DeskRemark" ColumnName="DeskRemark" />
                 <ScalarProperty Name="Usable" ColumnName="Usable" />
                 <ScalarProperty Name="DinerNumber" ColumnName="DinerNumber" />
                 <ScalarProperty Name="DinerCircumstance" ColumnName="DinerCircumstance" />
                 <ScalarProperty Name="IsRoom" ColumnName="IsRoom" />
                 <ScalarProperty Name="QRCode" ColumnName="QRCode" />
-                <ScalarProperty Name="MinConsuption" ColumnName="MinConsuption" />
+                <ScalarProperty Name="MinConsumption" ColumnName="MinConsumption" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="UsedNum" ColumnName="UsedNum" />
                 <ScalarProperty Name="AreaID" ColumnName="AreaID" />
@@ -1106,6 +1111,7 @@
                 <ScalarProperty Name="PayKind" ColumnName="PayKind" />
                 <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
                 <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
+                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1250,19 +1256,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PayStatus">
-            <EntityTypeMapping TypeName="MrCyModel.PayStatus">
-              <MappingFragment StoreEntitySet="PayStatus">
-                <ScalarProperty Name="index" ColumnName="index" />
-                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="OrderSN" ColumnName="OrderSN" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
-                <ScalarProperty Name="WeiPaySN" ColumnName="WeiPaySN" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PrinterInfo">
             <EntityTypeMapping TypeName="MrCyModel.PrinterInfo">
               <MappingFragment StoreEntitySet="PrinterInfo">
@@ -1294,6 +1287,16 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="Deletor" ColumnName="Deletor" />
                 <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AreaInfo">
+            <EntityTypeMapping TypeName="MrCyModel.AreaInfo">
+              <MappingFragment StoreEntitySet="AreaInfo">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

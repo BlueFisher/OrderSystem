@@ -191,7 +191,7 @@ app.controller('cartCtrl', [
 		$rootScope.removeMenu = function (menu) {
 			menu.Additional.Ordered--;
 			rootCart.SizeAll--;
-			rootCart.PriceAll -= menu.DisherPrice;
+			rootCart.PriceAll -= menu.DisherPrice * menu.DisherDiscount;;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
 					$scope.menuSubClass[i].Additional.Ordered--;

@@ -12,14 +12,11 @@ namespace OrderSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PayStatus
+    public partial class AreaInfo
     {
-        public int index { get; set; }
-        public string PayKind { get; set; }
-        public short Status { get; set; }
-        public string OrderSN { get; set; }
-        public Nullable<short> Price { get; set; }
-        public string OpenID { get; set; }
-        public string WeiPaySN { get; set; }
+        public int AutoID { get; set; }
+        public string AreaID { get; set; }
+        public string AreaName { get; set; }
+        public string Description { get; set; }
     }
 }

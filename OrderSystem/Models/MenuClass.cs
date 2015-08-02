@@ -14,7 +14,7 @@ namespace OrderSystem.Models
     
     public partial class MenuClass
     {
-        public Nullable<int> AutoId { get; set; }
+        public int AutoId { get; set; }
         public string ClassId { get; set; }
         public string ClassName { get; set; }
         public string ClassRemark { get; set; }
