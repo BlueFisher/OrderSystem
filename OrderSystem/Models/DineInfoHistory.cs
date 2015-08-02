@@ -26,5 +26,6 @@ namespace OrderSystem.Models
         public Nullable<System.DateTime> BeginTime { get; set; }
         public string PayKind { get; set; }
         public Nullable<decimal> Subtotal { get; set; }
+        public string PaidAccount { get; set; }
     }
 }

@@ -12,18 +12,11 @@ namespace OrderSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DineTempInfo
+    public partial class PosInfo
     {
         public int AutoID { get; set; }
-        public string ClientID { get; set; }
-        public string DeskID { get; set; }
-        public string Roomid { get; set; }
-        public Nullable<System.DateTime> BeginTime { get; set; }
-        public Nullable<short> peoplecount { get; set; }
-        public Nullable<decimal> Subtotal { get; set; }
-        public Nullable<int> IsPaid { get; set; }
-        public string PaidAccount { get; set; }
-        public string PayKind { get; set; }
-        public string Invoice { get; set; }
+        public string PosNum { get; set; }
+        public string PosName { get; set; }
+        public Nullable<bool> NetworkProcess { get; set; }
     }
 }

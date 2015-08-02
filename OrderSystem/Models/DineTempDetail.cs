@@ -14,12 +14,12 @@ namespace OrderSystem.Models
     
     public partial class DineTempDetail
     {
+        public int TempDetailAutoID { get; set; }
         public int AutoID { get; set; }
         public string DisherID { get; set; }
         public Nullable<int> DisherNum { get; set; }
         public Nullable<decimal> DisherPrice { get; set; }
         public Nullable<double> SalesDiscount { get; set; }
         public string Note { get; set; }
-        public int TempDetailAutoId { get; set; }
     }
 }

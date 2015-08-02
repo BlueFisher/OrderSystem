@@ -44,9 +44,11 @@ namespace OrderSystem.Models
         public virtual DbSet<MenuDetail> MenuDetail { get; set; }
         public virtual DbSet<MenuSubClass> MenuSubClass { get; set; }
         public virtual DbSet<PayKind> PayKind { get; set; }
+        public virtual DbSet<PayStatus> PayStatus { get; set; }
         public virtual DbSet<PrinterInfo> PrinterInfo { get; set; }
         public virtual DbSet<RoomInfo> RoomInfo { get; set; }
         public virtual DbSet<Note> Note { get; set; }
+        public virtual DbSet<PosInfo> PosInfo { get; set; }
         public virtual DbSet<Waiter> Waiter { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace OrderSystem.Models
         public Nullable<bool> Quitstatus { get; set; }
         public Nullable<decimal> SalesPrice { get; set; }
         public Nullable<double> SalesDiscount { get; set; }
-        public Nullable<bool> Ispayed { get; set; }
+        public Nullable<bool> IsPaid { get; set; }
         public string Note { get; set; }
     }
 }

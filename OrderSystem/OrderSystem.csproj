@@ -398,6 +398,12 @@
     <Compile Include="Models\PayKind.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PayStatus.cs">
+      <DependentUpon>MrCyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PosInfo.cs">
+      <DependentUpon>MrCyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PrinterInfo.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
