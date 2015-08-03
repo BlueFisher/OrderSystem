@@ -34,7 +34,8 @@ namespace OrderSystem.Controllers {
 					peoplecount = (short)model.Customer,
 					IsPaid = 0,
 					PayKind = model.PayKind,
-					Subtotal = (decimal)model.PriceAll
+					Subtotal = (decimal)model.PriceAll,
+					Invoice = model.Bill
 				};
 				ctx.DineTempInfo.Add(dti);
 				await ctx.SaveChangesAsync();
@@ -82,6 +83,10 @@ namespace OrderSystem.Controllers {
 				string hotelid = "";
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
+					dti = await ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefaultAsync();
+					dti.PaidAccount = tempId;
+					ctx.Entry<DineTempInfo>(dti).Property(p => p.PaidAccount).IsModified = true;
+					ctx.SaveChanges();
 				}
 				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100) + "&hotelid=" + hotelid;
 
