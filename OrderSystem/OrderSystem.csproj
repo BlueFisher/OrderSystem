@@ -99,10 +99,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\db_MrCy.mdf" />
-    <Content Include="App_Data\db_MrCy_log.ldf">
-      <DependentUpon>db_MrCy.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\css\bootstrap\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
@@ -440,6 +436,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Views\Cart\" />
   </ItemGroup>
   <ItemGroup>

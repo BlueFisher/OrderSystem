@@ -18,9 +18,7 @@ using System.Timers;
 namespace OrderSystem.Controllers {
 	public class CartController : Controller {
 
-		public async Task<ContentResult> Submit(SubmitViewModel model) {
-
-
+		public ContentResult Submit(SubmitViewModel model) {
 			DineTempInfo dti;
 			using(MrCyContext ctx = new MrCyContext()) {
 				string client = null;
@@ -37,7 +35,7 @@ namespace OrderSystem.Controllers {
 					Subtotal = (decimal)model.PriceAll
 				};
 				ctx.DineTempInfo.Add(dti);
-				await ctx.SaveChangesAsync();
+				ctx.SaveChanges();
 
 				foreach(SubmitMenuDetail menu in model.Results) {
 					string note = "";
@@ -46,8 +44,6 @@ namespace OrderSystem.Controllers {
 							note += (n.Note1 + " ");
 						}
 					}
-
-
 					DineTempDetail dtd = new DineTempDetail() {
 						AutoID = dti.AutoID,
 						DisherID = menu.DisherId,
@@ -58,52 +54,49 @@ namespace OrderSystem.Controllers {
 					};
 					ctx.DineTempDetail.Add(dtd);
 				}
-				await ctx.SaveChangesAsync();
+				ctx.SaveChanges();
 
-				DeskInfo d = await ctx.DeskInfo.Where(p => p.DeskId == model.Table.DeskId).FirstOrDefaultAsync();
+				DeskInfo d = ctx.DeskInfo.Where(p => p.DeskId == model.Table.DeskId).FirstOrDefault();
 				d.Status = 1;
 				ctx.Entry<DeskInfo>(d).Property(p => p.Status).IsModified = true;
-				await ctx.SaveChangesAsync();
+				ctx.SaveChanges();
 
 			}
 			Session["savedMenu"] = model;
-
-			//string result = HttpPost("http://www.choice.shu.edu.cn/weixin/Send.aspx", "ordersn=" + dti.AutoID.ToString() + "&price=" + dti.Subtotal.ToString());
 
 			string returnContent = "";
 			if(model.PayKind == "支付宝") {
 
 			}
 			else if(model.PayKind == "微信支付") {
-				//Session["pid"] = dti.AutoID.ToString();
-				//Session["pprice"] = dti.Subtotal.ToString();
-				//returnContent = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
-				string tempId = dti.AutoID.ToString() + DateTime.Now.ToFileTime();
+				string id = dti.AutoID.ToString();
+				string tempId = id + DateTime.Now.ToFileTime();
 				string hotelid = "";
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
 				}
-				returnContent = "http://www.choice.shu.edu.cn/weixin/Send.aspx?" + "ordersn=" + tempId + "&price=" + Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100) + "&hotelid=" + hotelid;
+				returnContent = String.Format(
+					"http://www.choice.shu.edu.cn/weixin/Send.aspx?ordersn={0}&price={1}&hotelid={2}&id={3}",
+					tempId,
+					Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100),
+					hotelid,
+					id
+				);
 
 				Timer t = new Timer(1000 * 10);
 				t.Elapsed += (object sender, ElapsedEventArgs e) => {
 					FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
 					StreamWriter sw = new StreamWriter(fs);
 					try {
-						
-						string result = "";
+						string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
 
-						result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
-
-
-						sw.WriteLine("订单号：" + dti.AutoID.ToString() + " " + tempId);
+						sw.WriteLine("订单号：" + id + " " + tempId);
 						sw.WriteLine(DateTime.Now.ToLocalTime());
 						sw.WriteLine("接收到" + result);
 						result = result.Trim();
 						if(result == "1") {
 							using(MrCyContext ctx = new MrCyContext()) {
-								int id = Convert.ToInt32(dti.AutoID.ToString());
-								DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
+								DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
 								info.IsPaid = 1;
 								ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 								ctx.SaveChanges();
@@ -123,10 +116,9 @@ namespace OrderSystem.Controllers {
 						sw.WriteLine(error);
 					}
 					finally {
+						sw.WriteLine("===========================");
 						sw.Close();
 					}
-					
-
 				};
 				t.Start();
 			}
@@ -138,7 +130,7 @@ namespace OrderSystem.Controllers {
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
 			request.CookieContainer = new CookieContainer();
 			CookieContainer cookie = request.CookieContainer;//如果用不到Cookie，删去即可  
-			//以下是发送的http头，随便加，其中referer挺重要的，有些网站会根据这个来反盗链  
+															 //以下是发送的http头，随便加，其中referer挺重要的，有些网站会根据这个来反盗链  
 			request.Referer = Url;
 			request.Accept = "application/x-www-form-urlencoded";
 			request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36";
