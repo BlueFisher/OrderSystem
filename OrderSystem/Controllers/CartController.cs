@@ -11,8 +11,8 @@ using WeiPay;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
-using System.IO;
-using System.Timers;
+
+using System.Configuration;
 
 
 namespace OrderSystem.Controllers {
@@ -54,6 +54,14 @@ namespace OrderSystem.Controllers {
 						SalesDiscount = menu.DisherDiscount
 					};
 					ctx.DineTempDetail.Add(dtd);
+					MenuDetail m = ctx.MenuDetail.FirstOrDefault(p => p.DisherId == menu.DisherId);
+					if(m.DisherPoint == null) {
+						m.DisherPoint = 1;
+					}
+					else {
+						m.DisherPoint++;
+					}
+					ctx.Entry<MenuDetail>(m).Property(p => p.DisherPoint).IsModified = true;
 				}
 				ctx.SaveChanges();
 
@@ -85,95 +93,11 @@ namespace OrderSystem.Controllers {
 					Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100),
 					hotelid,
 					id,
-					"http://10.1.131.37/Pay/WeixinCompleted/"
+					ConfigurationManager.AppSettings["WeixinRedirectUrl"].ToString()
 				);
-
-				//Timer t = new Timer(1000 * 10);
-				//t.Elapsed += (object sender, ElapsedEventArgs e) => {
-				//	FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
-				//	StreamWriter sw = new StreamWriter(fs);
-				//	try {
-				//		string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
-
-				//		sw.WriteLine("订单号：" + id + " " + tempId);
-				//		sw.WriteLine(DateTime.Now.ToLocalTime());
-				//		sw.WriteLine("接收到" + result);
-				//		result = result.Trim();
-				//		if(result == "1") {
-				//			using(MrCyContext ctx = new MrCyContext()) {
-				//				DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
-				//				info.IsPaid = 1;
-				//				ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
-				//				ctx.SaveChanges();
-				//			}
-				//			sw.WriteLine("支付成功");
-				//			((Timer)sender).Stop();
-				//		}
-				//		else if(result == "0") {
-				//			sw.WriteLine("支付失败");
-				//			((Timer)sender).Stop();
-				//		}
-				//		else {
-				//			sw.WriteLine("未支付");
-				//		}
-				//	}
-				//	catch(Exception error) {
-				//		sw.WriteLine(error);
-				//	}
-				//	finally {
-				//		sw.WriteLine("===========================");
-				//		sw.Close();
-				//	}
-				//};
-				//t.Start();
 			}
 
 			return Content(returnContent);
-		}
-
-		private string HttpPost(string Url, string postDataStr) {
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-			request.CookieContainer = new CookieContainer();
-			CookieContainer cookie = request.CookieContainer;//如果用不到Cookie，删去即可  
-															 //以下是发送的http头，随便加，其中referer挺重要的，有些网站会根据这个来反盗链  
-			request.Referer = Url;
-			request.Accept = "application/x-www-form-urlencoded";
-			request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36";
-			request.KeepAlive = true;
-			//上面的http头看情况而定，但是下面俩必须加  
-			request.ContentType = "application/json;charset=UTF-8";
-			request.Method = "POST";
-
-			Encoding encoding = Encoding.UTF8;//根据网站的编码自定义  
-			byte[] postData = encoding.GetBytes(postDataStr);//postDataStr即为发送的数据，格式还是和上次说的一样  
-			request.ContentLength = postData.Length;
-			Stream requestStream = request.GetRequestStream();
-			requestStream.Write(postData, 0, postData.Length);
-
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			Stream responseStream = response.GetResponseStream();
-
-			StreamReader streamReader = new StreamReader(responseStream, encoding);
-			string retString = streamReader.ReadToEnd();
-
-			streamReader.Close();
-			responseStream.Close();
-
-			return retString;
-		}
-		public string HttpGet(string Url) {
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-			request.Method = "GET";
-			request.ContentType = "text/plain;charset=UTF-8";
-
-			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			Stream myResponseStream = response.GetResponseStream();
-			StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-			string retString = myStreamReader.ReadToEnd();
-			myStreamReader.Close();
-			myResponseStream.Close();
-
-			return retString;
 		}
 
 		private string alipaySubmit(string pid, string pprice) {
