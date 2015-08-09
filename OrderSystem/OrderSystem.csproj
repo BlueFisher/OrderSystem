@@ -427,7 +427,7 @@
     <Content Include="Views\Home\partial-onlinepay.cshtml" />
     <Content Include="Views\Home\partial-onlinepaysuccess.cshtml" />
     <Content Include="Views\Home\partial-onlinepayfail.cshtml" />
-    <Content Include="Views\Pay\Weixin.cshtml" />
+    <Content Include="Views\Pay\WeixinCompleted.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

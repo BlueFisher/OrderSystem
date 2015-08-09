@@ -75,57 +75,58 @@ namespace OrderSystem.Controllers {
 				string hotelid = "";
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
-					dti = await ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefaultAsync();
+					dti = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
 					dti.PaidAccount = tempId;
 					ctx.Entry<DineTempInfo>(dti).Property(p => p.PaidAccount).IsModified = true;
 					ctx.SaveChanges();
 				}
 				returnContent = String.Format(
-					"http://www.choice.shu.edu.cn/weixin/Send.aspx?ordersn={0}&price={1}&hotelid={2}&id={3}",
+					"http://www.choice.shu.edu.cn/weixin/Send.aspx?ordersn={0}&price={1}&hotelid={2}&id={3}&rediret={4}",
 					tempId,
 					Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100),
 					hotelid,
-					id
+					id,
+					"http://localhost/Pay/WeixinCompleted/"
 				);
 
-				Timer t = new Timer(1000 * 10);
-				t.Elapsed += (object sender, ElapsedEventArgs e) => {
-					FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
-					StreamWriter sw = new StreamWriter(fs);
-					try {
-						string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
+				//Timer t = new Timer(1000 * 10);
+				//t.Elapsed += (object sender, ElapsedEventArgs e) => {
+				//	FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
+				//	StreamWriter sw = new StreamWriter(fs);
+				//	try {
+				//		string result = HttpGet("http://www.choice.shu.edu.cn/weixin/NotifyLocal.aspx?ordersn=" + tempId);
 
-						sw.WriteLine("订单号：" + id + " " + tempId);
-						sw.WriteLine(DateTime.Now.ToLocalTime());
-						sw.WriteLine("接收到" + result);
-						result = result.Trim();
-						if(result == "1") {
-							using(MrCyContext ctx = new MrCyContext()) {
-								DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
-								info.IsPaid = 1;
-								ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
-								ctx.SaveChanges();
-							}
-							sw.WriteLine("支付成功");
-							((Timer)sender).Stop();
-						}
-						else if(result == "0") {
-							sw.WriteLine("支付失败");
-							((Timer)sender).Stop();
-						}
-						else {
-							sw.WriteLine("未支付");
-						}
-					}
-					catch(Exception error) {
-						sw.WriteLine(error);
-					}
-					finally {
-						sw.WriteLine("===========================");
-						sw.Close();
-					}
-				};
-				t.Start();
+				//		sw.WriteLine("订单号：" + id + " " + tempId);
+				//		sw.WriteLine(DateTime.Now.ToLocalTime());
+				//		sw.WriteLine("接收到" + result);
+				//		result = result.Trim();
+				//		if(result == "1") {
+				//			using(MrCyContext ctx = new MrCyContext()) {
+				//				DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
+				//				info.IsPaid = 1;
+				//				ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
+				//				ctx.SaveChanges();
+				//			}
+				//			sw.WriteLine("支付成功");
+				//			((Timer)sender).Stop();
+				//		}
+				//		else if(result == "0") {
+				//			sw.WriteLine("支付失败");
+				//			((Timer)sender).Stop();
+				//		}
+				//		else {
+				//			sw.WriteLine("未支付");
+				//		}
+				//	}
+				//	catch(Exception error) {
+				//		sw.WriteLine(error);
+				//	}
+				//	finally {
+				//		sw.WriteLine("===========================");
+				//		sw.Close();
+				//	}
+				//};
+				//t.Start();
 			}
 
 			return Content(returnContent);
