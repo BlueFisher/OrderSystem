@@ -298,7 +298,8 @@ app.controller('cartCtrl', [
 	'$location',
 	'$http',
 	'filterObject',
-	function ($scope, $rootScope, $location, $http,filterObject) {
+	'$window',
+	function ($scope, $rootScope, $location, $http,filterObject,$window) {
 		$rootScope.viewTitle = '结算';
 		$rootScope.hideBackBtn = false;
 		if ($rootScope.cart == null) {
@@ -332,7 +333,7 @@ app.controller('cartCtrl', [
 				
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 					delete $rootScope.cart;
-					location.href = data;
+					$window.location.href = data;
 				});
 			} else {
 				$rootScope.cart.PayKind = '';

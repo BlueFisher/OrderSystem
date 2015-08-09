@@ -81,12 +81,11 @@ namespace OrderSystem.Controllers {
 					ctx.SaveChanges();
 				}
 				returnContent = String.Format(
-					"http://www.choice.shu.edu.cn/weixin/Send.aspx?ordersn={0}&price={1}&hotelid={2}&id={3}&rediret={4}",
-					tempId,
+					"http://www.choice.shu.edu.cn/weixin/Send.aspx?price={0}&hotelid={1}&id={2}&rediret={3}",
 					Convert.ToInt32(Convert.ToDouble(dti.Subtotal.ToString()) * 100),
 					hotelid,
 					id,
-					"http://localhost/Pay/WeixinCompleted/"
+					"http://10.1.131.37/Pay/WeixinCompleted/"
 				);
 
 				//Timer t = new Timer(1000 * 10);
