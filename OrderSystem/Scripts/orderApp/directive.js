@@ -34,4 +34,16 @@
 			}
 		}
     }
-});;
+}).directive('closeButton', function () {
+    return {
+		restrict: 'A',
+
+		link: function (scope, element, attrs) {
+			element.bind('click', close);
+
+			function close() {
+				WeixinJSBridge.call('closeWindow');
+			}
+		}
+    }
+});

@@ -20,12 +20,16 @@
 	<section class="header clearfix" 
 		ng-hide="hideNavBar" ng-controller="accountCtrl">
 		<button type="button" class="btn btn-primary header-left" 
-			back-button ng-hide="hideBackBtn">
+			back-button ng-show="backBtn">
 			<span class="fa fa-chevron-left"></span> 返回
 		</button>
 		<button type="button" class="btn btn-primary header-left" 
-			route-href="/cart" ng-show="hideBackBtn">
+			route-href="/cart" ng-show="indexBtn">
 			点菜
+		</button>
+		<button type="button" class="btn btn-primary header-left" 
+			close-button ng-show="closeBtn">
+			关闭
 		</button>
 		<div class="header-center">{{viewTitle}}</div>
 		<div class="btn-group btn-group-navicon header-right" dropdown is-open="status.isopen">

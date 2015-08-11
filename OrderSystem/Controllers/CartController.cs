@@ -54,6 +54,7 @@ namespace OrderSystem.Controllers {
 						SalesDiscount = menu.DisherDiscount
 					};
 					ctx.DineTempDetail.Add(dtd);
+					// 增加已点人数
 					MenuDetail m = ctx.MenuDetail.FirstOrDefault(p => p.DisherId == menu.DisherId);
 					if(m.DisherPoint == null) {
 						m.DisherPoint = 1;
@@ -78,15 +79,10 @@ namespace OrderSystem.Controllers {
 
 			}
 			else if(model.PayKind == "微信支付") {
-				string id = dti.AutoID.ToString();
-				string tempId = id + DateTime.Now.ToFileTime();
+				int id = dti.AutoID;
 				string hotelid = "";
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
-					dti = ctx.DineTempInfo.Where(p => p.AutoID == dti.AutoID).FirstOrDefault();
-					dti.PaidAccount = tempId;
-					ctx.Entry<DineTempInfo>(dti).Property(p => p.PaidAccount).IsModified = true;
-					ctx.SaveChanges();
 				}
 				returnContent = String.Format(
 					"http://www.choice.shu.edu.cn/weixin/Send.aspx?price={0}&hotelid={1}&id={2}&rediret={3}",
@@ -95,150 +91,15 @@ namespace OrderSystem.Controllers {
 					id,
 					ConfigurationManager.AppSettings["WeixinRedirectUrl"].ToString()
 				);
+				PayController.StartTimer(id, hotelid);
+
+
 			}
 
 			return Content(returnContent);
 		}
 
-		private string alipaySubmit(string pid, string pprice) {
-			string payment_type = "1";
-			//必填，不能修改
-			//服务器异步通知页面路径
-			string notify_url = "http://www.choice.shu.edu.cn/Pay/Completed";
-			//需http://格式的完整路径，不能加?id=123这类自定义参数
 
-			//页面跳转同步通知页面路径
-			string return_url = "http://www.choice.shu.edu.cn/Pay/Index";
-			//需http://格式的完整路径，不能加?id=123这类自定义参数，不能写成http://localhost/
-
-			//商户订单号
-			string out_trade_no = pid;
-			//商户网站订单系统中唯一订单号，必填
-
-			//订单名称
-			string subject = "上海乔曦信息技术有限";
-			//必填
-
-			//付款金额
-			string price = pprice;
-			//必填
-
-			//商品数量
-			string quantity = "1";
-			//必填，建议默认为1，不改变值，把一次交易看成是一次下订单而非购买一件商品
-			//物流费用
-			string logistics_fee = "0.00";
-			//必填，即运费
-			//物流类型
-			string logistics_type = "EXPRESS";
-			//必填，三个值可选：EXPRESS（快递）、POST（平邮）、EMS（EMS）
-			//物流支付方式
-			string logistics_payment = "SELLER_PAY";
-			//必填，两个值可选：SELLER_PAY（卖家承担运费）、BUYER_PAY（买家承担运费）
-			//订单描述
-
-			string body = "";
-			//商品展示地址
-			string show_url = "";
-			//需以http://开头的完整路径，如：http://www.商户网站.com/myorder.html
-
-			//收货人姓名
-			string receive_name = "";
-			//如：张三
-
-			//收货人地址
-			string receive_address = "";
-			//如：XX省XXX市XXX区XXX路XXX小区XXX栋XXX单元XXX号
-
-			//收货人邮编
-			string receive_zip = "";
-			//如：123456
-
-			//收货人电话号码
-			string receive_phone = "";
-			//如：0571-88158090
-
-			//收货人手机号码
-			string receive_mobile = "";
-			//如：13312341234
-
-
-			////////////////////////////////////////////////////////////////////////////////////////////////
-
-			//把请求参数打包成数组
-			SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
-			sParaTemp.Add("partner", Config.Partner);
-			sParaTemp.Add("seller_email", Config.Seller_email);
-			sParaTemp.Add("_input_charset", Config.Input_charset.ToLower());
-			sParaTemp.Add("service", "create_partner_trade_by_buyer");
-			sParaTemp.Add("payment_type", payment_type);
-			sParaTemp.Add("notify_url", notify_url);
-			sParaTemp.Add("return_url", return_url);
-			sParaTemp.Add("out_trade_no", out_trade_no);
-			sParaTemp.Add("subject", subject);
-			sParaTemp.Add("price", price);
-			sParaTemp.Add("quantity", quantity);
-			sParaTemp.Add("logistics_fee", logistics_fee);
-			sParaTemp.Add("logistics_type", logistics_type);
-			sParaTemp.Add("logistics_payment", logistics_payment);
-			sParaTemp.Add("body", body);
-			sParaTemp.Add("show_url", show_url);
-			sParaTemp.Add("receive_name", receive_name);
-			sParaTemp.Add("receive_address", receive_address);
-			sParaTemp.Add("receive_zip", receive_zip);
-			sParaTemp.Add("receive_phone", receive_phone);
-			sParaTemp.Add("receive_mobile", receive_mobile);
-
-			//建立请求
-
-			return Com.Alipay.Submit.BuildRequest(sParaTemp, "get", "确认");
-		}
-
-		public ActionResult weixinSubmit() {
-			string UserOpenId = "";
-
-			string code = Request.QueryString["code"];
-			if(string.IsNullOrEmpty(code)) {
-				string code_url = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state=lk#wechat_redirect", PayConfig.AppId, PayConfig.SendUrl);
-				return Redirect(code_url);
-			}
-			else {
-				LogUtil.WriteLog(" ============ 开始 获取微信用户相关信息 =====================");
-
-				#region 获取支付用户 OpenID================
-				string url = string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", PayConfig.AppId, PayConfig.AppSecret, code);
-				string returnStr = HttpUtil.Send("", url);
-				LogUtil.WriteLog("Send 页面  returnStr 第一个：" + returnStr);
-
-				var obj = JsonConvert.DeserializeObject<OpenModel>(returnStr);
-
-				url = string.Format("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type=refresh_token&refresh_token={1}", PayConfig.AppId, obj.refresh_token);
-				returnStr = HttpUtil.Send("", url);
-				obj = JsonConvert.DeserializeObject<OpenModel>(returnStr);
-
-				LogUtil.WriteLog("Send 页面  access_token：" + obj.access_token);
-				LogUtil.WriteLog("Send 页面  openid=" + obj.openid);
-
-				url = string.Format("https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}", obj.access_token, obj.openid);
-				returnStr = HttpUtil.Send("", url);
-				LogUtil.WriteLog("Send 页面  returnStr：" + returnStr);
-
-				UserOpenId = obj.openid;
-
-				LogUtil.WriteLog(" ============ 结束 获取微信用户相关信息 =====================");
-				#endregion
-			}
-
-			PayModel model = new PayModel();
-			model.OrderSN = Session["pid"].ToString();
-			model.TotalFee = Convert.ToInt32(Convert.ToDouble(Session["pprice"]) * 100);
-			model.Body = "";
-			model.Attach = "";
-			model.OpenId = UserOpenId;
-
-			//跳转到 WeiPay.aspx 页面，请设置函数中WeiPay.aspx的页面地址
-			return Redirect(model.ToString());
-		}
 
 		public async Task<JsonResult> GetPayName() {
 			using(MrCyContext ctx = new MrCyContext()) {

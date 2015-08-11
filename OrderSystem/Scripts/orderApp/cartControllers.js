@@ -7,7 +7,9 @@ app.controller('indexCtrl', [
 	'$location',
 	function ($scope, $rootScope, $location) {
 		$rootScope.viewTitle = '店小二';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 	}
 ]);
 
@@ -30,7 +32,9 @@ app.controller('cartCtrl', [
 		}
 
 		$rootScope.viewTitle = '菜单';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		var classMode = {
 			search: 0,
@@ -260,7 +264,9 @@ app.controller('cartCtrl', [
 	'$modal',
 	function ($scope, $rootScope, $location, $modal) {
 		$rootScope.viewTitle = '查看订单';
-		$rootScope.hideBackBtn = false;
+		$rootScope.backBtn = true;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
@@ -301,7 +307,9 @@ app.controller('cartCtrl', [
 	'$window',
 	function ($scope, $rootScope, $location, $http,filterObject,$window) {
 		$rootScope.viewTitle = '结算';
-		$rootScope.hideBackBtn = false;
+		$rootScope.backBtn = true;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
@@ -333,6 +341,7 @@ app.controller('cartCtrl', [
 				
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 					delete $rootScope.cart;
+					alert(data);
 					$window.location.href = data;
 				});
 			} else {
@@ -350,7 +359,9 @@ app.controller('cartCtrl', [
 	'filterObject',
 	function ($scope, $rootScope, $location, $http, filterObject) {
 		$rootScope.viewTitle = '完成点单';
-		$rootScope.hideBackBtn = false;
+		$rootScope.backBtn = true;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
@@ -380,7 +391,9 @@ app.controller('cartCtrl', [
 	'filterObject',
 	function ($scope, $rootScope, $location, $http, $sce, filterObject) {
 		$rootScope.viewTitle = '完成点单';
-		$rootScope.hideBackBtn = false;
+		$rootScope.backBtn = true;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = false;
 		if ($rootScope.cart == null) {
 			$location.path('/cart');
 			return;
@@ -407,14 +420,18 @@ app.controller('onlinepaysuccessCtrl', [
 	'$rootScope',
 	function ($scope, $rootScope) {
 		$rootScope.viewTitle = '完成点单';
-		$rootScope.hideBackBtn = false;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = true;
 	}
 ]).controller('onlinepayfailCtrl', [
 	'$scope',
 	'$rootScope',
 	function ($scope, $rootScope) {
-		$rootScope.viewTitle = '完成点单';
-		$rootScope.hideBackBtn = false;
+		$rootScope.viewTitle = '支付失败';
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = false;
+		$rootScope.closeBtn = true;
 	}
 ]);
 

@@ -40,7 +40,9 @@ app.controller('signinCtrl', [
 	'$http',
 	function ($scope, $rootScope, $location, $http) {
 		$rootScope.viewTitle = '登录';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		$scope.codeImgSrc = '/Account/CodeImage'
 		$scope.changeCodeImg = function () {
@@ -67,7 +69,9 @@ app.controller('signinCtrl', [
 	'$interval',
 	function ($scope, $rootScope, $location, $http, $interval) {
 		$rootScope.viewTitle = '注册';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		$scope.signupFormData = {};
 		$scope.isSendSMS = false;
@@ -125,7 +129,9 @@ app.controller('clientCtrl', [
 	'$routeParams',
 	function ($scope, $rootScope, $http, $location,$param) {
 		$rootScope.viewTitle = '当前点单';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		$http.post('/Cart/GetSavedMenu', {
 			qrCode: $location.search().qrCode
@@ -146,7 +152,9 @@ app.controller('clientCtrl', [
 	'$routeParams',
 	function ($scope, $rootScope, $http, $location,$param) {
 		$rootScope.viewTitle = '历史点单';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		var activeInfo;
 		$http.post('/Cart/GetHistoryDineInfo').success(function (data) {
@@ -202,7 +210,9 @@ app.controller('forgetCtrl', [
 	'$interval',
 	function ($scope, $rootScope, $location, $http, $interval) {
 		$rootScope.viewTitle = '忘记密码';
-		$rootScope.hideBackBtn = true;
+		$rootScope.backBtn = false;
+		$rootScope.indexBtn = true;
+		$rootScope.closeBtn = false;
 
 		$scope.signupFormData = {};
 		$scope.isSendSMS = false;
