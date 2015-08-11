@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using OrderSystem.Models;
+using System.Configuration;
 
 namespace OrderSystem.Controllers {
 	public class HomeController : Controller {
@@ -17,9 +18,17 @@ namespace OrderSystem.Controllers {
 			return View(id);
 		}
 
+		public JsonResult GetPayMethod() {
+			return Json(new {
+				canOfflinePay = ConfigurationManager.AppSettings["canOfflinePay"].ToString() == "True",
+				canOnlinePay = ConfigurationManager.AppSettings["canOnlinePay"].ToString() == "True",
+			});
+		}
+
 		public async Task<JsonResult> GetTable(GetTableViewModel model) {
 			using(MrCyContext ctx = new MrCyContext()) {
 				DeskInfo desk = await ctx.DeskInfo.Where(p => p.QRCode == model.qrCode).FirstOrDefaultAsync();
+				Session["qrCode"] = desk.QRCode;
 				return Json(desk);
 			}
 		}

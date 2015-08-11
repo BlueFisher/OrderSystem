@@ -73,6 +73,7 @@ namespace OrderSystem.Controllers {
 
 			}
 			Session["savedMenu"] = model;
+			Session["qrCode"] = model.Table.QRCode;
 
 			string returnContent = "";
 			if(model.PayKind == "支付宝") {

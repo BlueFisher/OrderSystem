@@ -29,10 +29,10 @@ namespace OrderSystem.Controllers {
 					}
 					
 				}
-				return Redirect("/#/onlinepaysuccess");
+				return Redirect("/#/onlinepaysuccess?qrCode=" + Session["qrCode"]);
 			}
 			else {
-				return Redirect("/#/onlinepayfail");
+				return Redirect("/#/onlinepayfail?qrCode=" + Session["qrCode"]);
 			}
 		}
 		public static void StartTimer(int id, string hotelid) {

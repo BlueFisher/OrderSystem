@@ -341,13 +341,13 @@ app.controller('cartCtrl', [
 				
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 					delete $rootScope.cart;
-					alert(data);
 					$window.location.href = data;
 				});
-			} else {
-				$rootScope.cart.PayKind = '';
-				$location.path('/onlinepay');
 			}
+			//  else {
+			// 	$rootScope.cart.PayKind = '';
+			// 	$location.path('/onlinepay');
+			// }
 
 		}
 	}
