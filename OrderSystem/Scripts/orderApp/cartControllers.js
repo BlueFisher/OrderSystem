@@ -335,10 +335,9 @@ app.controller('cartCtrl', [
 		$scope.onlinePay = function (pay) {
 			filterObject($rootScope.cart.Results);
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
-			
+			alert($rootScope.cart.Bill);
 			if (pay.PayName == '微信支付') {
 				$rootScope.cart.PayKind = '微信支付';
-				
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 					delete $rootScope.cart;
 					$window.location.href = data;
@@ -348,7 +347,6 @@ app.controller('cartCtrl', [
 			// 	$rootScope.cart.PayKind = '';
 			// 	$location.path('/onlinepay');
 			// }
-
 		}
 	}
 ]).controller('offlinepayCtrl', [

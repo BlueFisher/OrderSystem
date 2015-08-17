@@ -9,6 +9,7 @@ using System.Timers;
 using System.IO;
 using System.Net;
 using System.Text;
+using AutoPrint;
 
 namespace OrderSystem.Controllers {
 	public class PayController : Controller {
@@ -26,6 +27,8 @@ namespace OrderSystem.Controllers {
 						info.IsPaid = 1;
 						ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 						ctx.SaveChanges();
+						string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ToString();
+						new PrintDineMenu(conn).Print();
 					}
 					
 				}
@@ -71,6 +74,8 @@ namespace OrderSystem.Controllers {
 							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 							ctx.SaveChanges();
 						}
+						string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ToString();
+						new PrintDineMenu(conn).Print();
 						sw.WriteLine("支付成功");
 						((Timer)sender).Stop();
 					}
