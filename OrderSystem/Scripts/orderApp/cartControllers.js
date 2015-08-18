@@ -40,11 +40,12 @@ app.controller('cartCtrl', [
 			search: 0,
 			normal: 1,
 			rank: 2,
-			result: 3
+			result: 3,
+			onSale: 4
 		};
 		var rootCart; // The abbr. of  $rootScope.cart
 		var activeClass; // The current selected class
-		
+
 		if ($rootScope.cart == null) {
 			$rootScope.cart = {
 				SizeAll: 0,
@@ -64,14 +65,14 @@ app.controller('cartCtrl', [
 			GT($location.search().qrCode).then(function (deskInfo) {
 				rootCart.Table = deskInfo;
 			});
-			
+
 			// GetMenuSubClass
 			GMSCP().then(function (classes) {
 				$rootScope.menuSubClass = classes;
 				activeClass = classes[0];
 
 				_changeMode(classMode.rank);
-				
+
 				// GetMenuDetail
 				GMDP().then(function (menus) {
 					$rootScope.menuDetail = menus;
@@ -135,6 +136,9 @@ app.controller('cartCtrl', [
 		$scope.isResultMode = function () {
 			return $scope.currentMode == classMode.result;
 		}
+		$scope.isOnSaleMode = function () {
+			return $scope.currentMode == classMode.onSale;
+		}
 		function _changeMode(mode) {
 			$scope.currentMode = mode;
 			if (mode != classMode.search) {
@@ -164,6 +168,10 @@ app.controller('cartCtrl', [
 			_changeMode(classMode.result);
 			_filterMenu();
 		}
+		$scope.enterOnSaleMode = function () {
+			_changeMode(classMode.onSale);
+			_filterMenu();
+		}
 
 		$scope.searchChange = function (searchText) {
 			if (searchText == '') {
@@ -176,29 +184,37 @@ app.controller('cartCtrl', [
 				_filterMenu(searchText);
 			}
 		};
-		
+
 		// add and remove Meal
 		$rootScope.addMenu = function (menu) {
-			menu.Additional.Ordered++;
-			rootCart.SizeAll++;
-			rootCart.PriceAll += menu.DisherPrice * menu.DisherDiscount;
+			var count = 1;
+			if (menu.Additional.Ordered == 0) {
+				count = menu.MinCount;
+			}
+			menu.Additional.Ordered += count;
+			rootCart.SizeAll += count;
+			rootCart.PriceAll += (menu.DisherPrice * menu.DisherDiscount) * count;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].Additional.Ordered++;
+					$scope.menuSubClass[i].Additional.Ordered += count;
 					break;
 				}
 			}
-			if (menu.Additional.Ordered == 1) {
+			if (menu.Additional.Ordered == menu.MinCount) {
 				rootCart.Results.push(menu);
 			}
 		};
 		$rootScope.removeMenu = function (menu) {
-			menu.Additional.Ordered--;
-			rootCart.SizeAll--;
-			rootCart.PriceAll -= menu.DisherPrice * menu.DisherDiscount;;
+			var count = 1;
+			if (menu.Additional.Ordered == menu.MinCount) {
+				count = menu.MinCount;
+			}
+			menu.Additional.Ordered -= count;
+			rootCart.SizeAll -= count;
+			rootCart.PriceAll -= (menu.DisherPrice * menu.DisherDiscount) * count;
 			for (var i = 0; i < $scope.menuSubClass.length; i++) {
 				if ($scope.menuSubClass[i].SubClassId == menu.DisherSubclassID1) {
-					$scope.menuSubClass[i].Additional.Ordered--;
+					$scope.menuSubClass[i].Additional.Ordered -= count;
 					break;
 				}
 			}
@@ -247,10 +263,15 @@ app.controller('cartCtrl', [
 					filteredArr = $filter('limitTo')(filteredArr, 10);
 					break;
 				case classMode.search:
-					filteredArr = $filter('filter')($rootScope.menuDetail, searchText);
+					filteredArr = $filter('filter')(filteredArr, searchText);
 					break;
 				case classMode.result:
 					filteredArr = rootCart.Results
+					break;
+				case classMode.onSale:
+					filteredArr = $filter('filter')(filteredArr, {
+						IsOnSale: true
+					});
 					break;
 			}
 
@@ -305,7 +326,7 @@ app.controller('cartCtrl', [
 	'$http',
 	'filterObject',
 	'$window',
-	function ($scope, $rootScope, $location, $http,filterObject,$window) {
+	function ($scope, $rootScope, $location, $http, filterObject, $window) {
 		$rootScope.viewTitle = '结算';
 		$rootScope.backBtn = true;
 		$rootScope.indexBtn = false;
@@ -321,7 +342,7 @@ app.controller('cartCtrl', [
 		}
 		$http.post('/Cart/GetPayName').success(function (data) {
 			$rootScope.pays = [{
-				PayName:'微信支付'
+				PayName: '微信支付'
 			}];
 		});
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
@@ -372,7 +393,7 @@ app.controller('cartCtrl', [
 		$scope.pay = function () {
 			$scope.isCompleted = true;
 			$rootScope.cart.PriceAll = $scope.TempPriceAll;
-			
+
 			filterObject($rootScope.cart.Results);
 			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {

@@ -8,6 +8,10 @@
     </div>
 </script>
 
+<button class="btn btn-sm btn-cart-add" id="cart-animate" style="display:none">
+	<span class="fa fa-plus"></span>
+</button>
+
 <section class="search">
 	<div class="input-group">
 		<span class="input-group-addon"><span class="fa fa-search"></span></span>
@@ -26,6 +30,11 @@
 			ng-click="enterResultMode()">
 			<span class="fa fa-shopping-cart"></span> 查看点单
 		</li>-->
+		<li class="list-group-item"
+			ng-class="{active:isOnSaleMode()}"
+			ng-click="enterOnSaleMode()">
+			<span class="fa fa-star"></span> 今日特价
+		</li>
 		<li class="list-group-item"
 			ng-class="{active:isRankMode()}"
 			ng-click="enterRankMode()">
@@ -58,7 +67,7 @@
 					</a>
 				</div>
 				<div class="media-body">
-					<p class="meal-title">{{menu.DisherName}}</p>
+					<p class="meal-title" ng-click="addMenu(menu)">{{menu.DisherName}} <span class="on-sale" ng-if="menu.IsOnSale">特价</span></p>
 					<p class="meal-point">已有{{menu.DisherPoint}}个人点过</p>
 					<div class="meal-footer">
 						<p class="meal-price pull-left">{{menu.DisherPrice | currency : "￥"}}
@@ -73,7 +82,7 @@
 								<span class="btn btn-sm btn-cart-add">{{menu.Additional.Ordered}}</span>
 							</span>
 							<button class="btn btn-sm btn-cart-add"
-									ng-click="addMenu(menu)">
+									ng-click="addMenu(menu)" cart-add-button>
 								<span class="fa fa-plus"></span>
 							</button>
 						</div>

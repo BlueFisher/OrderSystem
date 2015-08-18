@@ -50,5 +50,8 @@ namespace OrderSystem.Models
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<PosInfo> PosInfo { get; set; }
         public virtual DbSet<Waiter> Waiter { get; set; }
+        public virtual DbSet<PayStatus> PayStatus { get; set; }
+        public virtual DbSet<HotelInfo> HotelInfo { get; set; }
+        public virtual DbSet<HotelUser> HotelUser { get; set; }
     }
 }

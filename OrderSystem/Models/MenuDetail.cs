@@ -44,5 +44,7 @@ namespace OrderSystem.Models
         public string Deletor { get; set; }
         public Nullable<System.DateTime> DeleteDate { get; set; }
         public Nullable<bool> CanSelect { get; set; }
+        public Nullable<int> MinCount { get; set; }
+        public Nullable<bool> IsOnSale { get; set; }
     }
 }

@@ -60,6 +60,13 @@ section.header .btn-group-navicon .dropdown-menu{
 	min-width: 0;
 }
 
+.on-sale{
+	display: inline-block;
+	padding: 0 5px;
+	color: #fff;
+	background-color: #c9302c;
+	border-radius: 2px;
+}
 section.category{
 	display: block;
 	width: 25%;
@@ -132,12 +139,12 @@ section.menu .media-body p.meal-price{
 	border-radius: 2px;
 }
 
-.cart-control .cart-number{
+.cart-number{
 	color: #999;
 	font-size: 13px;
 }
-.cart-control .btn.btn-cart-decrease,
-.cart-control .btn.btn-cart-add{
+.btn.btn-cart-decrease,
+ .btn.btn-cart-add{
 	padding: 0;
 	width: 25px;
 	height: 25px;
@@ -145,16 +152,16 @@ section.menu .media-body p.meal-price{
 
 	line-height: 25px;
 }
-.cart-control .btn.btn-cart-decrease{
+ .btn.btn-cart-decrease{
 	border: 1px solid  #337ab7;
 	background-color: #fff;
 	color: #337ab7;
 }
-.cart-control .btn.btn-cart-add{
+ .btn.btn-cart-add{
 	background-color: #337ab7;
 	color: #fff;
 }
-.cart-control .btn.btn-cart-num{
+ .btn.btn-cart-num{
 	background-color: #337ab7;
 	color: #fff;
 	border-radius: 50%;

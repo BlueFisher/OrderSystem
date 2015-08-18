@@ -4,9 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--生成过程中发现错误:
-警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.AreaInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“DB_MRCY.dbo.AreaInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="AreaInfo">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -214,7 +214,7 @@
           <Property Name="Status" Type="bit" />
           <Property Name="PayKind" Type="varchar" MaxLength="10" />
           <Property Name="Subtotal" Type="money" />
-          <Property Name="PaidAccount" Type="varchar" MaxLength="20" />
+          <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
           <Property Name="IsRefund" Type="bit" />
         </EntityType>
         <EntityType Name="DineInfoHistory">
@@ -233,7 +233,8 @@
           <Property Name="BeginTime" Type="datetime" />
           <Property Name="PayKind" Type="varchar" MaxLength="10" />
           <Property Name="Subtotal" Type="money" />
-          <Property Name="PaidAccount" Type="varchar" MaxLength="20" />
+          <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
+          <Property Name="IsRefund" Type="bit" />
         </EntityType>
         <EntityType Name="DineTempDetail">
           <Key>
@@ -262,6 +263,27 @@
           <Property Name="PaidAccount" Type="varchar" MaxLength="50" />
           <Property Name="PayKind" Type="varchar" MaxLength="20" />
           <Property Name="Invoice" Type="nchar" MaxLength="20" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“DB_MRCY.dbo.HotelInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="HotelInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HotelCode" Type="varchar" MaxLength="10" />
+          <Property Name="HotelName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“DB_MRCY.dbo.HotelUser”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="HotelUser">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginName" Type="varchar" MaxLength="20" />
+          <Property Name="LoginPassword" Type="varchar" MaxLength="20" />
+          <Property Name="HotelCode" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MenuClass">
           <Key>
@@ -313,6 +335,8 @@
           <Property Name="Deletor" Type="varchar" MaxLength="10" />
           <Property Name="DeleteDate" Type="datetime" />
           <Property Name="CanSelect" Type="bit" />
+          <Property Name="MinCount" Type="int" />
+          <Property Name="IsOnSale" Type="bit" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -332,7 +356,7 @@
           <Property Name="DeleteDate" Type="datetime" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.Note”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“DB_MRCY.dbo.Note”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="Note">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -360,8 +384,22 @@
           <Property Name="Deletor" Type="varchar" MaxLength="20" />
           <Property Name="DeleteDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="PayStatus">
+          <Key>
+            <PropertyRef Name="index" />
+          </Key>
+          <Property Name="index" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PayKind" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="smallint" Nullable="false" />
+          <Property Name="OrderSN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HotelID" Type="varchar" MaxLength="50" />
+          <Property Name="Price" Type="money" />
+          <Property Name="OpenID" Type="varchar" MaxLength="50" />
+          <Property Name="WeiPaySN" Type="varchar" MaxLength="50" />
+          <Property Name="Time" Type="datetime" />
+        </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.PosInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“DB_MRCY.dbo.PosInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="PosInfo">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -404,7 +442,7 @@
           <Property Name="DeleteDate" Type="datetime" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“D:\VS PROJECTS\ORDERSYSTEM\ORDERSYSTEM\APP_DATA\DB_MRCY.MDF.dbo.Waiter”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“DB_MRCY.dbo.Waiter”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="Waiter">
           <Key>
             <PropertyRef Name="AutoID" />
@@ -433,6 +471,7 @@
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PayKind" EntityType="Self.PayKind" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PayStatus" EntityType="Self.PayStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AreaInfo" EntityType="Self.AreaInfo" store:Type="Tables" store:Schema="dbo">
@@ -442,6 +481,21 @@
     [AreaInfo].[AreaName] AS [AreaName], 
     [AreaInfo].[Description] AS [Description]
     FROM [dbo].[AreaInfo] AS [AreaInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HotelInfo" EntityType="Self.HotelInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HotelInfo].[AutoID] AS [AutoID], 
+    [HotelInfo].[HotelCode] AS [HotelCode], 
+    [HotelInfo].[HotelName] AS [HotelName]
+    FROM [dbo].[HotelInfo] AS [HotelInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HotelUser" EntityType="Self.HotelUser" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HotelUser].[AutoID] AS [AutoID], 
+    [HotelUser].[LoginName] AS [LoginName], 
+    [HotelUser].[LoginPassword] AS [LoginPassword], 
+    [HotelUser].[HotelCode] AS [HotelCode]
+    FROM [dbo].[HotelUser] AS [HotelUser]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Note" EntityType="Self.Note" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -465,8 +519,7 @@
     FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -668,7 +721,7 @@
           <Property Name="Status" Type="Boolean" />
           <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="PaidAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsRefund" Type="Boolean" />
         </EntityType>
         <EntityType Name="DineInfoHistory">
@@ -687,7 +740,8 @@
           <Property Name="BeginTime" Type="DateTime" Precision="3" />
           <Property Name="PayKind" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="PaidAccount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaidAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsRefund" Type="Boolean" />
         </EntityType>
         <EntityType Name="DineTempDetail">
           <Key>
@@ -767,6 +821,8 @@
           <Property Name="Deletor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
           <Property Name="CanSelect" Type="Boolean" />
+          <Property Name="MinCount" Type="Int32" />
+          <Property Name="IsOnSale" Type="Boolean" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -896,7 +952,41 @@
           <EntitySet Name="Note" EntityType="Self.Note" />
           <EntitySet Name="PosInfo" EntityType="Self.PosInfo" />
           <EntitySet Name="Waiter" EntityType="Self.Waiter" />
+          <EntitySet Name="PayStatus" EntityType="MrCyModel.PayStatus" />
+          <EntitySet Name="HotelInfo" EntityType="MrCyModel.HotelInfo" />
+          <EntitySet Name="HotelUser" EntityType="MrCyModel.HotelUser" />
         </EntityContainer>
+        <EntityType Name="PayStatus">
+          <Key>
+            <PropertyRef Name="index" />
+          </Key>
+          <Property Name="index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayKind" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int16" Nullable="false" />
+          <Property Name="OrderSN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HotelID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WeiPaySN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="HotelInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="HotelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="HotelUser">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LoginPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HotelCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1118,6 +1208,7 @@
           <EntitySetMapping Name="DineInfoHistory">
             <EntityTypeMapping TypeName="MrCyModel.DineInfoHistory">
               <MappingFragment StoreEntitySet="DineInfoHistory">
+                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
@@ -1184,6 +1275,8 @@
           <EntitySetMapping Name="MenuDetail">
             <EntityTypeMapping TypeName="MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
+                <ScalarProperty Name="IsOnSale" ColumnName="IsOnSale" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DisherId" ColumnName="DisherId" />
                 <ScalarProperty Name="DisherCode" ColumnName="DisherCode" />
@@ -1324,6 +1417,40 @@
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayStatus">
+            <EntityTypeMapping TypeName="MrCyModel.PayStatus">
+              <MappingFragment StoreEntitySet="PayStatus">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="WeiPaySN" ColumnName="WeiPaySN" />
+                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="OrderSN" ColumnName="OrderSN" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
+                <ScalarProperty Name="index" ColumnName="index" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelInfo">
+            <EntityTypeMapping TypeName="MrCyModel.HotelInfo">
+              <MappingFragment StoreEntitySet="HotelInfo">
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelUser">
+            <EntityTypeMapping TypeName="MrCyModel.HotelUser">
+              <MappingFragment StoreEntitySet="HotelUser">
+                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
