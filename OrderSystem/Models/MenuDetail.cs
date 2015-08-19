@@ -46,5 +46,6 @@ namespace OrderSystem.Models
         public Nullable<bool> CanSelect { get; set; }
         public Nullable<int> MinCount { get; set; }
         public Nullable<bool> IsOnSale { get; set; }
+        public Nullable<bool> IsSetMeal { get; set; }
     }
 }

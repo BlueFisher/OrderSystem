@@ -381,6 +381,9 @@
     <Compile Include="Models\MenuDetail.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MenuSet.cs">
+      <DependentUpon>MrCyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MenuSubClass.cs">
       <DependentUpon>MrCyModel.tt</DependentUpon>
     </Compile>

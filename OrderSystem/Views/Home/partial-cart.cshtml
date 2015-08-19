@@ -88,6 +88,21 @@
 						</div>
 					</div>
 				</div>
+				<div>
+					<button class="btn btn-sm btn-primary btn-note"
+							ng-click="toggleSetMeal(menu)"
+							ng-if="menu.IsSetMeal">
+						查看详情
+						<span class="fa fa-chevron-circle-down" ng-show="!menu.Additional.IsSetMealCollapsed"></span>
+						<span class="fa fa-chevron-circle-up" ng-show="menu.Additional.IsSetMealCollapsed"></span>
+					</button>
+					<div class="well well-note" ng-if="menu.Additional.IsSetMealCollapsed">
+						<p ng-repeat="m in menu.Additional.SetMealList">
+							{{m.DisherName}}
+						</p>
+					</div>
+				</div>
+				
 				<!-- Remark Region -->
 				<div ng-if="menu.Additional.Ordered>0">
 					<button class="btn btn-sm btn-danger btn-note"
@@ -96,6 +111,7 @@
 						<span class="fa fa-chevron-circle-down" ng-show="!menu.Additional.IsNoteCollapsed"></span>
 						<span class="fa fa-chevron-circle-up" ng-show="menu.Additional.IsNoteCollapsed"></span>
 					</button>
+					
 					<!-- ngRepeat the added notes -->
 					<button class="btn btn-sm btn-success btn-note"
 							ng-repeat="note in menu.Additional.Notes"

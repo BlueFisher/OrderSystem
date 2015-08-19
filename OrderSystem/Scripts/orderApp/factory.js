@@ -53,7 +53,8 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 						Ordered: 0,
 						Notes: [],
 						FilteredNotes: [],
-						IsNoteCollapsed: false
+						IsNoteCollapsed: false,
+						IsSetMealCollapsed: false,
 					};
 				}
 				resolve(data);
@@ -67,6 +68,17 @@ app.factory('generateMenuSubClassPromise', ['$http', '$q', function ($http, $q) 
 	return function () {
 		return $q(function (resolve) {
 			$http.post('/Home/GetNote').success(function (data) {
+				resolve(data);
+			}).error(function (data, status) {
+				alert(status);
+			});
+		});
+	}
+
+}]).factory('generateSetMeal', ['$http', '$q', function ($http, $q) {
+	return function () {
+		return $q(function (resolve) {
+			$http.post('/Home/GetSetMeal').success(function (data) {
 				resolve(data);
 			}).error(function (data, status) {
 				alert(status);

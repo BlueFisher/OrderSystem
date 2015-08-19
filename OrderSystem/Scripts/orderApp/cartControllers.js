@@ -23,8 +23,9 @@ app.controller('cartCtrl', [
 	'generateMenuSubClassPromise',
 	'generateMenuDetailPromise',
 	'generateRemarkPromise',
+	'generateSetMeal',
 	'$modal',
-	function ($scope, $rootScope, $filter, $location, GT, GMSCP, GMDP, GRP, $modal) {
+	function ($scope, $rootScope, $filter, $location, GT, GMSCP, GMDP, GRP, GSM, $modal) {
 		// test! if the url doesn't have qrCode data then redirect to the one has qrCode = 101
 		if ($location.search().qrCode == undefined) {
 			$location.search('qrCode', '101');
@@ -76,6 +77,26 @@ app.controller('cartCtrl', [
 				// GetMenuDetail
 				GMDP().then(function (menus) {
 					$rootScope.menuDetail = menus;
+					GSM().then(function (list) {
+						for (var i = 0; i < $rootScope.menuDetail.length; i++) {
+							if ($rootScope.menuDetail[i].IsSetMeal) {
+								$rootScope.menuDetail[i].Additional.SetMealList = [];
+								for (var j = 0; j < list.length; j++) {
+									if (list[j].DisherSetId == $rootScope.menuDetail[i].DisherId) {
+										for (var k = 0; k < $rootScope.menuDetail.length; k++) {
+											if (list[j].DisherId == $rootScope.menuDetail[k].DisherId) {
+												$rootScope.menuDetail[i].Additional.SetMealList.push($rootScope.menuDetail[k]);
+											}
+										}
+										
+									}
+								}
+								console.log($rootScope.menuDetail[i].Additional)
+							}
+							
+						}
+						
+					});
 					_filterMenu();
 					// GetRemark
 					GRP().then(function (notes) {
@@ -238,6 +259,9 @@ app.controller('cartCtrl', [
 			activeNote = menu;
 			menu.Additional.IsNoteCollapsed = !menu.Additional.IsNoteCollapsed
 		}
+		$scope.toggleSetMeal = function (menu) {
+			menu.Additional.IsSetMealCollapsed = !menu.Additional.IsSetMealCollapsed;
+		}
 		// add and remove Remark
 		$rootScope.addNote = function (menu, note, index) {
 			menu.Additional.Notes.push(note);
@@ -338,7 +362,7 @@ app.controller('cartCtrl', [
 
 		$rootScope.customersAll = [];
 		for (var i = 0; i < 50; i++) {
-			$rootScope.customersAll.push(i + 1);
+			$rootScope.customersAll.push(i);
 		}
 		$http.post('/Cart/GetPayName').success(function (data) {
 			$rootScope.pays = [{
@@ -356,7 +380,6 @@ app.controller('cartCtrl', [
 		$scope.onlinePay = function (pay) {
 			filterObject($rootScope.cart.Results);
 			$rootScope.cart.PriceAll += $rootScope.cart.Customer * $rootScope.tablewareFee;
-			alert($rootScope.cart.Bill);
 			if (pay.PayName == '微信支付') {
 				$rootScope.cart.PayKind = '微信支付';
 				$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {

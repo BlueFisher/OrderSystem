@@ -4,18 +4,18 @@
 			桌号：{{cart.Table.DeskName}}
 		</li>
 		<li class="list-group-item">
-			人数：
+			餐具数：
 			<select ng-model="cart.Customer" convert-to-number>
 				<option ng-repeat="c in customersAll" value="{{c}}"
 					ng-selected="cart.Customer == c">{{c}}</option>
 			</select>
 			<span class="text-danger">（必填）</span>
 		</li>
-		<li class="list-group-item">
+		@*<li class="list-group-item">
 			发票抬头：
 			<input class="form-control input-sm form-control-inline" type="text" placeholder="置空不开具发票"
 				ng-model="cart.Bill">
-		</li>
+		</li>*@
 		<li class="list-group-item">
 			<span class="text-danger">
 				共计：{{cart.PriceAll | currency : "￥"}}
@@ -38,8 +38,7 @@
 				if(System.Configuration.ConfigurationManager.AppSettings["canOnlinePay"] == "True") {
 					<button class="btn btn-primary btn-block"
 							ng-repeat="pay in pays"
-							ng-click="onlinePay(pay)"
-							ng-disabled="cart.Customer == 0">
+							ng-click="onlinePay(pay)">
 						{{pay.PayName}}
 					</button>
 				}

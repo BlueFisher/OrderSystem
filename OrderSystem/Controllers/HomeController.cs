@@ -51,5 +51,11 @@ namespace OrderSystem.Controllers {
 				return Json(list);
 			}
 		}
+		public JsonResult GetSetMeal() {
+			using(MrCyContext ctx = new MrCyContext()) {
+				List<MenuSet> setList = ctx.MenuSet.ToList();
+				return Json(setList);
+			}
+		}
 	}
 }

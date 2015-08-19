@@ -33,6 +33,7 @@
         <EntityTypeShape EntityType="MrCyModel.PayStatus" Width="1.5" PointX="5.375" PointY="14.75" />
         <EntityTypeShape EntityType="MrCyModel.HotelInfo" Width="1.5" PointX="7.375" PointY="14.75" />
         <EntityTypeShape EntityType="MrCyModel.HotelUser" Width="1.5" PointX="15.375" PointY="6.75" />
+        <EntityTypeShape EntityType="MrCyModel.MenuSet" Width="1.5" PointX="15.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

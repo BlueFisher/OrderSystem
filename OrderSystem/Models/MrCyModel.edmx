@@ -337,6 +337,15 @@
           <Property Name="CanSelect" Type="bit" />
           <Property Name="MinCount" Type="int" />
           <Property Name="IsOnSale" Type="bit" />
+          <Property Name="IsSetMeal" Type="bit" />
+        </EntityType>
+        <EntityType Name="MenuSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisherId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DisherSetId" Type="varchar" MaxLength="6" Nullable="false" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -469,6 +478,7 @@
           <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuClass" EntityType="Self.MenuClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuSet" EntityType="Self.MenuSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PayKind" EntityType="Self.PayKind" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PayStatus" EntityType="Self.PayStatus" Schema="dbo" store:Type="Tables" />
@@ -823,6 +833,7 @@
           <Property Name="CanSelect" Type="Boolean" />
           <Property Name="MinCount" Type="Int32" />
           <Property Name="IsOnSale" Type="Boolean" />
+          <Property Name="IsSetMeal" Type="Boolean" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -955,6 +966,7 @@
           <EntitySet Name="PayStatus" EntityType="MrCyModel.PayStatus" />
           <EntitySet Name="HotelInfo" EntityType="MrCyModel.HotelInfo" />
           <EntitySet Name="HotelUser" EntityType="MrCyModel.HotelUser" />
+          <EntitySet Name="MenuSet" EntityType="MrCyModel.MenuSet" />
         </EntityContainer>
         <EntityType Name="PayStatus">
           <Key>
@@ -986,6 +998,14 @@
           <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="LoginPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="HotelCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MenuSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DisherId" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherSetId" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1275,6 +1295,7 @@
           <EntitySetMapping Name="MenuDetail">
             <EntityTypeMapping TypeName="MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
+                <ScalarProperty Name="IsSetMeal" ColumnName="IsSetMeal" />
                 <ScalarProperty Name="IsOnSale" ColumnName="IsOnSale" />
                 <ScalarProperty Name="MinCount" ColumnName="MinCount" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
@@ -1451,6 +1472,15 @@
                 <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuSet">
+            <EntityTypeMapping TypeName="MrCyModel.MenuSet">
+              <MappingFragment StoreEntitySet="MenuSet">
+                <ScalarProperty Name="DisherSetId" ColumnName="DisherSetId" />
+                <ScalarProperty Name="DisherId" ColumnName="DisherId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
