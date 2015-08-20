@@ -14,7 +14,18 @@ using AutoPrint;
 namespace OrderSystem.Controllers {
 	public class PayController : Controller {
 		// GET: Pay
-
+        private static void autoPrint() {
+            try {
+                string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ConnectionString;
+                new PrintDineMenu(conn).Print();
+            }
+            catch(Exception e) {
+                FileStream fs = new FileStream("d:/dll.txt", FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine(e);
+                sw.Close();
+            }
+        }
 		public ActionResult WeixinCompleted() {
 			if(Request.QueryString["id"] == null) {
 				return Redirect("/#/");
@@ -27,10 +38,8 @@ namespace OrderSystem.Controllers {
 						info.IsPaid = 1;
 						ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 						ctx.SaveChanges();
-						string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ToString();
-						new PrintDineMenu(conn).Print();
-					}
-					
+                        autoPrint();
+                    }
 				}
 				return Redirect("/#/onlinepaysuccess?qrCode=" + Session["qrCode"]);
 			}
@@ -74,9 +83,8 @@ namespace OrderSystem.Controllers {
 							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 							ctx.SaveChanges();
 						}
-						string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ToString();
-						new PrintDineMenu(conn).Print();
-						sw.WriteLine("支付成功");
+                        autoPrint();
+                        sw.WriteLine("支付成功");
 						((Timer)sender).Stop();
 					}
 					else if(result == "0") {
