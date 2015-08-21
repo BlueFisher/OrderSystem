@@ -141,7 +141,7 @@ app.controller('clientCtrl', [
 		});
 		
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
-			$scope.tablewareFee = parseInt(data.TablewareFee);
+			$scope.tablewareFee = parseFloat(data.TablewareFee);
 		});
 	}
 ]).controller('historyCtrl', [

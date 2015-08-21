@@ -3,9 +3,6 @@
 		<li class="list-group-item">
 			桌号：{{historyMenu.Table.DeskName}}
 		</li>
-		<li class="list-group-item">
-			人数：{{historyMenu.Customer}}
-		</li>
 		<!-- ngRepeat menu -->
 		<li class="list-group-item"
 			ng-repeat="menu in historyMenu.Results">
@@ -13,11 +10,11 @@
 				<div class="col-xs-6">
 					{{menu.DisherName}}
 				</div>
-				<div class="col-xs-2 text-right">
-					&times;{{menu.Ordered}}
-				</div>
 				<div class="col-xs-4 text-right text-danger">
 					{{menu.DisherPrice | currency : "￥"}}
+				</div>
+				<div class="col-xs-2 text-right">
+					&times;{{menu.Ordered}}
 				</div>
 			</div>
 			<div ng-if="menu.Note">个性服务：{{menu.Note}}</div>
@@ -27,11 +24,12 @@
 				<div class="col-xs-6">
 					餐具
 				</div>
-				<div class="col-xs-2 text-right">
-					&times;{{historyMenu.Customer}}
-				</div>
+				
 				<div class="col-xs-4 text-right text-danger">
 					{{tablewareFee | currency : "￥"}}
+				</div>
+				<div class="col-xs-2 text-right">
+					&times;{{historyMenu.Customer}}
 				</div>
 			</div>
 		</li>
