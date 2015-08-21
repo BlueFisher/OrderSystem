@@ -38,6 +38,7 @@ namespace OrderSystem.Controllers {
 						info.IsPaid = 1;
 						ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 						ctx.SaveChanges();
+						log("点击返回修改1");
                         autoPrint();
                     }
 				}
@@ -50,19 +51,17 @@ namespace OrderSystem.Controllers {
 		public static void StartTimer(int id, string hotelid) {
 			Timer t = new Timer(1000 * 10);
 			t.Elapsed += (object sender, ElapsedEventArgs e) => {
-				FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
-				StreamWriter sw = new StreamWriter(fs);
-				sw.WriteLine("订单号：" + id);
-				sw.WriteLine(DateTime.Now.ToLocalTime());
+				log("订单号：" + id);
+				log(DateTime.Now.ToLocalTime().ToString());
 				using(MrCyContext ctx = new MrCyContext()) {
 					DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
 					if(info == null) {
-						sw.WriteLine("订单已经被处理");
+						log("订单已经被处理");
 						((Timer)sender).Stop();
 						return;
 					}
 					else if(info.IsPaid == 1) {
-						sw.WriteLine("订单已经支付");
+						log("订单已经支付");
 						((Timer)sender).Stop();
 						return;
 					}
@@ -74,32 +73,31 @@ namespace OrderSystem.Controllers {
 					));
 					
 					
-					sw.WriteLine("接收到" + result);
+					log("接收到" + result);
 					result = result.Trim();
 					if(result == "1") {
+						log("");
 						using(MrCyContext ctx = new MrCyContext()) {
 							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
 							info.IsPaid = 1;
 							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 							ctx.SaveChanges();
 						}
+						log("计时器修改1");
                         autoPrint();
-                        sw.WriteLine("支付成功");
+						log("支付成功");
 						((Timer)sender).Stop();
 					}
 					else if(result == "0") {
-						sw.WriteLine("支付失败");
+						log("支付失败");
 						((Timer)sender).Stop();
 					}
 					else {
-						sw.WriteLine("未支付");
+						log("未支付");
 					}
 				}
 				catch(Exception error) {
-					sw.WriteLine(error);
-				}
-				finally {
-					sw.Close();
+					log(error.ToString());
 				}
 			};
 			t.Start();
@@ -119,5 +117,11 @@ namespace OrderSystem.Controllers {
 			return retString;
 		}
 
+		private static void log(string message) {
+			FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
+			StreamWriter sw = new StreamWriter(fs);
+			sw.WriteLine(message);
+			sw.Close();
+		}
 	}
 }
