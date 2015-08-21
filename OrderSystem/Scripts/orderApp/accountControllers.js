@@ -172,7 +172,7 @@ app.controller('clientCtrl', [
 			$scope.toggleSelected(activeInfo);
 		});
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
-			$scope.tablewareFee = parseInt(data.TablewareFee);
+			$scope.tablewareFee = parseFloat(data.TablewareFee);
 		});
 
 

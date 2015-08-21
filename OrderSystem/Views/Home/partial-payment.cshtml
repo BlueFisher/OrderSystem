@@ -19,7 +19,7 @@
 		<li class="list-group-item">
 			<span class="text-danger">
 				共计：{{cart.PriceAll | currency : "￥"}}
-				<span ng-show="tablewareFee!=0">
+				<span ng-show="tablewareFee>0">
 					 + {{tablewareFee | currency : "￥"}}&times;{{cart.Customer}}(餐具费)
 				</span>
 			</span>

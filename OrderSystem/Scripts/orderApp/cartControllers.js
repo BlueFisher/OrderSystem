@@ -370,7 +370,7 @@ app.controller('cartCtrl', [
 			}];
 		});
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
-			$rootScope.tablewareFee = parseInt(data.TablewareFee);
+			$rootScope.tablewareFee = parseFloat(data.TablewareFee);
 		});
 
 		$scope.offlinePay = function () {

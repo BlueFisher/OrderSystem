@@ -33,6 +33,7 @@ namespace OrderSystem.Controllers {
 			if(Request.QueryString["cancel"].ToString() == "1") {
 				using(MrCyContext ctx = new MrCyContext()) {
 					int id = Convert.ToInt32(Request.QueryString["id"]);
+					log(id.ToString());
 					DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
 					if(info != null) {
 						info.IsPaid = 1;
@@ -40,7 +41,10 @@ namespace OrderSystem.Controllers {
 						ctx.SaveChanges();
 						log("点击返回修改1");
                         autoPrint();
-                    }
+					}
+					else {
+						log("点击返回未找到订单");
+					}
 				}
 				return Redirect("/#/onlinepaysuccess?qrCode=" + Session["qrCode"]);
 			}
@@ -56,7 +60,7 @@ namespace OrderSystem.Controllers {
 				using(MrCyContext ctx = new MrCyContext()) {
 					DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
 					if(info == null) {
-						log("订单已经被处理");
+						log("计时器 未找到订单");
 						((Timer)sender).Stop();
 						return;
 					}
@@ -76,9 +80,9 @@ namespace OrderSystem.Controllers {
 					log("接收到" + result);
 					result = result.Trim();
 					if(result == "1") {
-						log("");
 						using(MrCyContext ctx = new MrCyContext()) {
 							DineTempInfo info = ctx.DineTempInfo.Where(p => p.AutoID == id).FirstOrDefault();
+							log(info.AutoID.ToString());
 							info.IsPaid = 1;
 							ctx.Entry<DineTempInfo>(info).Property(p => p.IsPaid).IsModified = true;
 							ctx.SaveChanges();

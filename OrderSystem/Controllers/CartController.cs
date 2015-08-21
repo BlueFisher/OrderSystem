@@ -13,6 +13,7 @@ using System.Net;
 using System.Text;
 
 using System.Configuration;
+using System.IO;
 
 
 namespace OrderSystem.Controllers {
@@ -20,6 +21,7 @@ namespace OrderSystem.Controllers {
 
 		public ContentResult Submit(SubmitViewModel model) {
 			DineTempInfo dti;
+			int id;
 			using(MrCyContext ctx = new MrCyContext()) {
 				string client = null;
 				if(User.Identity.IsAuthenticated) {
@@ -37,7 +39,7 @@ namespace OrderSystem.Controllers {
 				};
 				ctx.DineTempInfo.Add(dti);
 				ctx.SaveChanges();
-
+				id = dti.AutoID;
 				foreach(SubmitMenuDetail menu in model.Results) {
 					string note = "";
 					if(menu.Additional.Notes != null) {
@@ -80,7 +82,8 @@ namespace OrderSystem.Controllers {
 
 			}
 			else if(model.PayKind == "微信支付") {
-				int id = dti.AutoID;
+				
+				log("send" + id.ToString());
 				string hotelid = "";
 				using(MrCyContext ctx = new MrCyContext()) {
 					hotelid = ctx.BaseInfo.Where(p => p.InfoName == "HotelID").FirstOrDefault().InfoContent;
@@ -280,6 +283,12 @@ namespace OrderSystem.Controllers {
 
 				return Json(menuModel);
 			}
+		}
+		private static void log(string message) {
+			FileStream fs = new FileStream("d:/log.txt", FileMode.Append);
+			StreamWriter sw = new StreamWriter(fs);
+			sw.WriteLine(message);
+			sw.Close();
 		}
 	}
 }
