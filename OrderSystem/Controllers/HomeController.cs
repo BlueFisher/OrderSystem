@@ -35,7 +35,7 @@ namespace OrderSystem.Controllers {
 
 		public async Task<JsonResult> GetMenuSubClass() {
 			using(MrCyContext ctx = new MrCyContext()) {
-				List<MenuSubClass> list = await ctx.MenuSubClass.ToListAsync();
+				List<MenuSubClass> list = await ctx.MenuSubClass.Where(p=>p.Usable == true).ToListAsync();
 				return Json(list);
 			}
 		}

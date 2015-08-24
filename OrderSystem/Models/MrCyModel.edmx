@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MrCyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--生成过程中发现错误:
 警告 6002: 表/视图“DB_MRCY.dbo.AreaInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="AreaInfo">
@@ -196,7 +196,7 @@
           <Property Name="Quitstatus" Type="bit" />
           <Property Name="SalesPrice" Type="money" />
           <Property Name="SalesDiscount" Type="money" />
-          <Property Name="Note" Type="varchar" MaxLength="15" />
+          <Property Name="Note" Type="varchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="DineInfo">
           <Key>
@@ -344,8 +344,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DisherId" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="DisherSetId" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DisherId" Type="varchar" MaxLength="6" />
+          <Property Name="DisherSetId" Type="varchar" MaxLength="6" />
         </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
@@ -529,7 +529,8 @@
     FROM [dbo].[Waiter] AS [Waiter]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MrCyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -713,7 +714,7 @@
           <Property Name="Quitstatus" Type="Boolean" />
           <Property Name="SalesPrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SalesDiscount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Note" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Note" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DineInfo">
           <Key>
@@ -835,6 +836,14 @@
           <Property Name="IsOnSale" Type="Boolean" />
           <Property Name="IsSetMeal" Type="Boolean" />
         </EntityType>
+        <EntityType Name="MenuSet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisherId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DisherSetId" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="MenuSubClass">
           <Key>
             <PropertyRef Name="SubClassId" />
@@ -871,6 +880,20 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="Deletor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="PayStatus">
+          <Key>
+            <PropertyRef Name="index" />
+          </Key>
+          <Property Name="index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PayKind" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int16" Nullable="false" />
+          <Property Name="OrderSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HotelID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WeiPaySN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="PrinterInfo">
           <Key>
@@ -912,6 +935,23 @@
           <Property Name="AreaID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="AreaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="HotelInfo">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="HotelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="HotelUser">
+          <Key>
+            <PropertyRef Name="AutoID" />
+          </Key>
+          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LoginPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HotelCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Note">
           <Key>
@@ -955,58 +995,19 @@
           <EntitySet Name="DineTempInfo" EntityType="Self.DineTempInfo" />
           <EntitySet Name="MenuClass" EntityType="Self.MenuClass" />
           <EntitySet Name="MenuDetail" EntityType="Self.MenuDetail" />
+          <EntitySet Name="MenuSet" EntityType="Self.MenuSet" />
           <EntitySet Name="MenuSubClass" EntityType="Self.MenuSubClass" />
           <EntitySet Name="PayKind" EntityType="Self.PayKind" />
+          <EntitySet Name="PayStatus" EntityType="Self.PayStatus" />
           <EntitySet Name="PrinterInfo" EntityType="Self.PrinterInfo" />
           <EntitySet Name="RoomInfo" EntityType="Self.RoomInfo" />
           <EntitySet Name="AreaInfo" EntityType="Self.AreaInfo" />
+          <EntitySet Name="HotelInfo" EntityType="Self.HotelInfo" />
+          <EntitySet Name="HotelUser" EntityType="Self.HotelUser" />
           <EntitySet Name="Note" EntityType="Self.Note" />
           <EntitySet Name="PosInfo" EntityType="Self.PosInfo" />
           <EntitySet Name="Waiter" EntityType="Self.Waiter" />
-          <EntitySet Name="PayStatus" EntityType="MrCyModel.PayStatus" />
-          <EntitySet Name="HotelInfo" EntityType="MrCyModel.HotelInfo" />
-          <EntitySet Name="HotelUser" EntityType="MrCyModel.HotelUser" />
-          <EntitySet Name="MenuSet" EntityType="MrCyModel.MenuSet" />
         </EntityContainer>
-        <EntityType Name="PayStatus">
-          <Key>
-            <PropertyRef Name="index" />
-          </Key>
-          <Property Name="index" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PayKind" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int16" Nullable="false" />
-          <Property Name="OrderSN" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="HotelID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="OpenID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WeiPaySN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Time" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="HotelInfo">
-          <Key>
-            <PropertyRef Name="AutoID" />
-          </Key>
-          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HotelCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="HotelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="HotelUser">
-          <Key>
-            <PropertyRef Name="AutoID" />
-          </Key>
-          <Property Name="AutoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LoginPassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="HotelCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="MenuSet">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="DisherId" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="DisherSetId" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1228,7 +1229,6 @@
           <EntitySetMapping Name="DineInfoHistory">
             <EntityTypeMapping TypeName="MrCyModel.DineInfoHistory">
               <MappingFragment StoreEntitySet="DineInfoHistory">
-                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
                 <ScalarProperty Name="CheckID" ColumnName="CheckID" />
@@ -1242,6 +1242,7 @@
                 <ScalarProperty Name="PayKind" ColumnName="PayKind" />
                 <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
                 <ScalarProperty Name="PaidAccount" ColumnName="PaidAccount" />
+                <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1295,9 +1296,6 @@
           <EntitySetMapping Name="MenuDetail">
             <EntityTypeMapping TypeName="MrCyModel.MenuDetail">
               <MappingFragment StoreEntitySet="MenuDetail">
-                <ScalarProperty Name="IsSetMeal" ColumnName="IsSetMeal" />
-                <ScalarProperty Name="IsOnSale" ColumnName="IsOnSale" />
-                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
                 <ScalarProperty Name="AutoId" ColumnName="AutoId" />
                 <ScalarProperty Name="DisherId" ColumnName="DisherId" />
                 <ScalarProperty Name="DisherCode" ColumnName="DisherCode" />
@@ -1328,6 +1326,18 @@
                 <ScalarProperty Name="Deletor" ColumnName="Deletor" />
                 <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
                 <ScalarProperty Name="CanSelect" ColumnName="CanSelect" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="IsOnSale" ColumnName="IsOnSale" />
+                <ScalarProperty Name="IsSetMeal" ColumnName="IsSetMeal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuSet">
+            <EntityTypeMapping TypeName="MrCyModel.MenuSet">
+              <MappingFragment StoreEntitySet="MenuSet">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DisherId" ColumnName="DisherId" />
+                <ScalarProperty Name="DisherSetId" ColumnName="DisherSetId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1367,6 +1377,21 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="Deletor" ColumnName="Deletor" />
                 <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PayStatus">
+            <EntityTypeMapping TypeName="MrCyModel.PayStatus">
+              <MappingFragment StoreEntitySet="PayStatus">
+                <ScalarProperty Name="index" ColumnName="index" />
+                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OrderSN" ColumnName="OrderSN" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
+                <ScalarProperty Name="WeiPaySN" ColumnName="WeiPaySN" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1414,6 +1439,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="HotelInfo">
+            <EntityTypeMapping TypeName="MrCyModel.HotelInfo">
+              <MappingFragment StoreEntitySet="HotelInfo">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelUser">
+            <EntityTypeMapping TypeName="MrCyModel.HotelUser">
+              <MappingFragment StoreEntitySet="HotelUser">
+                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Note">
             <EntityTypeMapping TypeName="MrCyModel.Note">
               <MappingFragment StoreEntitySet="Note">
@@ -1438,49 +1482,6 @@
                 <ScalarProperty Name="AutoID" ColumnName="AutoID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PayStatus">
-            <EntityTypeMapping TypeName="MrCyModel.PayStatus">
-              <MappingFragment StoreEntitySet="PayStatus">
-                <ScalarProperty Name="Time" ColumnName="Time" />
-                <ScalarProperty Name="WeiPaySN" ColumnName="WeiPaySN" />
-                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
-                <ScalarProperty Name="OrderSN" ColumnName="OrderSN" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PayKind" ColumnName="PayKind" />
-                <ScalarProperty Name="index" ColumnName="index" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HotelInfo">
-            <EntityTypeMapping TypeName="MrCyModel.HotelInfo">
-              <MappingFragment StoreEntitySet="HotelInfo">
-                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
-                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
-                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="HotelUser">
-            <EntityTypeMapping TypeName="MrCyModel.HotelUser">
-              <MappingFragment StoreEntitySet="HotelUser">
-                <ScalarProperty Name="HotelCode" ColumnName="HotelCode" />
-                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
-                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
-                <ScalarProperty Name="AutoID" ColumnName="AutoID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MenuSet">
-            <EntityTypeMapping TypeName="MrCyModel.MenuSet">
-              <MappingFragment StoreEntitySet="MenuSet">
-                <ScalarProperty Name="DisherSetId" ColumnName="DisherSetId" />
-                <ScalarProperty Name="DisherId" ColumnName="DisherId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

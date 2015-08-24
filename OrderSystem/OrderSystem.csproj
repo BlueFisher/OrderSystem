@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\css\waiter-global.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\global.css" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
@@ -269,6 +270,7 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\lib\angular.min.js" />
+    <Content Include="Content\image\02\ZC.oxps" />
     <EntityDeploy Include="Models\MrCyModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MrCyModel.Designer.cs</LastGenOutput>
@@ -276,7 +278,6 @@
     <Content Include="Models\MrCyModel.edmx.diagram">
       <DependentUpon>MrCyModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\image\02\ZC.oxps" />
     <None Include="Properties\PublishProfiles\Config.pubxml" />
     <Content Include="Scripts\lib\jquery-2.1.4.min.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
@@ -285,6 +286,7 @@
     <Content Include="Scripts\orderApp\cartControllers.js" />
     <Content Include="Scripts\orderApp\directive.js" />
     <Content Include="Scripts\orderApp\factory.js" />
+    <Content Include="Scripts\waiterApp\app.js" />
     <Content Include="Scripts\weixin\jquery.js" />
     <Content Include="Scripts\weixin\lazyloadv3.js" />
     <Content Include="Views\Account\Client.cshtml" />
@@ -304,6 +306,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PayController.cs" />
+    <Compile Include="Controllers\WaiterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -430,6 +433,8 @@
     <Content Include="Views\Home\partial-onlinepaysuccess.cshtml" />
     <Content Include="Views\Home\partial-onlinepayfail.cshtml" />
     <Content Include="Views\Pay\WeixinCompleted.cshtml" />
+    <Content Include="Views\Waiter\Index.cshtml" />
+    <Content Include="Views\Waiter\partial-cart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

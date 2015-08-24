@@ -79,6 +79,10 @@ app.controller('cartCtrl', [
 					$rootScope.menuDetail = menus;
 					GSM().then(function (list) {
 						for (var i = 0; i < $rootScope.menuDetail.length; i++) {
+							if ($rootScope.menuDetail[i].IsOnSale) {
+								$rootScope.menuDetail[i].DisherPrice = parseFloat($rootScope.menuDetail[i].DisherVipPrice);
+								$rootScope.menuDetail[i].DisherDiscount = 1;
+							}
 							if ($rootScope.menuDetail[i].IsSetMeal) {
 								$rootScope.menuDetail[i].Additional.SetMealList = [];
 								for (var j = 0; j < list.length; j++) {

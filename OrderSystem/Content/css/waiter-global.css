@@ -1,0 +1,43 @@
+﻿html {
+	height: 100%;
+}
+
+body {
+	position: relative;
+	min-height: 100%;
+	font-family: "Microsoft Yahei";
+	background-color: #EEEDEF;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn:active:focus,
+.btn:focus {
+	outline: none;
+}
+
+.form-control-inline {
+	display: inline-block;
+	width: auto;
+}
+
+.menu-part{
+	float:left;
+	width:33.33%;
+}
+
+.fun{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+.fun-btn{
+	float:left;
+	width:33.33%;
+	text-align:center;
+	height: 30px;
+	line-height: 30px;
+	background: #fff;
+}
