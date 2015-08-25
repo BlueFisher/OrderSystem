@@ -143,6 +143,14 @@ app.controller('clientCtrl', [
 		$http.post('/Cart/GetTablewareFee').success(function (data) {
 			$scope.tablewareFee = parseFloat(data.TablewareFee);
 		});
+
+		$scope.tryAgain = function () {
+			$rootScope.historyCart = {
+				Customer: $scope.historyMenu.Customer,
+				Results: $scope.historyMenu.Results
+			}
+			$location.path('/cart');
+		}
 	}
 ]).controller('historyCtrl', [
 	'$scope',

@@ -5,13 +5,16 @@ var app = angular.module('waiterApp', ['ngRoute', 'ui.bootstrap']);
 
 app.config(function ($routeProvider) {
 	$routeProvider.when('/', {
+		templateUrl: 'Waiter/Partial/partial-index',
+		controller: 'indexCtrl'
+	}).when('/cart', {
 		templateUrl: 'Waiter/Partial/partial-cart',
 		controller: 'cartCtrl'
-	})
-});
-
-app.controller('cartCtrl', function ($scope, $http) {
-	$http.post('/Home/GetMenuDetail').success(function (data) {
-		$scope.menuDetails = data;
+	}).when('/payment', {
+		templateUrl: 'Waiter/Partial/partial-payment',
+		controller: 'paymentCtrl'
+	}).when('/success', {
+		templateUrl: 'Waiter/Partial/partial-success',
+		controller: 'successCtrl'
 	})
 });

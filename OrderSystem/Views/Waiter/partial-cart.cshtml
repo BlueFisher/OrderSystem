@@ -1,17 +1,91 @@
-﻿<section>
-	<div class="menu-part" ng-repeat="menu in menuDetails">
-		<p>{{menu.DisherName}}</p>
+﻿<section class="search">
+	<div class="input-group">
+		<span class="input-group-addon"><span class="fa fa-search"></span></span>
+		<input type="text" class="form-control" placeholder="搜索"
+			   ng-model="searchText" ng-change="searchChange(searchText)">
+	</div>
+</section>
+<section class="menu clearfix">
+
+	<!-- ngRepeat menu -->
+	<div class="menu-part" ng-repeat="menu in filteredMenuDetail" ng-class="{active:menu.Additional.Ordered>0}"ng-click="addMenu(menu,$event)">
+		<p class="meal-title" >
+			{{menu.DisherName}}
+			{{menu.DisherPrice | currency : "￥"}}
+			<span ng-if="menu.DisherDiscount<1">({{menu.DisherDiscount * 10}} 折)</span>
+			<span ng-if="menu.IsOnSale" class="text-danger">特价</span>
+		</p>
+		<div>
+			<div ng-if="menu.Additional.Ordered>0" class="menu-control">
+				<button class="btn btn-sm" style="color:#000"
+						ng-click="removeMenu(menu,$event)">
+					删除
+				</button>
+				{{menu.Additional.Ordered}}
+				<div>
+					<button class="btn btn-sm btn-danger btn-note"
+							ng-click="toggleNote(menu,$event)">
+						个性服务
+						<span class="fa fa-chevron-circle-down" ng-show="!menu.Additional.IsNoteCollapsed"></span>
+						<span class="fa fa-chevron-circle-up" ng-show="menu.Additional.IsNoteCollapsed"></span>
+					</button>
+
+					<!-- ngRepeat the added notes -->
+					<button class="btn btn-sm btn-success btn-note"
+							ng-repeat="note in menu.Additional.Notes"
+							ng-click="removeNote(menu,note,$index,$event)">
+						{{note.Note1}}
+						<span class="fa fa-times-circle"></span>
+					</button>
+					<div class="well well-note" ng-if="menu.Additional.IsNoteCollapsed">
+						<!-- ngRepeat not added notes -->
+						<button class="btn btn-sm btn-primary btn-note"
+								ng-repeat="note in menu.Additional.FilteredNotes"
+								ng-click="addNote(menu,note,$index,$event)"
+								ng-disabled="menu.Additional.Notes.length == 3">
+							{{note.Note1}}
+							<span class="fa fa-check-circle"></span>
+						</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
 	</div>
 </section>
 
-<section class="fun">
-	<div class="fun-btn">
-		分类
-	</div>
-	<div class="fun-btn">
-		开桌
-	</div>
-	<div class="fun-btn">
-		查看点单
+<section>
+	<div class="fun">
+		<div class="fun-part" >
+			<div dropdown>
+				<div dropdown-toggle>
+					分类
+				</div>
+				<ul class="dropdown-menu">
+					<li ng-class="{active:isOnSaleMode()}"
+						ng-click="enterOnSaleMode()">
+						<span class="fa fa-star"></span> 今日特价
+					</li>
+					<li ng-class="{active:isRankMode()}"
+						ng-click="enterRankMode()">
+						<span class="fa fa-star"></span> 销量排行
+					</li>
+					<!-- ngRepeat class -->
+					<li ng-repeat="class in menuSubClass"
+						ng-class="{active: class.Additional.IsSelected}"
+						ng-click="toggleSelected(class)">
+						{{class.SubClassName}}
+						<span ng-show="class.Additional.Ordered>0">{{class.Additional.Ordered}}</span>
+					</li>
+				</ul>
+			</div>
+			
+		</div>
+		<div class="fun-part" route-href="/payment">
+			结算
+		</div>
+		<div class="fun-part" ng-click="enterResultMode()">
+			查看点单
+		</div>
 	</div>
 </section>

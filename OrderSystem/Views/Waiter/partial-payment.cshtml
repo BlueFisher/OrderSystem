@@ -1,0 +1,38 @@
+﻿<section class="payment">
+	<ul class="list-group">
+		<li class="list-group-item">
+			桌号：
+			<select ng-model="deskId">
+				<option ng-repeat="t in tables" value="{{t.DeskId}}">
+					{{t.DeskName}}
+				</option>
+			</select>
+		</li>
+		<li class="list-group-item">
+			餐具数：
+			<select ng-model="cart.Customer" convert-to-number>
+				<option ng-repeat="c in customersAll" value="{{c}}"
+						ng-selected="cart.Customer == c">
+					{{c}}
+				</option>
+			</select>
+		</li>
+		<li class="list-group-item">
+			<span class="text-danger">
+				共计：{{cart.PriceAll | currency : "￥"}}
+				<span ng-show="tablewareFee>0">
+					+ {{tablewareFee | currency : "￥"}}&times;{{cart.Customer}}(餐具费)
+				</span>
+			</span>
+		</li>
+		<li class="list-group-item">
+			<button class="btn btn-danger btn-block"
+					ng-click="offlinePay()"
+					ng-disabled="deskId==null">
+				下单
+			</button>
+		</li>
+	</ul>
+
+	<form action="/cart/weixinSubmit" method="post"></form>
+</section>

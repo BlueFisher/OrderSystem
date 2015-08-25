@@ -287,6 +287,9 @@
     <Content Include="Scripts\orderApp\directive.js" />
     <Content Include="Scripts\orderApp\factory.js" />
     <Content Include="Scripts\waiterApp\app.js" />
+    <Content Include="Scripts\waiterApp\cartControllers.js" />
+    <Content Include="Scripts\waiterApp\directive.js" />
+    <Content Include="Scripts\waiterApp\factory.js" />
     <Content Include="Scripts\weixin\jquery.js" />
     <Content Include="Scripts\weixin\lazyloadv3.js" />
     <Content Include="Views\Account\Client.cshtml" />
@@ -435,6 +438,9 @@
     <Content Include="Views\Pay\WeixinCompleted.cshtml" />
     <Content Include="Views\Waiter\Index.cshtml" />
     <Content Include="Views\Waiter\partial-cart.cshtml" />
+    <Content Include="Views\Waiter\partial-index.cshtml" />
+    <Content Include="Views\Waiter\partial-payment.cshtml" />
+    <Content Include="Views\Waiter\partial-success.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

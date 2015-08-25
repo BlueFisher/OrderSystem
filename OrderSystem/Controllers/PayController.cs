@@ -122,10 +122,15 @@ namespace OrderSystem.Controllers {
 		}
 
 		private static void log(string message) {
-			FileStream fs = new FileStream("c:/log.txt", FileMode.Append);
-			StreamWriter sw = new StreamWriter(fs);
-			sw.WriteLine(message);
-			sw.Close();
+			try {
+				FileStream fs = new FileStream("c:/log.txt", FileMode.Append);
+				StreamWriter sw = new StreamWriter(fs);
+				sw.WriteLine(message);
+				sw.Close();
+			}
+			catch {
+
+			}
 		}
 	}
 }
