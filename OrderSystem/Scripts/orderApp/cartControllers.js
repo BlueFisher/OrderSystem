@@ -419,9 +419,13 @@ app.controller('cartCtrl', [
 
 		$scope.pay = function () {
 			$scope.isCompleted = true;
+			$rootScope.backBtn = false;
+			$rootScope.indexBtn = false;
+			$rootScope.closeBtn = true;
 			$rootScope.cart.PriceAll = $scope.TempPriceAll;
 
 			filterObject($rootScope.cart.Results);
+			$rootScope.cart.PayKind = '现场支付';
 			console.log($rootScope.cart);
 			$http.post('/Cart/Submit', $rootScope.cart).success(function (data) {
 				delete $rootScope.cart;

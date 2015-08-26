@@ -14,6 +14,7 @@ using System.Text;
 
 using System.Configuration;
 using System.IO;
+using AutoPrint;
 
 
 namespace OrderSystem.Controllers {
@@ -98,6 +99,18 @@ namespace OrderSystem.Controllers {
 				PayController.StartTimer(id, hotelid);
 
 
+			}
+			else if(model.PayKind == "现场支付") {
+				try {
+					string conn = System.Configuration.ConfigurationManager.ConnectionStrings["sqlString"].ConnectionString;
+					new PrintDineMenu(conn).Print();
+				}
+				catch(Exception e) {
+					FileStream fs = new FileStream("d:/dll.txt", FileMode.Append);
+					StreamWriter sw = new StreamWriter(fs);
+					sw.WriteLine(e);
+					sw.Close();
+				}
 			}
 
 			return Content(returnContent);

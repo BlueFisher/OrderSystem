@@ -28,9 +28,7 @@
 			@{
 				if(System.Configuration.ConfigurationManager.AppSettings["canOfflinePay"] == "True") {
 					<button class="btn btn-danger btn-block"
-							ng-click="offlinePay();"
-							ng-disabled="cart.Customer == 0"
-							>
+							ng-click="offlinePay()">
 						现场支付
 					</button>
 				}
